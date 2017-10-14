@@ -13,7 +13,7 @@ function Add_month($time, $num=1) {
     if ($m>12) {
         $y+=floor($m/12);
         $m=($m%12);
-        // Дополнительная проверка на декабрь
+        // Дополнительная 	проверка на декабрь
         if (!$m) {
             $m=12;
             $y--;
@@ -437,19 +437,5 @@ function XLS($str_beg_date, $sum_kred, $col_month, $proc, $arr_all_platezh)
 	 $objWriter->save('php://output');
 }
 
-
-/*
-function XLS1($str_beg_date, $sum_kred, $col_month, $proc, $arr_all_platezh) 
-{
-	$html=Platezh_to_html($str_beg_date, $sum_kred, $col_month, $proc, $arr_all_platezh);
-	header ( "Expires: Mon, 1 Apr 1974 05:00:00 GMT" );
-	header ( "Last-Modified: " . gmdate("D,d M YH:i:s") . " GMT" );
-	eader ( "Cache-Control: no-cache, must-revalidate" );
-	header ( "Pragma: no-cache" );
-	header ( "Content-type: application/vnd.ms-excel" );
-	header ( "Content-Disposition: attachment; filename=Grafik.xls" );
-	echo $html;
-}
-*/
 
  ?>
