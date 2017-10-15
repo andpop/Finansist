@@ -26,7 +26,7 @@
 			?>
 		</div>
 		<div class="jumbotron">
-			<form method="post" id="frmPlatezhParam" action="platezh_result.php">
+			<form method="post" id="frmPlatezhParam" action="out_platezh_schedule.php">
 				<?php
 				if ($_REQUEST['type_platezh'] == 'annuit')
 					echo '<input type="hidden" name="type_platezh" id="type_platezh" value="annuit">';
