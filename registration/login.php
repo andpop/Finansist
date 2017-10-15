@@ -1,8 +1,8 @@
 <?php
-include_once 'handler.php'; // проверяем авторизирован ли пользователь
+include_once 'check_authorization.php'; // проверяем авторизирован ли пользователь
 
 // если да, перенаправляем его на главную страницу
-if($user) 
+if ($user) 
 	{
 	header ('Location: index.php');
 	exit();
