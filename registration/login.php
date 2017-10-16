@@ -2,20 +2,22 @@
 include_once 'check_authorization.php'; // проверяем авторизирован ли пользователь
 
 // если да, перенаправляем его на главную страницу
-if ($user) 
-	{
+if ($user) {
 	header ('Location: index.php');
 	exit();
-	}
+}
 
-if(!empty($_POST['login']) AND !empty($_POST['password']))
-	{
+if (!empty($_POST['login']) AND !empty($_POST['password'])) {
  	// фильтрируем логин и пароль
- 	$login = mysql_real_escape_string(htmlspecialchars($_POST['login']));
- 	$password = mysql_real_escape_string(htmlspecialchars($_POST['password']));
+ 	$login = $mysqli->real_escape_string(htmlspecialchars($_POST['login']));
+ 	$password = $mysqli->real_escape_string(htmlspecialchars($_POST['password']));
  
-	$search_user = mysql_result(mysql_query("SELECT COUNT(*) FROM `users_profiles` WHERE `username` = '".$login."' AND `password` = '".md5($password)."'"), 0);
-	if($search_user == 0)
+ 	$query = "SELECT COUNT(*) FROM `users_profiles` WHERE `username` = '".$login."' AND `password` = '".md5($password)."'";
+ 	$result = $mysqli->query($query);
+ 	$is_correct_user = $result->fetch_row()[0];
+
+	//$search_user = mysql_result(mysql_query("SELECT COUNT(*) FROM `users_profiles` WHERE `username` = '".$login."' AND `password` = '".md5($password)."'"), 0);
+	if ($is_correct_user == 0)
 		{
 		echo 'Введенные данные неправильные или пользователь не найден.';
 		exit();
@@ -29,7 +31,7 @@ if(!empty($_POST['login']) AND !empty($_POST['password']))
 		echo 'Вы успешно авторизировались на сайте!';
 		exit();
 		}
-	}
+}
 echo '
 <form action="login.php" method="POST">
 Логин:<br />

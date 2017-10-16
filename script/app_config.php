@@ -1,6 +1,8 @@
 <?php
 require_once 'connection_params.php';
 
+//echo MYSQL_DB;
+
 function db_connect(){
 	$mysqli = @new mysqli(MYSQL_SERVER, MYSQL_USER, MYSQL_PASSWORD, MYSQL_DB);
 	

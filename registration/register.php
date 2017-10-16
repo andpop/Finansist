@@ -2,29 +2,31 @@
 include_once 'check_authorization.php'; // проверяем авторизирован ли пользователь
 
 // если да, перенаправляем его на главную страницу
-if($user) 
-	{
+if ($user) 	{
 	header ('Location: index.php');
 	exit();
-	}
+}
 
-if (!empty($_POST['login']) AND !empty($_POST['password']))
-	{
+if (!empty($_POST['login']) AND !empty($_POST['password'])) 	{
  	// фильтрируем логин и пароль
- 	$login = mysql_real_escape_string(htmlspecialchars($_POST['login']));
- 	$password = mysql_real_escape_string(htmlspecialchars($_POST['password']));
+ 	$login = $mysqli->real_escape_string(htmlspecialchars($_POST['login']));
+ 	$password = $mysqli->real_escape_string(htmlspecialchars($_POST['password']));
  
  	// проверяем есть ли логин в нашей базе данных
-	if (mysql_result(mysql_query("SELECT COUNT(*) FROM `users_profiles` WHERE `username` = '".$login."' LIMIT 1;"), 0) != 0)
+ 	$query = "SELECT COUNT(*) FROM `users_profiles` WHERE `username` = '".$login."' LIMIT 1;";
+ 	$result = $mysqli->query($query);
+ 	$is_user_already_exists = $result->fetch_row()[0];
+	if ($is_user_already_exists != 0)
 		{
 		echo 'Выбранный логин уже зарегистрирован!';
 		exit();
 		}
- 	// заносим данные в таблицу, обратите внимание - пароль кодируем в md5
-	mysql_query("INSERT INTO `users_profiles` (`username`, `password`) VALUES ('".$login."', '".md5($password)."')");
+ 	// Добавляем имя и пароль пользователя в таблицу (пароль кодируем в md5)
+	$query = "INSERT INTO `users_profiles` (`username`, `password`) VALUES ('".$login."', '".md5($password)."')";
+	$mysqli->query($query);
     echo 'Вы успешно зарегистрированы!';
 	exit();
-	}
+}
  // форма регистрации
 echo '
 <form action="register.php" method="POST">

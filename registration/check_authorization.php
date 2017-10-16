@@ -1,13 +1,16 @@
 <?php
 //include_once 'db_connect.php'; // Проверяем подключение к базе данных
-include_once '..\script\app_config.php'; // Проверяем подключение к базе данных
+include_once '../script/app_config.php'; // Проверяем подключение к базе данных
 $mysqli = db_connect();
 
 // Проверяем, заполнены ли логин и пароль в куках
 if (!empty($_COOKIE['username']) AND !empty($_COOKIE['password'])) {
- 	// Ищем пользователя в таблице users_profiles, mysql_real_escape_string используем как защиту от sql injection
- 	$search_user = mysql_query("SELECT * FROM `users_profiles` WHERE `username` = '".mysql_real_escape_string($_COOKIE['username'])."' AND `password` = '".mysql_real_escape_string($_COOKIE['password'])."'");
- 	$user = (mysql_num_rows($search_user) == 1) ? mysql_fetch_array($search_user) : 0;
+ 	// Ищем пользователя в таблице users_profiles
+ 	$username = $mysqli->real_escape_string($_COOKIE['username']);
+ 	$password = $mysqli->real_escape_string($_COOKIE['password']);
+ 	$search_user = $mysqli->query("SELECT * FROM `users_profiles` WHERE `username` = '".$username.
+ 		"' AND `password` = '".$password."'");
+ 	$user = ($search_user->num_rows == 1) ? $search_user->fetch_assoc() : 0;
 }
 else 	{
  	$user = 0;
