@@ -11,7 +11,8 @@ if (!empty($_POST['login']) AND !empty($_POST['password'])) {
  	// фильтрируем логин и пароль
  	$login = $mysqli->real_escape_string(htmlspecialchars($_POST['login']));
  	$password = $mysqli->real_escape_string(htmlspecialchars($_POST['password']));
- 
+ 	
+ 	// Проверяем правильность имени и пароля пользователя
  	$query = "SELECT COUNT(*) FROM `users_profiles` WHERE `username` = '".$login."' AND `password` = '".md5($password)."'";
  	$result = $mysqli->query($query);
  	$is_correct_user = $result->fetch_row()[0];
