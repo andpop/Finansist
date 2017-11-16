@@ -63,3 +63,15 @@ CREATE TABLE `Company` (
   `OPF` TINYINT(2) NOT NULL,
   `SNO` TINYINT(2) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+---------------------------------------------------------------------
+
+CREATE TABLE `GSZ` (
+  `Id` TINYINT(2) UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  `Brief_Name` VARCHAR(10) NOT NULL,
+  `Full_Name` VARCHAR(100) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+INSERT INTO `GSZ` (`Brief_Name`, `Full_Name`) VALUES
+('Группа 1', 'Описание первой группы связанных заемщиков'),
+('Группа 2', 'Описание второй группы связанных заемщиков');
