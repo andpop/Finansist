@@ -57,12 +57,17 @@ INSERT INTO `User` (`Email`, `Nickname`, `Password`, `Full_Name`, `Newsletter`) 
 ---------------------------------------------------------------------
 
 CREATE TABLE `Company` (
-  `INN` BIGINT(20) NOT NULL PRIMARY KEY,
+  `Id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  `INN` BIGINT(20) NOT NULL,
+  `GSZ_Id` TINYINT(2) NOT NULL,
   `User_Id` INT(10) NOT NULL,
-  `Name` VARCHAR(100) NOT NULL,
-  `OPF` TINYINT(2) NOT NULL,
-  `SNO` TINYINT(2) NOT NULL
+  `Name` CHAR(150) NOT NULL,
+  `OPF_Id` TINYINT(2) NOT NULL,
+  `SNO_Id` TINYINT(2) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+INSERT INTO `finansist`.`Company` (`INN`, `GSZ_Id`, `User_Id`, `Name`, `OPF_Id`, `SNO_Id`) VALUES ('1234567890', '1', '1', 'ООО "Рога и копыта"', '2', '1');
 
 ---------------------------------------------------------------------
 
@@ -72,6 +77,17 @@ CREATE TABLE `GSZ` (
   `Full_Name` VARCHAR(150)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+CREATE TABLE `GSZ` (
+  `Id` TINYINT(2) UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  `Brief_Name` CHAR(30),
+  `Full_Name` CHAR(150)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 INSERT INTO `GSZ` (`Brief_Name`, `Full_Name`) VALUES
 ('Группа 1', 'Описание первой группы связанных заемщиков'),
 ('Группа 2', 'Описание второй группы связанных заемщиков');
+
+//Выборка данных по компаниям с краткими кодами ОПФ и СНО
+SELECT `A`.`Name`, `A`.`INN`, `B`.`Brief_Name`, `C`.`Brief_Name`
+FROM `Company` A, `OPF` B, `SNO` `C`
+WHERE (`A`.`OPF_Id`=`B`.`Id`) AND (`A`.`SNO_Id`=`C`.`Id`)

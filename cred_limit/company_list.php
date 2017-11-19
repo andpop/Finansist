@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Финансист онлайн - Группы связанных заемщиков</title>
+	<title>Финансист онлайн - Компании из ГСЗ</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<meta name="description" content="" />
 	<meta name="keywords" content="" />
@@ -13,14 +13,14 @@
 	<?php
 		require_once '../script/app_config.php';
 
-		$MAX_LENGTH_BRIEF_NAME = 30;
-		$MAX_LENGTH_FULL_NAME = 150;
+		// $MAX_LENGTH_BRIEF_NAME = 30;
+		// $MAX_LENGTH_FULL_NAME = 150;
 		
 		if (!isset($_GET["action"])) $_GET["action"] = "show_list";
 		switch ($_GET["action"]) 
 		{
 			case 'show_list':  //Список всех записей из таблицы
-				show_gsz_list();
+				show_company_list();
 				break;
 			case "add_form":     // Форма для добавления новой записи
 				add_item_form(); 
@@ -30,17 +30,17 @@
 				break;
 			
 			default:
-				show_gsz_list();
+				show_company_list();
 				break;
 		}
 		
 		//Вывод всех записей из таблицы GSZ
-		function show_gsz_list()
+		function show_company_list()
 		{
 			$mysqli = db_connect();
 			echo '<div class="container">';
 			echo '<header>';
-			echo '<h2 class="text-center">ГРУППЫ СВЯЗАННЫХ ЗАЕМЩИКОВ</h2>';
+			echo '<h2 class="text-center">КОМПАНИИ ГРУППЫ СВЯЗАННЫХ ЗАЕМЩИКОВ</h2>';
 			echo '</header>';
 			echo '<div class="jumbotron">';
 			echo '<table class="table">';
