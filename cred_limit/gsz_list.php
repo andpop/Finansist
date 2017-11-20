@@ -53,14 +53,15 @@
 				$id = $row['Id'];
 				$s = '<tr><td>'.$row['Brief_Name'].'</td>';
 				$s .= '<td>'.$row['Full_Name'].'</td>';
-				$s .= '<td><a class="btn btn-info btn-xs" href="'.$_SERVER['PHP_SELF'].'?action=edit_form&id='.$id.'">Изменить</a></td>';
-				$s .= '<td><a class="btn btn-info btn-xs" href="gsz_save_item.php?action=delete&Id='.$id.'">Удалить</a></td>';
+				$s .= '<td><a class="btn btn-primary btn-xs" href="company_list.php?action=show_list&GSZ_Id='.$id.'">Компании</a></td>';
+				$s .= '<td><a class="btn btn-link btn-xs" href="'.$_SERVER['PHP_SELF'].'?action=edit_form&id='.$id.'">Изменить</a></td>';
+				$s .= '<td><a class="btn btn-link btn-xs" href="gsz_save_item.php?action=delete&Id='.$id.'">Удалить</a></td>';
 				$s .= "</tr>\n";
 				echo $s;
 			} //end of while $row
 			echo '</table>';
 			echo '<a class="btn btn-primary" href="'.$_SERVER['PHP_SELF'].'?action=add_form">Добавить</a> ';
-			echo '<a class="btn btn-warning" href="limit.html">Вернуться</a>';
+			echo '<a class="btn btn-warning" onClick="history.back();">Вернуться</a>';
 			echo '</div>'; //end of Jumbotron
 			$mysqli->close();		
 		} //end of function show_gsz_list
