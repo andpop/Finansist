@@ -105,21 +105,23 @@
 			echo '<div class="jumbotron">';
 
 
-			echo '<h3>Изменение записи	</h3>';
+			echo '<h3>Изменение данных</h3>';
 			$mysqli = db_connect();
 			$query = 'SELECT `Brief_Name`, `Full_Name` FROM GSZ WHERE `Id`='.$_GET['id'];
 			$result_set = $mysqli->query($query);
 			$row = $result_set->fetch_assoc();
-			
+			$Brief_Name = htmlspecialchars($row['Brief_Name']);
+			$Full_Name = htmlspecialchars($row['Full_Name']);
+
 			echo '<form name="edit_form" action="gsz_save_item.php?action=update" method="POST">';
 			echo '<input type="hidden" name="Id" Id="Id" value="'.$_GET['id'].'">';
 	        echo '<div class="form-group">';
             echo '<label for="GSZ_Brief_Name">Название</label>';
-            echo '<input type="text" class="form-control" name="GSZ_Brief_Name" id="GSZ_Brief_Name"  maxlength='.$GLOBALS[MAX_LENGTH_BRIEF_NAME].' value="'.$row['Brief_Name'].'">';
+            echo '<input type="text" class="form-control" name="GSZ_Brief_Name" id="GSZ_Brief_Name"  maxlength='.$GLOBALS[MAX_LENGTH_BRIEF_NAME].' value="'.$Brief_Name.'">';
         	echo '</div>';
         	echo '<div class="form-group">';
             echo '<label for="GSZ_Full_Name">Описание</label>';
-            echo '<input type="text" class="form-control" name="GSZ_Full_Name" id="GSZ_Full_Name"  maxlength='.$GLOBALS[MAX_LENGTH_FULL_NAME].' value="'.$row['Full_Name'].'">';
+            echo '<input type="text" class="form-control" name="GSZ_Full_Name" id="GSZ_Full_Name"  maxlength='.$GLOBALS[MAX_LENGTH_FULL_NAME].' value="'.$Full_Name.'">';
         	echo '</div>';
         	echo '<button type="submit" class="btn btn-primary">Сохранить</button> ';
         	echo '<button type="button" class="btn btn-warning" onClick="history.back();">Отменить</button>';

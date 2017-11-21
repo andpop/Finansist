@@ -73,12 +73,6 @@ INSERT INTO `finansist`.`Company` (`INN`, `GSZ_Id`, `User_Id`, `Name`, `OPF_Id`,
 
 CREATE TABLE `GSZ` (
   `Id` TINYINT(2) UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  `Brief_Name` VARCHAR(30),
-  `Full_Name` VARCHAR(150)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-CREATE TABLE `GSZ` (
-  `Id` TINYINT(2) UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
   `Brief_Name` CHAR(30),
   `Full_Name` CHAR(150)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -88,6 +82,6 @@ INSERT INTO `GSZ` (`Brief_Name`, `Full_Name`) VALUES
 ('Группа 2', 'Описание второй группы связанных заемщиков');
 
 //Выборка данных по компаниям с краткими кодами ОПФ и СНО
-SELECT `A`.`Name`, `A`.`INN`, `B`.`Brief_Name`, `C`.`Brief_Name`
+SELECT `A`.`Name` AS `Name`, `A`.`INN` AS `INN`, `B`.`Brief_Name` AS `OPF`, `C`.`Brief_Name` AS `SNO`
 FROM `Company` A, `OPF` B, `SNO` `C`
 WHERE (`A`.`OPF_Id`=`B`.`Id`) AND (`A`.`SNO_Id`=`C`.`Id`)

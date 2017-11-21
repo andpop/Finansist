@@ -12,10 +12,11 @@
 <body>
 	<?php
 		require_once '../script/app_config.php';
+		require_once './cred_limit_scripts.php';
 
 		// $MAX_LENGTH_BRIEF_NAME = 30;
 		$MAX_LENGTH_COMPANY_NAME = 150;
-		
+
 		if (!isset($_GET["action"])) 
 				{
 					$_GET["action"] = "show_list";
@@ -81,14 +82,14 @@
 				$s .= '<td>'.$row['INN'].'</td>';
 				$s .= '<td>'.$row['OPF'].'</td>';
 				$s .= '<td>'.$row['SNO'].'</td>';
-				$s .= '<td><a class="btn btn-link btn-xs" href="'.$_SERVER['PHP_SELF'].'?action=edit_form&id='.$id.'">Изменить</a></td>';
-				$s .= '<td><a class="btn btn-link btn-xs" href="gsz_save_item.php?action=delete&Id='.$id.'">Удалить</a></td>';
+				$s .= '<td><a class="btn btn-link btn-xs" href="'.$_SERVER['PHP_SELF'].'?action=edit_form&Company_Id='.$id.'">Изменить</a></td>';
+				$s .= '<td><a class="btn btn-link btn-xs" href="company_save_item.php?action=delete&Company_Id='.$id.'&GSZ_Id='.$GSZ_Id.'">Удалить</a></td>';
 				$s .= "</tr>\n";
 				echo $s;
 			} //end of while $row
 			echo '</table>';
 			echo '<a class="btn btn-primary" href="'.$_SERVER['PHP_SELF'].'?action=add_form&GSZ_Id='.$GSZ_Id.'">Добавить</a> ';
-			echo '<a class="btn btn-warning" onClick="history.back();">Вернуться</a>';
+			echo '<a class="btn btn-warning" href=".\gsz_list.php">Вернуться</a>';
 			echo '</div>'; //end of Jumbotron
 			$mysqli->close();		
 		} //end of function show_gsz_list
@@ -109,13 +110,10 @@
 				exit("Неверный формат URL-запроса");
 			}
 			$mysqli = db_connect();
-			$query = 'SELECT `Brief_Name` FROM `gsz` WHERE `Id`='.$GSZ_Id;
-			$result_set = $mysqli->query($query);
-			$row = $result_set->fetch_assoc();
 
 			echo '<div class="jumbotron">';
 
-			echo '<h3>Новая компания из ГСЗ: '.$row['Brief_Name'].'</h3>';
+			echo '<h3>Новая компания из ГСЗ: '.get_GSZ_name_by_id($GSZ_Id).'</h3>';
 			echo '<form name="add_form" action="company_save_item.php?action=add" method="POST">';
 
 			echo '<input type="hidden" name="GSZ_Id" id="CSZ_Id" value='.$GSZ_Id.'>';
@@ -123,6 +121,7 @@
             echo '<label for="Company_Name">Название</label>';
             echo '<input type="text" class="form-control" name="Company_Name" id="Company_Name" maxlength='.$GLOBALS[MAX_LENGTH_COMPANY_NAME].' placeholder="Наименование компании">';
         	echo '</div>';
+
 	        echo '<div class="form-group">';
             echo '<label for="INN">ИНН</label>';
             echo '<input type="text" class="form-control" name="INN" id="INN" maxlength=12 placeholder="123456789012">';
@@ -131,12 +130,8 @@
             echo '<div class="form-group">';
             echo '    <label for="OPF">Организационно-правовая форма</label>';
             echo '    <select class="form-control"  name="OPF" id="OPF">';
-			$query = 'SELECT `Brief_Name` FROM `opf`';
-			$result_set = $mysqli->query($query);
-			while (($row = $result_set->fetch_assoc()) != false) 
-			{
-				echo '      <option>'.$row['Brief_Name'].'</option>';				
-			}
+            foreach (get_OPF_names() as $OPF_name) 
+            	echo '      <option>'.$OPF_name.'</option>';
             echo '    </select>                           ';
             echo '</div>';
 
@@ -144,12 +139,8 @@
             echo '<div class="form-group">';
             echo '    <label for="SNO">Система налогооблажения</label>';
             echo '    <select class="form-control"  name="SNO" id="SNO">';
-			$query = 'SELECT `Brief_Name` FROM `sno`';
-			$result_set = $mysqli->query($query);
-			while (($row = $result_set->fetch_assoc()) != false) 
-			{
-				echo '      <option>'.$row['Brief_Name'].'</option>';				
-			}
+            foreach (get_SNO_names() as $SNO_name) 
+            	echo '      <option>'.$SNO_name.'</option>';
             echo '    </select>                           ';
             echo '</div>';
 
@@ -168,25 +159,66 @@
 			echo '<header>';
 			echo '<h2 class="text-center">ГРУППЫ СВЯЗАННЫХ ЗАЕМЩИКОВ</h2>';
 			echo '</header>';
-			echo '<div class="jumbotron">';
-
-
-			echo '<h3>Изменение записи	</h3>';
+			
+			$Company_Id = $_GET["Company_Id"];
+			// !!!!!!!!!!!!! Доделать проверку !!!!!!!!!!!!!!!!!!!!!
+			if (!preg_match("/^\d+$/", $Company_Id))
+			{
+				exit("Неверный формат URL-запроса");
+			}
 			$mysqli = db_connect();
-			$query = 'SELECT `Brief_Name`, `Full_Name` FROM GSZ WHERE `Id`='.$_GET['id'];
+			$query = 'SELECT `Name`, `INN`, `GSZ_Id`, `OPF_Id`, `SNO_Id` FROM `Company` WHERE `Id`='.$Company_Id;
 			$result_set = $mysqli->query($query);
 			$row = $result_set->fetch_assoc();
-			
-			echo '<form name="edit_form" action="gsz_save_item.php?action=update" method="POST">';
-			echo '<input type="hidden" name="Id" Id="Id" value="'.$_GET['id'].'">';
+			// Попробовать extract() для получения переменных
+			$Name = htmlspecialchars($row['Name']);
+			$INN = $row['INN'];
+			$GSZ_Id = $row['GSZ_Id'];
+			$OPF_Id = $row['OPF_Id'];
+			$SNO_Id = $row['SNO_Id'];
+			$OPF = get_OPF_name_by_id($OPF_Id);
+			$SNO = get_SNO_name_by_id($SNO_Id);
+
+			echo '<div class="jumbotron">';
+			echo '<h3>Компания из ГСЗ: '.get_GSZ_name_by_id($GSZ_Id).'</h3>';
+
+			echo '<form name="edit_form" action="company_save_item.php?action=update" method="POST">';
+			echo '<input type="hidden" name="Company_Id" Id="Company_Id" value="'.$Company_Id.'">';
+			echo '<input type="hidden" name="GSZ_Id" Id="GSZ_Id" value="'.$GSZ_Id.'">';
 	        echo '<div class="form-group">';
-            echo '<label for="GSZ_Brief_Name">Название</label>';
-            echo '<input type="text" class="form-control" name="GSZ_Brief_Name" id="GSZ_Brief_Name"  maxlength='.$GLOBALS[MAX_LENGTH_BRIEF_NAME].' value="'.$row['Brief_Name'].'">';
+            echo '<label for="Company_Name">Название</label>';
+            echo '<input type="text" class="form-control" name="Company_Name" id="Company_Name"  maxlength='.$GLOBALS[MAX_LENGTH_COMPANY_NAME].' value="'.$Name.'">';
         	echo '</div>';
-        	echo '<div class="form-group">';
-            echo '<label for="GSZ_Full_Name">Описание</label>';
-            echo '<input type="text" class="form-control" name="GSZ_Full_Name" id="GSZ_Full_Name"  maxlength='.$GLOBALS[MAX_LENGTH_FULL_NAME].' value="'.$row['Full_Name'].'">';
+
+	        echo '<div class="form-group">';
+            echo '<label for="INN">ИНН</label>';
+            echo '<input type="text" class="form-control" name="INN" id="INN" maxlength=12 value="'.$INN.'">';
         	echo '</div>';
+
+            echo '<div class="form-group">';
+            echo '    <label for="OPF">Организационно-правовая форма</label>';
+            echo '    <select class="form-control"  name="OPF" id="OPF">';
+            foreach (get_OPF_names() as $OPF_name) 
+            	if ($OPF_name==$OPF)
+            		echo '      <option selected>'.$OPF_name.'</option>';
+            	else
+            		echo '      <option>'.$OPF_name.'</option>';
+            echo '    </select>                           ';
+            echo '</div>';
+
+
+            echo '<div class="form-group">';
+            echo '    <label for="SNO">Система налогооблажения</label>';
+            echo '    <select class="form-control"  name="SNO" id="SNO">';
+            foreach (get_SNO_names() as $SNO_name) 
+            	if ($SNO_name==$SNO)
+            		echo '      <option selected>'.$SNO_name.'</option>';
+            	else
+            		echo '      <option>'.$SNO_name.'</option>';
+            echo '    </select>                           ';
+            echo '</div>';
+
+
         	echo '<button type="submit" class="btn btn-primary">Сохранить</button> ';
         	echo '<button type="button" class="btn btn-warning" onClick="history.back();">Отменить</button>';
         	echo '</form>';
