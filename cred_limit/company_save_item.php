@@ -14,17 +14,8 @@
 			$SNO = $_POST['SNO'];
 			$GSZ_Id=$_POST['GSZ_Id'];
 
-			// $query = 'SELECT `Id` FROM `opf` WHERE `Brief_Name`="'.$OPF.'"';
-			// $result_set = $mysqli->query($query);
-			// $row = $result_set->fetch_assoc();
 			$OPF_Id = get_OPF_Id_by_Name($OPF);
-
-			// $query = 'SELECT `Id` FROM `sno` WHERE `Brief_Name`="'.$SNO.'"';
-			// $result_set = $mysqli->query($query);
-			// $row = $result_set->fetch_assoc();
-			// $SNO_Id = $row['Id'];
 			$SNO_Id = get_SNO_Id_by_Name($SNO);
-
 
 			$query = 'INSERT INTO `Company` (`Name`, `INN`, `OPF_Id`, `SNO_Id`, `GSZ_Id`) ';
 			$query .= 'VALUES ("'.$Name.'", '.$INN.', '.$OPF_Id.', '.$SNO_Id.', '.$GSZ_Id.')';
@@ -67,6 +58,16 @@
 	//echo $query;
 
 	$mysqli->query($query);
-	header( 'Location: company_list.php?action=show_list&GSZ_Id='.$GSZ_Id);
+	if ($mysqli->errno)
+	{
+		$url_param = "action=show_list&GSZ_Id=${GSZ_Id}&error=".urlencode($mysqli->error);
+		header( 'Location: company_list.php?'.$url_param);
+		//print_r($url_param);
+		//echo 'При выполнении запроса произошла ошибка '.$mysqli->errno.": ".$mysqli->error;
+	}
+	else
+	{
+		header( 'Location: company_list.php?action=show_list&GSZ_Id='.$GSZ_Id);
+	}
  	die();
 ?>

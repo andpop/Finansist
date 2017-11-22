@@ -34,6 +34,9 @@
 			case "edit_form":    // Форма для редактирования записи
 				edit_item_form(); 
 				break;
+			case "confirm_delete":    // Форма для редактирования записи
+				confirm_delete_form(); 
+				break;
 			
 			default:
 				show_company_list();
@@ -57,11 +60,22 @@
 			}
 			
 			echo '<div class="jumbotron">';
+			
+			if (isset($_GET['error']))
+			{
+				$s = '<div id="error_message" class="alert alert-danger" role="alert">При сохранении данных произошла ошибка: ';
+				$s .= htmlspecialchars(urldecode($_GET['error'])).'. ';
+				$s .= '<button id="btnError_message" type="button" class="btn btn-info btn-xs";">Закрыть</button></div>';
+				echo $s;
+				// echo '<div class="alert alert-danger" role="alert">При сохранении данных произошла ошибка</div>';
+			}
+
 			$query = 'SELECT `Brief_Name` FROM `gsz` WHERE `Id`='.$GSZ_Id;
 			$result_set = $mysqli->query($query);
 			$row = $result_set->fetch_assoc();
 
 			echo '<h3>'.$row['Brief_Name'].'</h3>';
+
 
 			echo '<table class="table">';
 			echo '<tr><th>Название</th><th>ИНН</th><th>ОПФ</th><th>СНО</th></tr>';
@@ -83,7 +97,7 @@
 				$s .= '<td>'.$row['OPF'].'</td>';
 				$s .= '<td>'.$row['SNO'].'</td>';
 				$s .= '<td><a class="btn btn-link btn-xs" href="'.$_SERVER['PHP_SELF'].'?action=edit_form&Company_Id='.$id.'">Изменить</a></td>';
-				$s .= '<td><a class="btn btn-link btn-xs" href="company_save_item.php?action=delete&Company_Id='.$id.'&GSZ_Id='.$GSZ_Id.'">Удалить</a></td>';
+				$s .= '<td><a class="btn btn-link btn-xs" href="'.$_SERVER['PHP_SELF'].'?action=confirm_delete&Company_Id='.$id.'">Удалить</a></td>';
 				$s .= "</tr>\n";
 				echo $s;
 			} //end of while $row
@@ -91,11 +105,12 @@
 			echo '<a class="btn btn-primary" href="'.$_SERVER['PHP_SELF'].'?action=add_form&GSZ_Id='.$GSZ_Id.'">Добавить</a> ';
 			echo '<a class="btn btn-warning" href=".\gsz_list.php">Вернуться</a>';
 			echo '</div>'; //end of Jumbotron
+			echo '</div>'; 	//class="container"
 			$mysqli->close();		
 		} //end of function show_gsz_list
 
 		
-		// Функция формирует форму для добавления записи в таблице БД
+		// Вывод формы для добавления компании в БД
 		function add_item_form()
 		{
 			echo '<div class="container">';
@@ -148,6 +163,7 @@
         	echo '<button type="button" class="btn btn-warning" onClick="history.back();">Отменить</button>';
         	echo '</form>';
 			echo '</div>'; // end of Jumbotron
+			echo '</div>'; 	//class="container"
 		} //end of function get_add_item_form()
 
 
@@ -223,11 +239,46 @@
         	echo '<button type="button" class="btn btn-warning" onClick="history.back();">Отменить</button>';
         	echo '</form>';
 			echo '</div>'; // end of Jumbotron
+			echo '</div>'; 	//class="container"
 		}
 
+		// Форма для подтверждения удаления компании из ГСЗ 
+		function confirm_delete_form()
+		{
+			//$s .= '<td><a class="btn btn-link btn-xs" href="company_save_item.php?action=delete&Company_Id='.$id.'&GSZ_Id='.$GSZ_Id.'">Удалить</a></td>';
+			echo '<div class="container">';
+			echo '	<header>';
+			echo '		<h2 class="text-center">ГРУППЫ СВЯЗАННЫХ ЗАЕМЩИКОВ</h2>';
+			echo '	</header>';
+
+			$Company_Id = $_GET["Company_Id"];
+			// !!!!!!!!!!!!! Доделать проверку !!!!!!!!!!!!!!!!!!!!!
+			if (!preg_match("/^\d+$/", $Company_Id))
+			{
+				exit("Неверный формат URL-запроса");
+			}
+			$mysqli = db_connect();
+			$query = 'SELECT `Name`, `INN`, `GSZ_Id` FROM `Company` WHERE `Id`='.$Company_Id;
+			$result_set = $mysqli->query($query);
+			$row = $result_set->fetch_assoc();
+			// Попробовать extract() для получения переменных
+			$Name = htmlspecialchars($row['Name']);
+			$INN = $row['INN'];
+			$GSZ_Id = $row['GSZ_Id'];
+
+			echo '<div class="jumbotron">';
+			echo '	<h3>Удалить компанию '.$Name.' (ИНН '.$INN.') из ГСЗ '.get_GSZ_name_by_id($GSZ_Id).'?</h3>';
+			echo '	<a class="btn btn-primary" href="company_save_item.php?action=delete&Company_Id='.$Company_Id.'&GSZ_Id='.$GSZ_Id.'">Удалить</a> ';
+			echo '	<button type="button" class="btn btn-warning" onClick="history.back();">Отменить</button>';
+			echo '</div>'; //class="jumbotron"
+			echo '</div>'; 	//class="container"
+
+		}
 		?>
 
 
-</div> 
+	<script type="text/javascript" src="../js/jquery-1.12.2.min.js"></script>
+	<script type="text/javascript" src="../js/jquery.validate.min.js"></script> 
+	<script type="text/javascript" src="../js/cred_limit.js"></script>
 </body>
 </html>

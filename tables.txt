@@ -77,6 +77,8 @@ CREATE TABLE `GSZ` (
   `Full_Name` CHAR(150)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+CREATE UNIQUE INDEX INN ON company (INN);
+
 INSERT INTO `GSZ` (`Brief_Name`, `Full_Name`) VALUES
 ('Группа 1', 'Описание первой группы связанных заемщиков'),
 ('Группа 2', 'Описание второй группы связанных заемщиков');

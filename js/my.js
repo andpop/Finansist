@@ -148,4 +148,9 @@ $(document).ready(function() {
 	}
 	);
 	
+	$('#btnError_message').click(function(){
+		$('#error_message').hide();
+	}
+	);
+
 });
