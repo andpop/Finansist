@@ -11,6 +11,8 @@
 </head>
 <body>
 	<?php
+		echo phpversion();
+
 		require_once '../script/app_config.php';
 
 		$MAX_LENGTH_BRIEF_NAME = 30;

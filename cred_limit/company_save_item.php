@@ -3,7 +3,7 @@
 	require_once './cred_limit_scripts.php';
 
 	$mysqli = db_connect();
-	if (!isset($_REQUEST["action"])) break;
+	if (!isset($_REQUEST["action"])) exit;
 
 	switch ($_REQUEST["action"])
 	{

@@ -1,7 +1,7 @@
 <?php
 	require_once '../script/app_config.php';
 	$mysqli = db_connect();
-	if (!isset($_REQUEST["action"])) break;
+	if (!isset($_REQUEST["action"])) exit;
 
 	switch ($_REQUEST["action"])
 	{
