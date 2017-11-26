@@ -6,13 +6,13 @@
 	switch ($_REQUEST["action"])
 	{
 		case 'add':
-			$Brief_Name = mysql_escape_string( $_REQUEST['GSZ_Brief_Name'] );
-			$Full_Name = mysql_escape_string( $_REQUEST['GSZ_Full_Name'] );
+			$Brief_Name = $mysqli->real_escape_string( $_REQUEST['GSZ_Brief_Name'] );
+			$Full_Name = $mysqli->real_escape_string( $_REQUEST['GSZ_Full_Name'] );
 			$query = "INSERT INTO `GSZ` (`Brief_Name`, `Full_Name`) VALUES ('".$Brief_Name."', '".$Full_Name."')";
 			break;
 		case 'update':
-			$Brief_Name = mysql_escape_string( $_REQUEST['GSZ_Brief_Name'] );
-			$Full_Name = mysql_escape_string( $_REQUEST['GSZ_Full_Name'] );
+			$Brief_Name = $mysqli->real_escape_string( $_REQUEST['GSZ_Brief_Name'] );
+			$Full_Name = $mysqli->real_escape_string( $_REQUEST['GSZ_Full_Name'] );
 
 			//Проверяем, является ли параметр Id целым числом
 			if (!preg_match("/^\d+$/", $_REQUEST['Id']))

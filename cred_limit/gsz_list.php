@@ -11,7 +11,6 @@
 </head>
 <body>
 	<?php
-		echo phpversion();
 
 		require_once '../script/app_config.php';
 

@@ -8,8 +8,8 @@
 	switch ($_REQUEST["action"])
 	{
 		case 'add':
-			$Name = mysql_escape_string($_POST['Company_Name']);
-			$INN = mysql_escape_string($_POST['INN']);
+			$Name = $mysqli->real_escape_string($_POST['Company_Name']);
+			$INN = $mysqli->real_escape_string($_POST['INN']);
 			$OPF = $_POST['OPF'];
 			$SNO = $_POST['SNO'];
 			$GSZ_Id=$_POST['GSZ_Id'];
@@ -25,8 +25,9 @@
 			$Id = $_POST['Company_Id'];
 			$GSZ_Id = $_POST['GSZ_Id'];
 
-			$Name = mysql_escape_string($_POST['Company_Name']);
-			$INN = mysql_escape_string($_POST['INN']);
+			$Name = $mysqli->real_escape_string($_POST['Company_Name']);
+			$INN = $mysqli->real_escape_string($_POST['INN']);
+			
 			//Добавить проверку на -1
 			$OPF_Id = get_OPF_Id_by_Name($_POST['OPF']);
 			$SNO_Id = get_SNO_Id_by_Name($_POST['SNO']);
@@ -60,7 +61,7 @@
 	$mysqli->query($query);
 	if ($mysqli->errno)
 	{
-		$url_param = "action=show_list&GSZ_Id=${GSZ_Id}&error=".urlencode($mysqli->error);
+		$url_param = "action=show_list&GSZ_Id={$GSZ_Id}&error=".urlencode($mysqli->error);
 		header( 'Location: company_list.php?'.$url_param);
 		//print_r($url_param);
 		//echo 'При выполнении запроса произошла ошибка '.$mysqli->errno.": ".$mysqli->error;
