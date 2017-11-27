@@ -245,6 +245,7 @@
 		*/
 		function confirm_delete_form()
 		{
+			echo '<div class="container">'.PHP_EOL;
 			echo '	<header>'.PHP_EOL;
 			echo '		<h2 class="text-center">ГРУППЫ СВЯЗАННЫХ ЗАЕМЩИКОВ</h2>'.PHP_EOL;
 			echo '	</header>'.PHP_EOL;
@@ -265,7 +266,8 @@
 			$GSZ_Id = $row['GSZ_Id'];
 
 			echo '<div class="jumbotron">'.PHP_EOL;
-			echo "	<h3>Удалить компанию {$Name} (ИНН {$INN}) из ГСЗ ".get_GSZ_name_by_id($GSZ_Id)."?</h3>".PHP_EOL;
+			echo '<div class="alert alert-info" role="alert">';
+			echo "	<h3>Удалить компанию {$Name} (ИНН {$INN}) из ГСЗ ".get_GSZ_name_by_id($GSZ_Id)."?</h3></div>".PHP_EOL;
 			echo "	<a class=\"btn btn-primary\" href=\"company_save_item.php?action=delete&Company_Id={$Company_Id}&GSZ_Id={$GSZ_Id}\">Удалить</a> ".PHP_EOL;
 			echo '	<button type="button" class="btn btn-warning" onClick="history.back();">Отменить</button>'.PHP_EOL;
 			echo '</div>'.PHP_EOL; //class="jumbotron"

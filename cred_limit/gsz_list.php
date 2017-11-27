@@ -42,12 +42,12 @@
 		function show_gsz_list()
 		{
 			$mysqli = db_connect();
-			echo '<div class="container">';
-			echo '<header>';
-			echo '<h2 class="text-center">ГРУППЫ СВЯЗАННЫХ ЗАЕМЩИКОВ</h2>';
-			echo '</header>';
-			echo '<div class="jumbotron">';
-			echo '<table class="table">';
+			echo '<div class="container">'.PHP_EOL;
+			echo '<header>'.PHP_EOL;
+			echo '<h2 class="text-center">ГРУППЫ СВЯЗАННЫХ ЗАЕМЩИКОВ</h2>'.PHP_EOL;
+			echo '</header>'.PHP_EOL;
+			echo '<div class="jumbotron">'.PHP_EOL;
+			echo '<table class="table">'.PHP_EOL;
 			echo '<tr><th>Название</th><th>Описание</th></tr>';
 
 			$query = "SELECT * FROM `gsz` ORDER BY `Brief_Name`";
@@ -55,19 +55,19 @@
 			while (($row = $result_set->fetch_assoc()) != false) 
 			{
 				$id = $row['Id'];
-				$s = '<tr><td>'.$row['Brief_Name'].'</td>';
-				$s .= '<td>'.$row['Full_Name'].'</td>';
-				$s .= '<td><a class="btn btn-primary btn-xs" href="company_list.php?action=show_list&GSZ_Id='.$id.'">Компании</a></td>';
-				$s .= '<td><a class="btn btn-link btn-xs" href="'.$_SERVER['PHP_SELF'].'?action=edit_form&id='.$id.'">Изменить</a></td>';
-				$s .= '<td><a class="btn btn-link btn-xs" href="'.$_SERVER['PHP_SELF'].'?action=confirm_delete&GSZ_Id='.$id.'">Удалить</a></td>';
-				//$s .= '<td><a class="btn btn-link btn-xs" href="gsz_save_item.php?action=delete&Id='.$id.'">Удалить</a></td>';
-				$s .= "</tr>\n";
+				$s = "<tr><td>{$row['Brief_Name']}</td>";
+				$s .= "<td>{$row['Full_Name']}</td>";
+				$s .= "<td><a class=\"btn btn-primary btn-xs\" href=\"company_list.php?action=show_list&GSZ_Id={$id}\">Компании</a></td>";
+				$s .= "<td><a class=\"btn btn-link btn-xs\" href=\"{$_SERVER['PHP_SELF']}?action=edit_form&id={$id}\">Изменить</a></td>";
+				$s .= "<td><a class=\"btn btn-link btn-xs\" href=\"{$_SERVER['PHP_SELF']}?action=confirm_delete&GSZ_Id={$id}\">Удалить</a></td>";
+				$s .= "</tr>".PHP_EOL;
 				echo $s;
 			} //end of while $row
-			echo '</table>';
-			echo '<a class="btn btn-primary" href="'.$_SERVER['PHP_SELF'].'?action=add_form">Добавить</a> ';
-			echo '<a class="btn btn-warning" href="limit.html">Вернуться</a>';
-			echo '</div>'; //end of Jumbotron
+			echo '</table>'.PHP_EOL;
+			echo "<a class=\"btn btn-primary\" href=\"{$_SERVER['PHP_SELF']}?action=add_form\">Добавить</a> ".PHP_EOL;
+			echo '<a class="btn btn-warning" href="limit.html">Вернуться</a>'.PHP_EOL;
+			echo '</div>'.PHP_EOL; //end of Jumbotron
+			echo '</div>'.PHP_EOL; //class="container"
 			$mysqli->close();		
 		} //end of function show_gsz_list
 
@@ -75,27 +75,28 @@
 		// Функция формирует форму для добавления записи в таблице БД
 		function add_item_form()
 		{
-			echo '<div class="container">';
-			echo '<header>';
-			echo '<h2 class="text-center">ГРУППЫ СВЯЗАННЫХ ЗАЕМЩИКОВ</h2>';
-			echo '</header>';
-			echo '<div class="jumbotron">';
+			echo '<div class="container">'.PHP_EOL;
+			echo '<header>'.PHP_EOL;
+			echo '<h2 class="text-center">ГРУППЫ СВЯЗАННЫХ ЗАЕМЩИКОВ</h2>'.PHP_EOL;
+			echo '</header>'.PHP_EOL;
+			echo '<div class="jumbotron">'.PHP_EOL;
 
-			echo '<h3>Новая группа</h3>';
-			echo '<form name="add_form" action="gsz_save_item.php?action=add" method="POST">';
+			echo '<h3>Новая группа</h3>'.PHP_EOL;
+			echo '<form name="add_form" action="gsz_save_item.php?action=add" method="POST">'.PHP_EOL;
 
-	        echo '<div class="form-group">';
-            echo '<label for="GSZ_Brief_Name">Название</label>';
-            echo '<input type="text" class="form-control" name="GSZ_Brief_Name" id="GSZ_Brief_Name" maxlength='.$GLOBALS[MAX_LENGTH_BRIEF_NAME].' placeholder="Краткое название ГСЗ">';
-        	echo '</div>';
-        	echo '<div class="form-group">';
-            echo '<label for="GSZ_Full_Name">Описание</label>';
-            echo '<input type="text" class="form-control" name="GSZ_Full_Name" id="GSZ_Full_Name" maxlength='.$GLOBALS[MAX_LENGTH_FULL_NAME].' placeholder="Описание ГСЗ">';
-        	echo '</div>';
-        	echo '<button type="submit" class="btn btn-primary">Сохранить</button> ';
-        	echo '<button type="button" class="btn btn-warning" onClick="history.back();">Отменить</button>';
-        	echo '</form>';
-			echo '</div>'; // end of Jumbotron
+	        echo '<div class="form-group">'.PHP_EOL;
+            echo '<label for="GSZ_Brief_Name">Название</label>'.PHP_EOL;
+            echo "<input type=\"text\" class=\"form-control\" name=\"GSZ_Brief_Name\" id=\"GSZ_Brief_Name\" maxlength={$GLOBALS[MAX_LENGTH_BRIEF_NAME]} placeholder=\"Краткое название ГСЗ\">";
+        	echo '</div>'.PHP_EOL;
+        	echo '<div class="form-group">'.PHP_EOL;
+            echo '<label for="GSZ_Full_Name">Описание</label>'.PHP_EOL;
+            echo "<input type=\"text\" class=\"form-control\" name=\"GSZ_Full_Name\" id=\"GSZ_Full_Name\" maxlength={$GLOBALS[MAX_LENGTH_FULL_NAME]} placeholder=\"Описание ГСЗ\">";
+        	echo '</div>'.PHP_EOL;
+        	echo '<button type="submit" class="btn btn-primary">Сохранить</button> '.PHP_EOL;
+        	echo '<button type="button" class="btn btn-warning" onClick="history.back();">Отменить</button>'.PHP_EOL;
+        	echo '</form>'.PHP_EOL;
+			echo '</div>'.PHP_EOL; // end of Jumbotron
+			echo '</div>'.PHP_EOL; //class="container"
 		} //end of function get_add_item_form()
 
 
@@ -103,46 +104,46 @@
 		function edit_item_form()
 		{
 			// !!!!! Добавить ограничения длины полей ввода в форме
-			echo '<div class="container">';
-			echo '<header>';
-			echo '<h2 class="text-center">ГРУППЫ СВЯЗАННЫХ ЗАЕМЩИКОВ</h2>';
-			echo '</header>';
-			echo '<div class="jumbotron">';
+			echo '<div class="container">'.PHP_EOL;
+			echo '<header>'.PHP_EOL;
+			echo '<h2 class="text-center">ГРУППЫ СВЯЗАННЫХ ЗАЕМЩИКОВ</h2>'.PHP_EOL;
+			echo '</header>'.PHP_EOL;
+			echo '<div class="jumbotron">'.PHP_EOL;
 
 
-			echo '<h3>Изменение данных</h3>';
+			echo '<h3>Изменение данных</h3>'.PHP_EOL;
 			$mysqli = db_connect();
-			$query = 'SELECT `Brief_Name`, `Full_Name` FROM GSZ WHERE `Id`='.$_GET['id'];
+			$query = "SELECT `Brief_Name`, `Full_Name` FROM GSZ WHERE `Id`={$_GET['id']}";
 			$result_set = $mysqli->query($query);
 			$row = $result_set->fetch_assoc();
 			$Brief_Name = htmlspecialchars($row['Brief_Name']);
 			$Full_Name = htmlspecialchars($row['Full_Name']);
 
-			echo '<form name="edit_form" action="gsz_save_item.php?action=update" method="POST">';
-			echo '<input type="hidden" name="Id" Id="Id" value="'.$_GET['id'].'">';
-	        echo '<div class="form-group">';
-            echo '<label for="GSZ_Brief_Name">Название</label>';
-            echo '<input type="text" class="form-control" name="GSZ_Brief_Name" id="GSZ_Brief_Name"  maxlength='.$GLOBALS[MAX_LENGTH_BRIEF_NAME].' value="'.$Brief_Name.'">';
-        	echo '</div>';
-        	echo '<div class="form-group">';
-            echo '<label for="GSZ_Full_Name">Описание</label>';
-            echo '<input type="text" class="form-control" name="GSZ_Full_Name" id="GSZ_Full_Name"  maxlength='.$GLOBALS[MAX_LENGTH_FULL_NAME].' value="'.$Full_Name.'">';
-        	echo '</div>';
-        	echo '<button type="submit" class="btn btn-primary">Сохранить</button> ';
-        	echo '<button type="button" class="btn btn-warning" onClick="history.back();">Отменить</button>';
-        	echo '</form>';
-			echo '</div>'; // end of Jumbotron
+			echo '<form name="edit_form" action="gsz_save_item.php?action=update" method="POST">'.PHP_EOL;
+			echo "<input type=\"hidden\" name=\"Id\" Id=\"Id\" value=\"{$_GET['id']}\">";
+	        echo '<div class="form-group">'.PHP_EOL;
+            echo '<label for="GSZ_Brief_Name">Название</label>'.PHP_EOL;
+            echo "<input type=\"text\" class=\"form-control\" name=\"GSZ_Brief_Name\" id=\"GSZ_Brief_Name\"  maxlength={$GLOBALS[MAX_LENGTH_BRIEF_NAME]} value=\"{$Brief_Name}\">";
+        	echo '</div>'.PHP_EOL;
+        	echo '<div class="form-group">'.PHP_EOL;
+            echo '<label for="GSZ_Full_Name">Описание</label>'.PHP_EOL;
+            echo "<input type=\"text\" class=\"form-control\" name=\"GSZ_Full_Name\" id=\"GSZ_Full_Name\"  maxlength={$GLOBALS[MAX_LENGTH_FULL_NAME]} value=\"{$Full_Name}\">";
+        	echo '</div>'.PHP_EOL;
+        	echo '<button type="submit" class="btn btn-primary">Сохранить</button> '.PHP_EOL;
+        	echo '<button type="button" class="btn btn-warning" onClick="history.back();">Отменить</button>'.PHP_EOL;
+        	echo '</form>'.PHP_EOL;
+			echo '</div>'.PHP_EOL; // end of Jumbotron
+			echo '</div>'.PHP_EOL; //class="container"
 		}
 
 		// Форма для подтверждения удаления компании из ГСЗ 
 		function confirm_delete_form()
 		{
-			//$s .= '<td><a class="btn btn-link btn-xs" href="gsz_save_item.php?action=delete&Id='.$id.'">Удалить</a></td>';
 
-			echo '<div class="container">';
-			echo '	<header>';
-			echo '		<h2 class="text-center">ГРУППЫ СВЯЗАННЫХ ЗАЕМЩИКОВ</h2>';
-			echo '	</header>';
+			echo '<div class="container">'.PHP_EOL;
+			echo '	<header>'.PHP_EOL;
+			echo '		<h2 class="text-center">ГРУППЫ СВЯЗАННЫХ ЗАЕМЩИКОВ</h2>'.PHP_EOL;
+			echo '	</header>'.PHP_EOL;
 
 			$GSZ_Id = $_GET["GSZ_Id"];
 			// !!!!!!!!!!!!! Доделать проверку !!!!!!!!!!!!!!!!!!!!!
@@ -151,17 +152,18 @@
 				exit("Неверный формат URL-запроса");
 			}
 			$mysqli = db_connect();
-			$query = 'SELECT `Brief_Name` FROM `gsz` WHERE `Id`='.$GSZ_Id;
+			$query = "SELECT `Brief_Name` FROM `gsz` WHERE `Id`={$GSZ_Id}";
 			$result_set = $mysqli->query($query);
 			$row = $result_set->fetch_assoc();
 			$Name = htmlspecialchars($row['Brief_Name']);
 
-			echo '<div class="jumbotron">';
-			echo '	<h3>Удалить группу '.$Name.'?</h3>';
-			echo '	<a class="btn btn-primary" href="gsz_save_item.php?action=delete&Id='.$GSZ_Id.'">Удалить</a> ';
-			echo '	<button type="button" class="btn btn-warning" onClick="history.back();">Отменить</button>';
-			echo '</div>'; //class="jumbotron"
-			echo '</div>'; 	//class="container"
+			echo '<div class="jumbotron">'.PHP_EOL;
+			echo '<div class="alert alert-info" role="alert">'.PHP_EOL;
+			echo "	<h3>Удалить группу {$Name}?</h3></div>";
+			echo "	<a class=\"btn btn-primary\" href=\"gsz_save_item.php?action=delete&Id={$GSZ_Id}\">Удалить</a> ";
+			echo '	<button type="button" class="btn btn-warning" onClick="history.back();">Отменить</button>'.PHP_EOL;
+			echo '</div>'.PHP_EOL; //class="jumbotron"
+			echo '</div>'.PHP_EOL; 	//class="container"
 
 		}
 
