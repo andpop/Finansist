@@ -14,6 +14,8 @@
 
 		require_once '../script/app_config.php';
 
+		$mysqli = db_connect();
+
 		$MAX_LENGTH_BRIEF_NAME = 30;
 		$MAX_LENGTH_FULL_NAME = 150;
 		
@@ -37,11 +39,11 @@
 				show_gsz_list();
 				break;
 		}
+		$mysqli->close();		
 		
 		//Вывод всех записей из таблицы GSZ
 		function show_gsz_list()
 		{
-			$mysqli = db_connect();
 			echo '<div class="container">'.PHP_EOL;
 			echo '<header>'.PHP_EOL;
 			echo '<h2 class="text-center">ГРУППЫ СВЯЗАННЫХ ЗАЕМЩИКОВ</h2>'.PHP_EOL;
@@ -50,6 +52,7 @@
 			echo '<table class="table">'.PHP_EOL;
 			echo '<tr><th>Название</th><th>Описание</th></tr>';
 
+			global $mysqli;
 			$query = "SELECT * FROM `gsz` ORDER BY `Brief_Name`";
 			$result_set = $mysqli->query($query);
 			while (($row = $result_set->fetch_assoc()) != false) 
@@ -68,7 +71,7 @@
 			echo '<a class="btn btn-warning" href="limit.html">Вернуться</a>'.PHP_EOL;
 			echo '</div>'.PHP_EOL; //end of Jumbotron
 			echo '</div>'.PHP_EOL; //class="container"
-			$mysqli->close();		
+			
 		} //end of function show_gsz_list
 
 		
@@ -112,7 +115,10 @@
 
 
 			echo '<h3>Изменение данных</h3>'.PHP_EOL;
-			$mysqli = db_connect();
+			
+			
+			global $mysqli;
+
 			$query = "SELECT `Brief_Name`, `Full_Name` FROM GSZ WHERE `Id`={$_GET['id']}";
 			$result_set = $mysqli->query($query);
 			$row = $result_set->fetch_assoc();
@@ -151,7 +157,9 @@
 			{
 				exit("Неверный формат URL-запроса");
 			}
-			$mysqli = db_connect();
+			
+
+			global $mysqli;
 			$query = "SELECT `Brief_Name` FROM `gsz` WHERE `Id`={$GSZ_Id}";
 			$result_set = $mysqli->query($query);
 			$row = $result_set->fetch_assoc();

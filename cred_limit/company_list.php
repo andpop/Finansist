@@ -13,6 +13,7 @@
 	<?php
 		require_once '../script/app_config.php';
 		require_once './cred_limit_scripts.php';
+		$mysqli = db_connect();
 
 		$MAX_LENGTH_COMPANY_NAME = 150;
 
@@ -41,11 +42,12 @@
 				show_company_list();
 				break;
 		}
+		$mysqli->close();		
 		
 		//Вывод всех записей из таблицы GSZ
 		function show_company_list()
 		{
-			$mysqli = db_connect();
+			
 			echo '<div class="container">'.PHP_EOL;
 			echo '<header>'.PHP_EOL;
 			echo '<h2 class="text-center">КОМПАНИИ ГРУППЫ СВЯЗАННЫХ ЗАЕМЩИКОВ</h2>'.PHP_EOL;
@@ -67,6 +69,8 @@
 				$s .= '<button id="btnError_message" type="button" class="btn btn-info btn-xs";">Закрыть</button></div>'.PHP_EOL;
 				echo $s;
 			}
+
+			global $mysqli;
 
 			$query = "SELECT `Brief_Name` FROM `gsz` WHERE `Id`={$GSZ_Id}";
 			$result_set = $mysqli->query($query);
@@ -99,7 +103,7 @@
 			echo '<a class="btn btn-warning" href=".\gsz_list.php">Вернуться</a>';
 			echo "</div>"; //end of Jumbotron
 			echo "</div>"; 	//class="container"
-			$mysqli->close();		
+			
 		} //end of function show_gsz_list
 
 		
@@ -120,7 +124,7 @@
 			{
 				exit("Неверный формат URL-запроса");
 			}
-			$mysqli = db_connect();
+			
 
 			echo '<div class="jumbotron">'.PHP_EOL;
 
@@ -180,7 +184,8 @@
 			{
 				exit("Неверный формат URL-запроса");
 			}
-			$mysqli = db_connect();
+			
+			global $mysqli;
 			$query = "SELECT `Name`, `INN`, `GSZ_Id`, `OPF_Id`, `SNO_Id` FROM `Company` WHERE `Id`={$Company_Id}";
 			$result_set = $mysqli->query($query);
 			$row = $result_set->fetch_assoc();
@@ -256,7 +261,10 @@
 			{
 				exit("Неверный формат URL-запроса");
 			}
-			$mysqli = db_connect();
+			
+
+			global $mysqli;
+
 			$query = "SELECT `Name`, `INN`, `GSZ_Id` FROM `Company` WHERE `Id`={$Company_Id}";
 			$result_set = $mysqli->query($query);
 			$row = $result_set->fetch_assoc();
