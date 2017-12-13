@@ -1,6 +1,8 @@
 <?php 
 require_once '../script/app_config.php';
 
+define('MAX_LENGTH_COMPANY_NAME', 150);
+
 function get_GSZ_name_by_id($GSZ_Id)
 {
 	$mysqli = db_connect();

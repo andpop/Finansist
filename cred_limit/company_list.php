@@ -15,8 +15,6 @@
 		require_once './cred_limit_scripts.php';
 		$mysqli = db_connect();
 
-		$MAX_LENGTH_COMPANY_NAME = 150;
-
 		if (!isset($_GET["action"])) 
 				{
 					$_GET["action"] = "show_list";
@@ -102,7 +100,7 @@
 			echo "<a class=\"btn btn-primary\" href=\"{$_SERVER['PHP_SELF']}?action=add_form&GSZ_Id={$GSZ_Id}\">Добавить</a> ";
 			echo '<a class="btn btn-warning" href=".\gsz_list.php">Вернуться</a>';
 			echo "</div>"; //end of Jumbotron
-			echo "</div>"; 	//class="container"
+			echo "</div>"; 	//end of class="container"
 			
 		} //end of function show_gsz_list
 
@@ -134,12 +132,12 @@
 			echo "<input type=\"hidden\" name=\"GSZ_Id\" id=\"GSZ_Id\" value={$GSZ_Id}>".PHP_EOL;
 	        echo '<div class="form-group">'.PHP_EOL;
             echo '<label for="Company_Name">Название</label>'.PHP_EOL;
-            echo "<input type=\"text\" class=\"form-control\" name=\"Company_Name\" id=\"Company_Name\" maxlength={$GLOBALS[MAX_LENGTH_COMPANY_NAME]} placeholder=\"Наименование компании\">".PHP_EOL;
+            echo "<input type=\"text\" class=\"form-control\" name=\"Company_Name\" id=\"Company_Name\" maxlength={MAX_LENGTH_COMPANY_NAME} placeholder=\"Наименование компании\">".PHP_EOL;
         	echo '</div>'.PHP_EOL;
 
 	        echo '<div class="form-group">'.PHP_EOL;
             echo '<label for="INN">ИНН</label>'.PHP_EOL;
-            echo '<input type="text" class="form-control" name="INN" id="INN" maxlength=12 placeholder="123456789012">'.PHP_EOL;
+            echo '<input type="text" class="form-control" name="INN" id="INN" maxlength=12 minlength=10 placeholder="123456789012">'.PHP_EOL;
         	echo '</div>'.PHP_EOL;
 
             echo '<div class="form-group">'.PHP_EOL;
@@ -168,7 +166,7 @@
 
 
 		/**
-		* Printing HTML-form for editing company of GSZ into DB
+		* Printing HTML-form for editing company of the GSZ 
 		*/
 		function edit_company_form()
 		{
@@ -206,12 +204,12 @@
 			echo "<input type=\"hidden\" name=\"GSZ_Id\" Id=\"GSZ_Id\" value=\"{$GSZ_Id}\">".PHP_EOL;
 	        echo '<div class="form-group">'.PHP_EOL;
             echo '<label for="Company_Name">Название</label>'.PHP_EOL;
-            echo "<input type=\"text\" class=\"form-control\" name=\"Company_Name\" id=\"Company_Name\"  maxlength={$GLOBALS[MAX_LENGTH_COMPANY_NAME]} value=\"{$Name}\">".PHP_EOL;
+            echo "<input type=\"text\" class=\"form-control\" name=\"Company_Name\" id=\"Company_Name\"  maxlength={MAX_LENGTH_COMPANY_NAME} value=\"{$Name}\">".PHP_EOL;
         	echo '</div>'.PHP_EOL;
 
 	        echo '<div class="form-group">'.PHP_EOL;
             echo '<label for="INN">ИНН</label>'.PHP_EOL;
-            echo '<input type="text" class="form-control" name="INN" id="INN" maxlength=12 value="'.$INN.'">'.PHP_EOL;
+            echo '<input type="text" class="form-control" name="INN" id="INN" maxlength=12 minlength=10 value="'.$INN.'">'.PHP_EOL;
         	echo '</div>'.PHP_EOL;
 
             echo '<div class="form-group">'.PHP_EOL;
