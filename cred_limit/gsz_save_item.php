@@ -38,6 +38,6 @@
 	//echo $query;
 
 	$mysqli->query($query);
-	header( 'Location: gsz_list.php');
+	header( 'Location: gsz_forms.php');
  	die();
 ?>

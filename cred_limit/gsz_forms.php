@@ -60,7 +60,7 @@
 				$id = $row['Id'];
 				$s = "<tr><td>{$row['Brief_Name']}</td>";
 				$s .= "<td>{$row['Full_Name']}</td>";
-				$s .= "<td><a class=\"btn btn-primary btn-xs\" href=\"company_list.php?action=show_list&GSZ_Id={$id}\">Компании</a></td>";
+				$s .= "<td><a class=\"btn btn-primary btn-xs\" href=\"company_forms.php?action=show_list&GSZ_Id={$id}\">Компании</a></td>";
 				$s .= "<td><a class=\"btn btn-link btn-xs\" href=\"{$_SERVER['PHP_SELF']}?action=edit_form&id={$id}\">Изменить</a></td>";
 				$s .= "<td><a class=\"btn btn-link btn-xs\" href=\"{$_SERVER['PHP_SELF']}?action=confirm_delete&GSZ_Id={$id}\">Удалить</a></td>";
 				$s .= "</tr>".PHP_EOL;
@@ -89,11 +89,11 @@
 
 	        echo '<div class="form-group">'.PHP_EOL;
             echo '<label for="GSZ_Brief_Name">Название</label>'.PHP_EOL;
-            echo "<input type=\"text\" class=\"form-control\" name=\"GSZ_Brief_Name\" id=\"GSZ_Brief_Name\" maxlength={$GLOBALS[MAX_LENGTH_BRIEF_NAME]} placeholder=\"Краткое название ГСЗ\">";
+            echo "<input type=\"text\" class=\"form-control\" name=\"GSZ_Brief_Name\" id=\"GSZ_Brief_Name\" maxlength={MAX_LENGTH_BRIEF_NAME} placeholder=\"Краткое название ГСЗ\">";
         	echo '</div>'.PHP_EOL;
         	echo '<div class="form-group">'.PHP_EOL;
             echo '<label for="GSZ_Full_Name">Описание</label>'.PHP_EOL;
-            echo "<input type=\"text\" class=\"form-control\" name=\"GSZ_Full_Name\" id=\"GSZ_Full_Name\" maxlength={$GLOBALS[MAX_LENGTH_FULL_NAME]} placeholder=\"Описание ГСЗ\">";
+            echo "<input type=\"text\" class=\"form-control\" name=\"GSZ_Full_Name\" id=\"GSZ_Full_Name\" maxlength={MAX_LENGTH_FULL_NAME} placeholder=\"Описание ГСЗ\">";
         	echo '</div>'.PHP_EOL;
         	echo '<button type="submit" class="btn btn-primary">Сохранить</button> '.PHP_EOL;
         	echo '<button type="button" class="btn btn-warning" onClick="history.back();">Отменить</button>'.PHP_EOL;
@@ -129,11 +129,11 @@
 			echo "<input type=\"hidden\" name=\"Id\" Id=\"Id\" value=\"{$_GET['id']}\">";
 	        echo '<div class="form-group">'.PHP_EOL;
             echo '<label for="GSZ_Brief_Name">Название</label>'.PHP_EOL;
-            echo "<input type=\"text\" class=\"form-control\" name=\"GSZ_Brief_Name\" id=\"GSZ_Brief_Name\"  maxlength={$GLOBALS[MAX_LENGTH_BRIEF_NAME]} value=\"{$Brief_Name}\">";
+            echo "<input type=\"text\" class=\"form-control\" name=\"GSZ_Brief_Name\" id=\"GSZ_Brief_Name\"  maxlength={MAX_LENGTH_BRIEF_NAME} value=\"{$Brief_Name}\">";
         	echo '</div>'.PHP_EOL;
         	echo '<div class="form-group">'.PHP_EOL;
             echo '<label for="GSZ_Full_Name">Описание</label>'.PHP_EOL;
-            echo "<input type=\"text\" class=\"form-control\" name=\"GSZ_Full_Name\" id=\"GSZ_Full_Name\"  maxlength={$GLOBALS[MAX_LENGTH_FULL_NAME]} value=\"{$Full_Name}\">";
+            echo "<input type=\"text\" class=\"form-control\" name=\"GSZ_Full_Name\" id=\"GSZ_Full_Name\"  maxlength={MAX_LENGTH_FULL_NAME} value=\"{$Full_Name}\">";
         	echo '</div>'.PHP_EOL;
         	echo '<button type="submit" class="btn btn-primary">Сохранить</button> '.PHP_EOL;
         	echo '<button type="button" class="btn btn-warning" onClick="history.back();">Отменить</button>'.PHP_EOL;

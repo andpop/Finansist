@@ -98,11 +98,11 @@
 			} //end of while $row
 			echo "</table>".PHP_EOL;
 			echo "<a class=\"btn btn-primary\" href=\"{$_SERVER['PHP_SELF']}?action=add_form&GSZ_Id={$GSZ_Id}\">Добавить</a> ";
-			echo '<a class="btn btn-warning" href=".\gsz_list.php">Вернуться</a>';
+			echo '<a class="btn btn-warning" href=".\gsz_forms.php">Вернуться</a>';
 			echo "</div>"; //end of Jumbotron
 			echo "</div>"; 	//end of class="container"
 			
-		} //end of function show_gsz_list
+		} //end of function show_gsz_forms
 
 		
 		

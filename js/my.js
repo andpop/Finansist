@@ -126,7 +126,6 @@ $(document).ready(function() {
 	//Нажимаем на кнопку в форме
 	$('#btnShowPaymentSchedule').click(function(){
 		//Проверяем корректность значений в полях формы
-		// if ($('#frmPlatezhParam').valid()) {
 		if (ValidFormPlatezhParam()) {
 			var data = $("#frmPlatezhParam :input").serialize();
 			$.post($("#frmPlatezhParam").attr('action'), data, function(html_reply){
