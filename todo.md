@@ -1,5 +1,5 @@
 
-1. company_list.php переименовать в company_forms.php, gsz_list.php в gsz_forms.php.
+<!-- 1. company_list.php переименовать в company_forms.php, gsz_list.php в gsz_forms.php. -->
 1. В cred_calc и cred_limit сделать структуру (папки scripts, js).
 1. my.js переименовать в cred_calc.js
 1. К Id везде добавить префикс.

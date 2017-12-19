@@ -6,10 +6,10 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<meta name="description" content="" />
 	<meta name="keywords" content="" />
-	<link rel="stylesheet" href="../css/bootstrap.min.css"/> 
-	<link rel="stylesheet" href="../css/jumbotron-narrow.css">
-	<link rel="stylesheet" href="../css/magnific-popup.css">
-	<link rel="stylesheet" href="../css/style.css"/> 
+	<link rel="stylesheet" href="/css/bootstrap.min.css"/> 
+	<link rel="stylesheet" href="/css/jumbotron-narrow.css">
+	<link rel="stylesheet" href="/css/magnific-popup.css">
+	<link rel="stylesheet" href="/css/style.css"/> 
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 	
@@ -82,10 +82,10 @@
 		<div id="text-popup" class="white-popup mfp-hide">
 		</div>
 	</div>  <!-- Конец container -->
-	<script type="text/javascript" src="../js/jquery-1.12.2.min.js"></script>
-	<script type="text/javascript" src="../js/jquery.validate.min.js"></script>
-	<script type="text/javascript" src="../js/additional-methods.min.js"></script>
-	<script type="text/javascript" src="../js/magnific-popup.js"></script>
-	<script type="text/javascript" src="../js/my.js"></script>
+	<script type="text/javascript" src="/js/jquery-1.12.2.min.js"></script>
+	<script type="text/javascript" src="/js/jquery.validate.min.js"></script>
+	<script type="text/javascript" src="/js/additional-methods.min.js"></script>
+	<script type="text/javascript" src="/js/magnific-popup.js"></script>
+	<script type="text/javascript" src="js/cred_calc.js"></script>
 </body>
 </html>

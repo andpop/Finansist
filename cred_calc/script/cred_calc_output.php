@@ -79,7 +79,7 @@ function Platezh_to_html($str_beg_date, $sum_kred, $col_month, $proc, $arr_all_p
 function PDF($str_beg_date, $sum_kred, $col_month, $proc, $arr_all_platezh) 
 {
  
-	require_once('../libs/tcpdf/tcpdf.php');
+	require_once($_SERVER['DOCUMENT_ROOT'].'/libs/tcpdf/tcpdf.php');
 
 	class MYPDF extends TCPDF 
 	{ 
@@ -130,7 +130,10 @@ function PDF($str_beg_date, $sum_kred, $col_month, $proc, $arr_all_platezh)
 		    $this->SetTextColor(0);
 		    $this->SetFont('dejavusans','',10);
 		    //Данные
-		    $fill=false;
+			$fill=false;
+
+			$total_platezh = $total_platezh_main_dolg = $total_platezh_proc = 0;
+			
 			foreach ($data as $arr_platezh) 
 			{
 				$str_platezh = number_format($arr_platezh['platezh'], 2, '.', ' ');
@@ -202,9 +205,9 @@ function PDF($str_beg_date, $sum_kred, $col_month, $proc, $arr_all_platezh)
 function XLS($str_beg_date, $sum_kred, $col_month, $proc, $arr_all_platezh) 
 {
 	// Подключаем класс для работы с excel
-	require_once('../libs/PHPExcel/Classes/PHPExcel.php');
+	require_once($_SERVER['DOCUMENT_ROOT'].'/libs/PHPExcel/Classes/PHPExcel.php');
 	// Подключаем класс для вывода данных в формате excel
-	require_once('../libs/PHPExcel/Classes/PHPExcel/Writer/Excel5.php');
+	require_once($_SERVER['DOCUMENT_ROOT'].'/libs/PHPExcel/Classes/PHPExcel/Writer/Excel5.php');
 
 	// Создаем объект класса PHPExcel
 	$xls = new PHPExcel();
@@ -279,6 +282,8 @@ function XLS($str_beg_date, $sum_kred, $col_month, $proc, $arr_all_platezh)
 	  // $sheet->getColumnDimension($col)->setAutoSize(true);
 	}
 
+	$total_platezh = $total_platezh_main_dolg = $total_platezh_proc = 0;
+	
 	foreach ($arr_all_platezh as $arr_platezh) {
 		$sheet->setCellValueByColumnAndRow(0, $stroka, $arr_platezh['nomer']);
 		$sheet->setCellValueByColumnAndRow(1, $stroka, " " . $arr_platezh['date']);
