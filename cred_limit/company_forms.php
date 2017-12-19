@@ -5,14 +5,15 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<meta name="description" content="" />
 	<meta name="keywords" content="" />
-	<link href="../css/bootstrap.min.css" rel="stylesheet"/> 
-	<link href="../css/style.css" rel="stylesheet"/> 
+	<link href="/css/bootstrap.min.css" rel="stylesheet"/> 
+	<link href="/css/style.css" rel="stylesheet"/> 
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
 	<?php
-		require_once '../script/app_config.php';
-		require_once './cred_limit_scripts.php';
+		require_once($_SERVER['DOCUMENT_ROOT'].'/script/app_config.php');
+		require_once('script/cred_limit_scripts.php');
+		
 		$mysqli = db_connect();
 
 		if (!isset($_GET["action"])) 
@@ -42,7 +43,7 @@
 		}
 		$mysqli->close();		
 		
-		//Вывод всех записей из таблицы GSZ
+		//Вывод всех компаний из определенной группы связанных заемщиков
 		function show_company_list()
 		{
 			
@@ -127,12 +128,12 @@
 			echo '<div class="jumbotron">'.PHP_EOL;
 
 			echo '<h3>Новая компания из ГСЗ: '.get_GSZ_name_by_id($GSZ_Id).'</h3>'.PHP_EOL;
-			echo '<form name="add_form" action="company_save_item.php?action=add" method="POST">'.PHP_EOL;
+			echo '<form name="add_form" action="script/company_save_item.php?action=add" method="POST">'.PHP_EOL;
 
 			echo "<input type=\"hidden\" name=\"GSZ_Id\" id=\"GSZ_Id\" value={$GSZ_Id}>".PHP_EOL;
 	        echo '<div class="form-group">'.PHP_EOL;
             echo '<label for="Company_Name">Название</label>'.PHP_EOL;
-            echo "<input type=\"text\" class=\"form-control\" name=\"Company_Name\" id=\"Company_Name\" maxlength={MAX_LENGTH_COMPANY_NAME} placeholder=\"Наименование компании\">".PHP_EOL;
+            echo "<input type=\"text\" class=\"form-control\" name=\"Company_Name\" id=\"Company_Name\" maxlength=".MAX_LENGTH_COMPANY_NAME." placeholder=\"Наименование компании\">".PHP_EOL;
         	echo '</div>'.PHP_EOL;
 
 	        echo '<div class="form-group">'.PHP_EOL;
@@ -197,14 +198,21 @@
 			$SNO = get_SNO_name_by_id($SNO_Id);
 
 			echo '<div class="jumbotron">'.PHP_EOL;
+
+			$s = '<div id="info_message" class="alert alert-info" role="alert"><strong>Внимание! Компания с системой налогооблажения ЕНВД не участвует в расчете кредитного лимита! </strong>';
+			// $s .= htmlspecialchars(urldecode($_GET['error'])).'. ';
+			$s .= '<button id="btnError_message" type="button" class="btn btn-default btn-xs";">Закрыть</button></div>'.PHP_EOL;
+			echo $s;
+
+
 			echo '<h3>Компания из ГСЗ: '.get_GSZ_name_by_id($GSZ_Id).'</h3>'.PHP_EOL;
 
-			echo '<form name="edit_form" action="company_save_item.php?action=update" method="POST">'.PHP_EOL;
+			echo '<form name="edit_form" action="script/company_save_item.php?action=update" method="POST">'.PHP_EOL;
 			echo "<input type=\"hidden\" name=\"Company_Id\" Id=\"Company_Id\" value=\"{$Company_Id}\">".PHP_EOL;
 			echo "<input type=\"hidden\" name=\"GSZ_Id\" Id=\"GSZ_Id\" value=\"{$GSZ_Id}\">".PHP_EOL;
 	        echo '<div class="form-group">'.PHP_EOL;
             echo '<label for="Company_Name">Название</label>'.PHP_EOL;
-            echo "<input type=\"text\" class=\"form-control\" name=\"Company_Name\" id=\"Company_Name\"  maxlength={MAX_LENGTH_COMPANY_NAME} value=\"{$Name}\">".PHP_EOL;
+            echo "<input type=\"text\" class=\"form-control\" name=\"Company_Name\" id=\"Company_Name\"  maxlength=".MAX_LENGTH_COMPANY_NAME." value=\"{$Name}\">".PHP_EOL;
         	echo '</div>'.PHP_EOL;
 
 	        echo '<div class="form-group">'.PHP_EOL;
@@ -259,7 +267,6 @@
 			{
 				exit("Неверный формат URL-запроса");
 			}
-			
 
 			global $mysqli;
 
@@ -274,7 +281,7 @@
 			echo '<div class="jumbotron">'.PHP_EOL;
 			echo '<div class="alert alert-info" role="alert">';
 			echo "	<h3>Удалить компанию {$Name} (ИНН {$INN}) из ГСЗ ".get_GSZ_name_by_id($GSZ_Id)."?</h3></div>".PHP_EOL;
-			echo "	<a class=\"btn btn-primary\" href=\"company_save_item.php?action=delete&Company_Id={$Company_Id}&GSZ_Id={$GSZ_Id}\">Удалить</a> ".PHP_EOL;
+			echo "	<a class=\"btn btn-primary\" href=\"script/company_save_item.php?action=delete&Company_Id={$Company_Id}&GSZ_Id={$GSZ_Id}\">Удалить</a> ".PHP_EOL;
 			echo '	<button type="button" class="btn btn-warning" onClick="history.back();">Отменить</button>'.PHP_EOL;
 			echo '</div>'.PHP_EOL; //class="jumbotron"
 			echo '</div>'.PHP_EOL; 	//class="container"
@@ -283,8 +290,8 @@
 		?>
 
 
-	<script type="text/javascript" src="../js/jquery-1.12.2.min.js"></script>
-	<script type="text/javascript" src="../js/jquery.validate.min.js"></script> 
-	<script type="text/javascript" src="../js/cred_limit.js"></script>
+	<script type="text/javascript" src="/js/jquery-1.12.2.min.js"></script>
+	<script type="text/javascript" src="/js/jquery.validate.min.js"></script> 
+	<script type="text/javascript" src="js/cred_limit.js"></script>
 </body>
 </html>

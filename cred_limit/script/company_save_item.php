@@ -1,6 +1,6 @@
 <?php
-	require_once '../script/app_config.php';
-	require_once './cred_limit_scripts.php';
+	require_once($_SERVER['DOCUMENT_ROOT'].'/script/app_config.php');
+	require_once('script/cred_limit_scripts.php');
 
 	$mysqli = db_connect();
 	if (!isset($_REQUEST["action"])) exit;
@@ -63,12 +63,10 @@
 	{
 		$url_param = "action=show_list&GSZ_Id={$GSZ_Id}&error=".urlencode($mysqli->error);
 		header( 'Location: company_forms.php?'.$url_param);
-		//print_r($url_param);
-		//echo 'При выполнении запроса произошла ошибка '.$mysqli->errno.": ".$mysqli->error;
 	}
 	else
 	{
-		header( 'Location: company_forms.php?action=show_list&GSZ_Id='.$GSZ_Id);
+		header( 'Location: ../company_forms.php?action=show_list&GSZ_Id='.$GSZ_Id);
 	}
  	die();
 ?>

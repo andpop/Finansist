@@ -24,11 +24,13 @@ INSERT INTO `OPF` (`Brief_Name`, `Full_Name`, `INN_Length`) VALUES
 	УСН/Д-Р | Упрощенная система налогообложения, объект обложения – доходы, уменьшенные на величину расходов
 	УСН/Д | Упрощенная система налогообложения, объект обложения – доходы. Компании, у которых будет выбрана данная система налогообложения, будут учитываться только при расчете кредита на пополнение оборотных средств.
 	ЕСХН | Единый сельхозналог
+  ЕНВД | Единый налог на вмененный доход (не участвует в расчете кредитного лимита)
 
 CREATE TABLE `SNO` (
   `Id` TINYINT(2) UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
   `Brief_Name` VARCHAR(10) NOT NULL,
-  `Full_Name` VARCHAR(100) NOT NULL
+  `Full_Name` VARCHAR(100) NOT NULL,
+  `Cred_Limit_Affect`
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 INSERT INTO `SNO` (`Brief_Name`, `Full_Name`) VALUES
@@ -37,6 +39,9 @@ INSERT INTO `SNO` (`Brief_Name`, `Full_Name`) VALUES
 ('УСН/Д', 'Упрощенная система налогообложения, объект обложения – доходы'),
 ('ЕСХН', 'Единый сельхозналог'),
 ('ЕНВД', 'Единый налог на вмененный доход');
+
+ALTER TABLE `SNO` ADD `Cred_Limit_Affect` TINYINT(1) NOT NULL DEFAULT '1' AFTER `Full_Name`;
+UPDATE `SNO` SET `Cred_Limit_Affect`=0 WHERE `Brief_Name`='ЕНВД';
 
 -------------------------------------------------------------------
 

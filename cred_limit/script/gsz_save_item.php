@@ -1,5 +1,5 @@
 <?php
-	require_once '../script/app_config.php';
+	require_once($_SERVER['DOCUMENT_ROOT'].'/script/app_config.php');
 	$mysqli = db_connect();
 	if (!isset($_REQUEST["action"])) exit;
 
@@ -35,9 +35,7 @@
 			break;
 	}
 	
-	//echo $query;
-
 	$mysqli->query($query);
-	header( 'Location: gsz_forms.php');
+	header( 'Location: ../gsz_forms.php');
  	die();
 ?>

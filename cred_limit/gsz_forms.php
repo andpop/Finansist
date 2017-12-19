@@ -5,20 +5,18 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<meta name="description" content="" />
 	<meta name="keywords" content="" />
-	<link href="../css/bootstrap.min.css" rel="stylesheet"/> 
-	<link href="../css/style.css" rel="stylesheet"/> 
+	<link href="/css/bootstrap.min.css" rel="stylesheet"/> 
+	<link href="/css/style.css" rel="stylesheet"/> 
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
 	<?php
 
-		require_once '../script/app_config.php';
+		require_once($_SERVER['DOCUMENT_ROOT'].'/script/app_config.php');
+		require_once('./script/cred_limit_scripts.php');
 
 		$mysqli = db_connect();
 
-		$MAX_LENGTH_BRIEF_NAME = 30;
-		$MAX_LENGTH_FULL_NAME = 150;
-		
 		if (!isset($_GET["action"])) $_GET["action"] = "show_list";
 		switch ($_GET["action"]) 
 		{
@@ -85,15 +83,15 @@
 			echo '<div class="jumbotron">'.PHP_EOL;
 
 			echo '<h3>Новая группа</h3>'.PHP_EOL;
-			echo '<form name="add_form" action="gsz_save_item.php?action=add" method="POST">'.PHP_EOL;
+			echo '<form name="add_form" action="script/gsz_save_item.php?action=add" method="POST">'.PHP_EOL;
 
 	        echo '<div class="form-group">'.PHP_EOL;
             echo '<label for="GSZ_Brief_Name">Название</label>'.PHP_EOL;
-            echo "<input type=\"text\" class=\"form-control\" name=\"GSZ_Brief_Name\" id=\"GSZ_Brief_Name\" maxlength={MAX_LENGTH_BRIEF_NAME} placeholder=\"Краткое название ГСЗ\">";
+            echo "<input type=\"text\" class=\"form-control\" name=\"GSZ_Brief_Name\" id=\"GSZ_Brief_Name\" maxlength=".MAX_LENGTH_GSZ_BRIEF_NAME." placeholder=\"Краткое название ГСЗ\">";
         	echo '</div>'.PHP_EOL;
         	echo '<div class="form-group">'.PHP_EOL;
             echo '<label for="GSZ_Full_Name">Описание</label>'.PHP_EOL;
-            echo "<input type=\"text\" class=\"form-control\" name=\"GSZ_Full_Name\" id=\"GSZ_Full_Name\" maxlength={MAX_LENGTH_FULL_NAME} placeholder=\"Описание ГСЗ\">";
+            echo "<input type=\"text\" class=\"form-control\" name=\"GSZ_Full_Name\" id=\"GSZ_Full_Name\" maxlength=".MAX_LENGTH_GSZ_FULL_NAME." placeholder=\"Описание ГСЗ\">";
         	echo '</div>'.PHP_EOL;
         	echo '<button type="submit" class="btn btn-primary">Сохранить</button> '.PHP_EOL;
         	echo '<button type="button" class="btn btn-warning" onClick="history.back();">Отменить</button>'.PHP_EOL;
@@ -113,9 +111,7 @@
 			echo '</header>'.PHP_EOL;
 			echo '<div class="jumbotron">'.PHP_EOL;
 
-
 			echo '<h3>Изменение данных</h3>'.PHP_EOL;
-			
 			
 			global $mysqli;
 
@@ -125,15 +121,15 @@
 			$Brief_Name = htmlspecialchars($row['Brief_Name']);
 			$Full_Name = htmlspecialchars($row['Full_Name']);
 
-			echo '<form name="edit_form" action="gsz_save_item.php?action=update" method="POST">'.PHP_EOL;
+			echo '<form name="edit_form" action="script/gsz_save_item.php?action=update" method="POST">'.PHP_EOL;
 			echo "<input type=\"hidden\" name=\"Id\" Id=\"Id\" value=\"{$_GET['id']}\">";
 	        echo '<div class="form-group">'.PHP_EOL;
             echo '<label for="GSZ_Brief_Name">Название</label>'.PHP_EOL;
-            echo "<input type=\"text\" class=\"form-control\" name=\"GSZ_Brief_Name\" id=\"GSZ_Brief_Name\"  maxlength={MAX_LENGTH_BRIEF_NAME} value=\"{$Brief_Name}\">";
+            echo "<input type=\"text\" class=\"form-control\" name=\"GSZ_Brief_Name\" id=\"GSZ_Brief_Name\"  maxlength=".MAX_LENGTH_GSZ_BRIEF_NAME." value=\"{$Brief_Name}\">";
         	echo '</div>'.PHP_EOL;
         	echo '<div class="form-group">'.PHP_EOL;
             echo '<label for="GSZ_Full_Name">Описание</label>'.PHP_EOL;
-            echo "<input type=\"text\" class=\"form-control\" name=\"GSZ_Full_Name\" id=\"GSZ_Full_Name\"  maxlength={MAX_LENGTH_FULL_NAME} value=\"{$Full_Name}\">";
+            echo "<input type=\"text\" class=\"form-control\" name=\"GSZ_Full_Name\" id=\"GSZ_Full_Name\"  maxlength=".MAX_LENGTH_GSZ_FULL_NAME." value=\"{$Full_Name}\">";
         	echo '</div>'.PHP_EOL;
         	echo '<button type="submit" class="btn btn-primary">Сохранить</button> '.PHP_EOL;
         	echo '<button type="button" class="btn btn-warning" onClick="history.back();">Отменить</button>'.PHP_EOL;
@@ -168,7 +164,7 @@
 			echo '<div class="jumbotron">'.PHP_EOL;
 			echo '<div class="alert alert-info" role="alert">'.PHP_EOL;
 			echo "	<h3>Удалить группу {$Name}?</h3></div>";
-			echo "	<a class=\"btn btn-primary\" href=\"gsz_save_item.php?action=delete&Id={$GSZ_Id}\">Удалить</a> ";
+			echo "	<a class=\"btn btn-primary\" href=\"script/gsz_save_item.php?action=delete&Id={$GSZ_Id}\">Удалить</a> ";
 			echo '	<button type="button" class="btn btn-warning" onClick="history.back();">Отменить</button>'.PHP_EOL;
 			echo '</div>'.PHP_EOL; //class="jumbotron"
 			echo '</div>'.PHP_EOL; 	//class="container"
