@@ -23,14 +23,8 @@
 			case 'show_list':  //Список всех записей из таблицы
 				show_gsz_list();
 				break;
-			case "add_form":     // Форма для добавления новой записи
-				add_item_form(); 
-				break;
 			case "edit_form":    // Форма для редактирования записи
 				edit_item_form(); 
-				break;
-			case "confirm_delete":    // Форма для редактирования записи
-				confirm_delete_form(); 
 				break;
 			
 			default:
@@ -60,12 +54,14 @@
 				$s .= "<td>{$row['Full_Name']}</td>";
 				$s .= "<td><a class=\"btn btn-primary btn-xs\" href=\"company_forms.php?action=show_list&GSZ_Id={$id}\">Компании</a></td>";
 				$s .= "<td><a class=\"btn btn-link btn-xs\" href=\"{$_SERVER['PHP_SELF']}?action=edit_form&id={$id}\">Изменить</a></td>";
-				$s .= "<td><a class=\"btn btn-link btn-xs\" href=\"{$_SERVER['PHP_SELF']}?action=confirm_delete&GSZ_Id={$id}\">Удалить</a></td>";
+				$s .= "<td><a class=\"btn btn-link btn-xs\" href=\"gsz_confirm_delete.php?GSZ_Id={$id}\">Удалить</a></td>";
 				$s .= "</tr>".PHP_EOL;
 				echo $s;
 			} //end of while $row
 			echo '</table>'.PHP_EOL;
-			echo "<a class=\"btn btn-primary\" href=\"{$_SERVER['PHP_SELF']}?action=add_form\">Добавить</a> ".PHP_EOL;
+			// echo "<a class=\"btn btn-primary\" href=\"{$_SERVER['PHP_SELF']}?action=add_form\">Добавить</a> ".PHP_EOL;
+			echo "<a class=\"btn btn-primary\" href=\"gsz_add.php\">Добавить</a> ".PHP_EOL;
+			
 			echo '<a class="btn btn-warning" href="limit.html">Вернуться</a>'.PHP_EOL;
 			echo '</div>'.PHP_EOL; //end of Jumbotron
 			echo '</div>'.PHP_EOL; //class="container"
@@ -73,34 +69,6 @@
 		} //end of function show_gsz_list
 
 		
-		// Функция формирует форму для добавления записи в таблице БД
-		function add_item_form()
-		{
-			echo '<div class="container">'.PHP_EOL;
-			echo '<header>'.PHP_EOL;
-			echo '<h2 class="text-center">ГРУППЫ СВЯЗАННЫХ ЗАЕМЩИКОВ</h2>'.PHP_EOL;
-			echo '</header>'.PHP_EOL;
-			echo '<div class="jumbotron">'.PHP_EOL;
-
-			echo '<h3>Новая группа</h3>'.PHP_EOL;
-			echo '<form name="add_form" action="script/gsz_save_item.php?action=add" method="POST">'.PHP_EOL;
-
-	        echo '<div class="form-group">'.PHP_EOL;
-            echo '<label for="GSZ_Brief_Name">Название</label>'.PHP_EOL;
-            echo "<input type=\"text\" class=\"form-control\" name=\"GSZ_Brief_Name\" id=\"GSZ_Brief_Name\" maxlength=".MAX_LENGTH_GSZ_BRIEF_NAME." placeholder=\"Краткое название ГСЗ\">";
-        	echo '</div>'.PHP_EOL;
-        	echo '<div class="form-group">'.PHP_EOL;
-            echo '<label for="GSZ_Full_Name">Описание</label>'.PHP_EOL;
-            echo "<input type=\"text\" class=\"form-control\" name=\"GSZ_Full_Name\" id=\"GSZ_Full_Name\" maxlength=".MAX_LENGTH_GSZ_FULL_NAME." placeholder=\"Описание ГСЗ\">";
-        	echo '</div>'.PHP_EOL;
-        	echo '<button type="submit" class="btn btn-primary">Сохранить</button> '.PHP_EOL;
-        	echo '<button type="button" class="btn btn-warning" onClick="history.back();">Отменить</button>'.PHP_EOL;
-        	echo '</form>'.PHP_EOL;
-			echo '</div>'.PHP_EOL; // end of Jumbotron
-			echo '</div>'.PHP_EOL; //class="container"
-		} //end of function get_add_item_form()
-
-
 		// Функция формирует форму для редактирования записи в таблице БД
 		function edit_item_form()
 		{
@@ -136,39 +104,6 @@
         	echo '</form>'.PHP_EOL;
 			echo '</div>'.PHP_EOL; // end of Jumbotron
 			echo '</div>'.PHP_EOL; //class="container"
-		}
-
-		// Форма для подтверждения удаления компании из ГСЗ 
-		function confirm_delete_form()
-		{
-
-			echo '<div class="container">'.PHP_EOL;
-			echo '	<header>'.PHP_EOL;
-			echo '		<h2 class="text-center">ГРУППЫ СВЯЗАННЫХ ЗАЕМЩИКОВ</h2>'.PHP_EOL;
-			echo '	</header>'.PHP_EOL;
-
-			$GSZ_Id = $_GET["GSZ_Id"];
-			// !!!!!!!!!!!!! Доделать проверку !!!!!!!!!!!!!!!!!!!!!
-			if (!preg_match("/^\d+$/", $GSZ_Id))
-			{
-				exit("Неверный формат URL-запроса");
-			}
-			
-
-			global $mysqli;
-			$query = "SELECT `Brief_Name` FROM `gsz` WHERE `Id`={$GSZ_Id}";
-			$result_set = $mysqli->query($query);
-			$row = $result_set->fetch_assoc();
-			$Name = htmlspecialchars($row['Brief_Name']);
-
-			echo '<div class="jumbotron">'.PHP_EOL;
-			echo '<div class="alert alert-info" role="alert">'.PHP_EOL;
-			echo "	<h3>Удалить группу {$Name}?</h3></div>";
-			echo "	<a class=\"btn btn-primary\" href=\"script/gsz_save_item.php?action=delete&Id={$GSZ_Id}\">Удалить</a> ";
-			echo '	<button type="button" class="btn btn-warning" onClick="history.back();">Отменить</button>'.PHP_EOL;
-			echo '</div>'.PHP_EOL; //class="jumbotron"
-			echo '</div>'.PHP_EOL; 	//class="container"
-
 		}
 
 		?>
