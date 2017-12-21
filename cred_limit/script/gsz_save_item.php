@@ -36,6 +36,6 @@
 	}
 	
 	$mysqli->query($query);
-	header( 'Location: ../gsz_forms.php');
+	header( 'Location: ../gsz_list.php');
  	die();
 ?>
