@@ -1,6 +1,6 @@
 <?php
 	require_once($_SERVER['DOCUMENT_ROOT'].'/script/app_config.php');
-	require_once('script/cred_limit_scripts.php');
+	require_once('cred_limit_scripts.php');
 
 	$mysqli = db_connect();
 	if (!isset($_REQUEST["action"])) exit;

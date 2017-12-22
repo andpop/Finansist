@@ -27,14 +27,8 @@
 			case 'show_list':  //Список всех записей из таблицы
 				show_company_list();
 				break;
-			case "add_form":     // Форма для добавления новой записи
-				add_company_form(); 
-				break;
 			case "edit_form":    // Форма для редактирования записи
 				edit_company_form(); 
-				break;
-			case "confirm_delete":    // Форма для редактирования записи
-				confirm_delete_form(); 
 				break;
 			
 			default:
@@ -93,12 +87,12 @@
 				$id = $row['Id'];
 				$s = "<tr><td>{$row['Name']}</td><td>{$row['INN']}</td><td>{$row['OPF']}</td><td>{$row['SNO']}</td>".PHP_EOL;
 				$s .= "<td><a class=\"btn btn-link btn-xs\" href=\"{$_SERVER['PHP_SELF']}?action=edit_form&Company_Id={$id}\">Изменить</a></td>".PHP_EOL;
-				$s .= "<td><a class=\"btn btn-link btn-xs\" href=\"{$_SERVER['PHP_SELF']}?action=confirm_delete&Company_Id={$id}\">Удалить</a></td>".PHP_EOL;
+				$s .= "<td><a class=\"btn btn-link btn-xs\" href=\"company_confirm_delete.php?Company_Id={$id}\">Удалить</a></td>".PHP_EOL;
 				$s .= "</tr>".PHP_EOL;
 				echo $s;
 			} //end of while $row
 			echo "</table>".PHP_EOL;
-			echo "<a class=\"btn btn-primary\" href=\"{$_SERVER['PHP_SELF']}?action=add_form&GSZ_Id={$GSZ_Id}\">Добавить</a> ";
+			echo "<a class=\"btn btn-primary\" href=\"company_add.php?GSZ_Id={$GSZ_Id}\">Добавить</a> ";
 			echo '<a class="btn btn-warning" href=".\gsz_forms.php">Вернуться</a>';
 			echo "</div>"; //end of Jumbotron
 			echo "</div>"; 	//end of class="container"
@@ -107,64 +101,6 @@
 
 		
 		
-		/**
-		* Printing HTML-form for adding company of GSZ into DB
-		*/
-		function add_company_form()
-		{
-			echo '<div class="container">'.PHP_EOL;
-			echo '<header>'.PHP_EOL;
-			echo '<h2 class="text-center">КОМПАНИИ ГРУППЫ СВЯЗАННЫХ ЗАЕМЩИКОВ</h2>'.PHP_EOL;
-			echo '</header>'.PHP_EOL;
-
-			$GSZ_Id = $_GET["GSZ_Id"];
-			// !!!!!!!!!!!!! Доделать проверку !!!!!!!!!!!!!!!!!!!!!
-			if (!preg_match("/^\d+$/", $GSZ_Id))
-			{
-				exit("Неверный формат URL-запроса");
-			}
-			
-
-			echo '<div class="jumbotron">'.PHP_EOL;
-
-			echo '<h3>Новая компания из ГСЗ: '.get_GSZ_name_by_id($GSZ_Id).'</h3>'.PHP_EOL;
-			echo '<form name="add_form" action="script/company_save_item.php?action=add" method="POST">'.PHP_EOL;
-
-			echo "<input type=\"hidden\" name=\"GSZ_Id\" id=\"GSZ_Id\" value={$GSZ_Id}>".PHP_EOL;
-	        echo '<div class="form-group">'.PHP_EOL;
-            echo '<label for="Company_Name">Название</label>'.PHP_EOL;
-            echo "<input type=\"text\" class=\"form-control\" name=\"Company_Name\" id=\"Company_Name\" maxlength=".MAX_LENGTH_COMPANY_NAME." placeholder=\"Наименование компании\">".PHP_EOL;
-        	echo '</div>'.PHP_EOL;
-
-	        echo '<div class="form-group">'.PHP_EOL;
-            echo '<label for="INN">ИНН</label>'.PHP_EOL;
-            echo '<input type="text" class="form-control" name="INN" id="INN" maxlength=12 minlength=10 placeholder="123456789012">'.PHP_EOL;
-        	echo '</div>'.PHP_EOL;
-
-            echo '<div class="form-group">'.PHP_EOL;
-            echo '    <label for="OPF">Организационно-правовая форма</label>'.PHP_EOL;
-            echo '    <select class="form-control"  name="OPF" id="OPF">'.PHP_EOL;
-            foreach (get_OPF_names() as $OPF_name) 
-            	echo "      <option>{$OPF_name}</option>".PHP_EOL;
-            echo '    </select>                           '.PHP_EOL;
-            echo '</div>'.PHP_EOL;
-
-
-            echo '<div class="form-group">'.PHP_EOL;
-            echo '    <label for="SNO">Система налогооблажения</label>'.PHP_EOL;
-            echo '    <select class="form-control"  name="SNO" id="SNO">'.PHP_EOL;
-            foreach (get_SNO_names() as $SNO_name) 
-            	echo "      <option>{$SNO_name}</option>".PHP_EOL;
-            echo '    </select>                           '.PHP_EOL;
-            echo '</div>'.PHP_EOL;
-
-        	echo '<button type="submit" class="btn btn-primary">Сохранить</button> '.PHP_EOL;
-        	echo '<button type="button" class="btn btn-warning" onClick="history.back();">Отменить</button>'.PHP_EOL;
-        	echo '</form>'.PHP_EOL;
-			echo '</div>'.PHP_EOL; // end of Jumbotron
-			echo '</div>'.PHP_EOL; 	//class="container"
-		} //end of function get_add_item_form()
-
 
 		/**
 		* Printing HTML-form for editing company of the GSZ 
@@ -251,42 +187,6 @@
 			echo '</div>'.PHP_EOL; 	//class="container"
 		}
 
-		/**
-		* Printing form for confirmation of deleting company from GSZ
-		*/
-		function confirm_delete_form()
-		{
-			echo '<div class="container">'.PHP_EOL;
-			echo '	<header>'.PHP_EOL;
-			echo '		<h2 class="text-center">ГРУППЫ СВЯЗАННЫХ ЗАЕМЩИКОВ</h2>'.PHP_EOL;
-			echo '	</header>'.PHP_EOL;
-
-			$Company_Id = $_GET["Company_Id"];
-			// !!!!!!!!!!!!! Доделать проверку !!!!!!!!!!!!!!!!!!!!!
-			if (!preg_match("/^\d+$/", $Company_Id))
-			{
-				exit("Неверный формат URL-запроса");
-			}
-
-			global $mysqli;
-
-			$query = "SELECT `Name`, `INN`, `GSZ_Id` FROM `Company` WHERE `Id`={$Company_Id}";
-			$result_set = $mysqli->query($query);
-			$row = $result_set->fetch_assoc();
-			// Попробовать extract() для получения переменных
-			$Name = htmlspecialchars($row['Name']);
-			$INN = $row['INN'];
-			$GSZ_Id = $row['GSZ_Id'];
-
-			echo '<div class="jumbotron">'.PHP_EOL;
-			echo '<div class="alert alert-info" role="alert">';
-			echo "	<h3>Удалить компанию {$Name} (ИНН {$INN}) из ГСЗ ".get_GSZ_name_by_id($GSZ_Id)."?</h3></div>".PHP_EOL;
-			echo "	<a class=\"btn btn-primary\" href=\"script/company_save_item.php?action=delete&Company_Id={$Company_Id}&GSZ_Id={$GSZ_Id}\">Удалить</a> ".PHP_EOL;
-			echo '	<button type="button" class="btn btn-warning" onClick="history.back();">Отменить</button>'.PHP_EOL;
-			echo '</div>'.PHP_EOL; //class="jumbotron"
-			echo '</div>'.PHP_EOL; 	//class="container"
-
-		}
 		?>
 
 
