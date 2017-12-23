@@ -51,7 +51,7 @@
 							echo "      <option>{$OPF_name}</option>".PHP_EOL;
 						?>
 					</select>
-				</div>'
+				</div>
 			
 				<div class="form-group">
 					<label for="SNO">Система налогооблажения</label>

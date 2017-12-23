@@ -86,7 +86,7 @@
 			{
 				$id = $row['Id'];
 				$s = "<tr><td>{$row['Name']}</td><td>{$row['INN']}</td><td>{$row['OPF']}</td><td>{$row['SNO']}</td>".PHP_EOL;
-				$s .= "<td><a class=\"btn btn-link btn-xs\" href=\"{$_SERVER['PHP_SELF']}?action=edit_form&Company_Id={$id}\">Изменить</a></td>".PHP_EOL;
+				$s .= "<td><a class=\"btn btn-link btn-xs\" href=\"company_edit.php?Company_Id={$id}\">Изменить</a></td>".PHP_EOL;
 				$s .= "<td><a class=\"btn btn-link btn-xs\" href=\"company_confirm_delete.php?Company_Id={$id}\">Удалить</a></td>".PHP_EOL;
 				$s .= "</tr>".PHP_EOL;
 				echo $s;

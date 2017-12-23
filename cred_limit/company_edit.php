@@ -45,11 +45,11 @@
 		<div class="jumbotron">
 
 			<div id="info_message" class="alert alert-info" role="alert">
-				<strong>Внимание! Компания с системой налогооблажения ЕНВД не участвует в расчете кредитного лимита! </strong>'
+				<strong>Внимание! Компания с системой налогооблажения ЕНВД не участвует в расчете кредитного лимита! </strong>
 				<button id="btnError_message" type="button" class="btn btn-default btn-xs">Закрыть</button>
 			</div>
 
-			<h3>Компания из ГСЗ: <?=get_GSZ_name_by_id($GSZ_Id)?></h3>;
+			<h3>Компания из ГСЗ: <?=get_GSZ_name_by_id($GSZ_Id)?></h3>
 
 			<form name="edit_form" action="script/company_save_item.php?action=update" method="POST">
 				<input type="hidden" name="Company_Id" Id="Company_Id" value="<?=$Company_Id?>">
@@ -77,7 +77,6 @@
 					</select>
 				</div>
 
-
 				<div class="form-group">
 			    	<label for="SNO">Система налогооблажения</label>
 			    	<select class="form-control"  name="SNO" id="SNO">
@@ -95,9 +94,8 @@
 				<button ts="btn btn-warning" onClick="history.back();">Отменить</button>;
 			</form>
 		</div> 
-
-
-	<script type="tery-1.12.2.min.js"></script>	<script type="text/javascript" src="/js/jquery.valida
+	<script type="text/javascript" src="/js/jquery-1.12.2.min.js"></script>
+	<script type="text/javascript" src="/js/jquery.validate.min.js"></script> 
 	<script type="text/javascript" src="js/cred_limit.js"></script>
 </body>
 </html>
