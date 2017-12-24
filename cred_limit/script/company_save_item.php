@@ -62,7 +62,7 @@
 	if ($mysqli->errno)
 	{
 		$url_param = "GSZ_Id={$GSZ_Id}&error=".urlencode($mysqli->error);
-		header( 'Location: company_list.php?'.$url_param);
+		header( 'Location: ../company_list.php?'.$url_param);
 	}
 	else
 	{

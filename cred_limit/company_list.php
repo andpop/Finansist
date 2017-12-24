@@ -24,7 +24,7 @@
 		$mysqli = db_connect();
 		$query = "SELECT `Brief_Name` FROM `gsz` WHERE `Id`={$GSZ_Id}";
 		$gsz_result_set = $mysqli->query($query);
-		$gsz_row = $result_set->fetch_assoc();
+		$gsz_row = $gsz_result_set->fetch_assoc();
 
 		$query = "SELECT `A`.`Id` AS `Id`, `A`.`Name` AS `Name`, `A`.`INN` AS `INN`, `B`.`Brief_Name` AS `OPF`, `C`.`Brief_Name` AS `SNO` ";
 		$query .= "FROM `Company` `A`, `OPF` `B`, `SNO` `C` ";
@@ -43,11 +43,15 @@
 			<?php
 			if (isset($_GET['error']))
 			{
-				$s = '<div id="error_message" class="alert alert-danger" role="alert">При сохранении данных произошла ошибка: ';
-				$s .= htmlspecialchars(urldecode($_GET['error'])).'. ';
-				$s .= '<button id="btnError_message" type="button" class="btn btn-info btn-xs";">Закрыть</button></div>'.PHP_EOL;
-				echo $s;
-			}	
+				$message = htmlspecialchars(urldecode($_GET['error'])).'. ';
+			?>
+
+			<div id="error_message" class="alert alert-danger" role="alert">
+				При сохранении данных произошла ошибка: <?=$message?>
+				<button id="btnError_message" type="button" class="btn btn-info btn-xs">Закрыть</button>
+			</div>
+			<?php
+			} //if (isset($_GET['error']))
 			?>
 
 			<h3><?=$gsz_row['Brief_Name']?></h3>
