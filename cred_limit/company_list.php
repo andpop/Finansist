@@ -75,7 +75,7 @@
 				?>
 			</table>
 			<a class="btn btn-primary" href="company_add.php?GSZ_Id=<?=$GSZ_Id?>">Добавить</a>
-			<a class="btn btn-warning" href=".\gsz_forms.php">Вернуться</a>
+			<a class="btn btn-warning" href=".\gsz_list.php">Вернуться</a>
 		</div>
 	</div>
 		

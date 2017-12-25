@@ -8,6 +8,26 @@ define('ERROR_MESSAGE_PREFIX', 'Ошибка при выполнении пос�
 define('NO_ERRORS_MESSAGE', 'NO_ERRORS');
 
 
+class GSZ_Item 
+{
+	public $id, $Brief_Name, $Full_Name;
+
+	function __construct($id)
+	{
+		$mysqli = db_connect();
+		// $query = "SELECT `Brief_Name`, `Full_Name` FROM GSZ WHERE `Id`={$_GET['id']}";
+		$query = "SELECT `Brief_Name`, `Full_Name` FROM GSZ WHERE `Id`={$id}";
+		$result_set = $mysqli->query($query);
+		$row = $result_set->fetch_assoc();
+		
+		$this->Brief_Name = htmlspecialchars($row['Brief_Name']);
+		$this->Full_Name = htmlspecialchars($row['Full_Name']);
+		$this->id = $id;
+		
+		$mysqli->close();		
+	}
+}
+
 function get_error_message() 
 {
 	if (isset($_GET['error']))
