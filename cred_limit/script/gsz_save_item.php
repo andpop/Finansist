@@ -15,18 +15,21 @@
 			$Full_Name = $mysqli->real_escape_string( $_REQUEST['GSZ_Full_Name'] );
 
 			//Проверяем, является ли параметр Id целым числом
-			if (!preg_match("/^\d+$/", $_REQUEST['Id']))
+			if (!ctype_digit($_REQUEST['Id']))
 			{
-				exit("Неверный формат URL-запроса");
+				$error_message = urlencode("Указан некорректный URL");
+				header( 'Location: ../gsz_list.php?error='.$error_message);
 			}
 			
 			$query = 'UPDATE `GSZ` SET `Brief_Name`="'.$Brief_Name.'", `Full_Name`="'.$Full_Name.'" WHERE `Id`='.$_REQUEST['Id'];
 			break;
+
 		case 'delete':
 			//Проверяем, является ли параметр Id целым числом
-			if (!preg_match("/^\d+$/", $_REQUEST['Id']))
+			if (!ctype_digit($_REQUEST['Id']))
 			{
-				exit("Неверный формат URL-запроса");
+				$error_message = urlencode("Указан некорректный URL");
+				header( 'Location: ../gsz_list.php?error='.$error_message);
 			}
 
 			$query = 'DELETE FROM `GSZ` WHERE `Id`='.$_REQUEST['Id'];

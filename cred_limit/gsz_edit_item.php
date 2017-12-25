@@ -1,3 +1,15 @@
+	<?php
+		require_once('./script/cred_limit_scripts.php');
+
+		$mysqli = db_connect();
+		$query = "SELECT `Brief_Name`, `Full_Name` FROM GSZ WHERE `Id`={$_GET['id']}";
+		$result_set = $mysqli->query($query);
+		$row = $result_set->fetch_assoc();
+		$Brief_Name = htmlspecialchars($row['Brief_Name']);
+		$Full_Name = htmlspecialchars($row['Full_Name']);
+		$mysqli->close();		
+	?>
+<!-- =================================================================================================== -->
 <!DOCTYPE html>
 <html>
 <head>
@@ -10,19 +22,6 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
-	<?php
-
-		require_once($_SERVER['DOCUMENT_ROOT'].'/script/app_config.php');
-		require_once('./script/cred_limit_scripts.php');
-
-		$mysqli = db_connect();
-		$query = "SELECT `Brief_Name`, `Full_Name` FROM GSZ WHERE `Id`={$_GET['id']}";
-		$result_set = $mysqli->query($query);
-		$row = $result_set->fetch_assoc();
-		$Brief_Name = htmlspecialchars($row['Brief_Name']);
-		$Full_Name = htmlspecialchars($row['Full_Name']);
-		$mysqli->close();		
-	?>
 
 	<div class="container">
 		<header>

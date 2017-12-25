@@ -5,8 +5,11 @@
 $(document).ready(function() {
 	
 	$('#btnError_message').click(function(){
-		$('#error_message').hide();
+		$('#error_message_div').hide();
 	}
 	);
+
+	if ($('#error_message').text() != "NO_ERRORS")
+		$('#error_message_div').show();
 
 });

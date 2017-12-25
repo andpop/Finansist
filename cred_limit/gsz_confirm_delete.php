@@ -1,3 +1,15 @@
+<?php
+	require_once('./script/cred_limit_scripts.php');
+	$GSZ_Id = $_GET["GSZ_Id"];
+	if (!ctype_digit($GSZ_Id))
+	{
+		$error_message = urlencode("Указан некорректный URL");
+		header( 'Location: gsz_list.php?error='.$error_message);
+	}
+	
+	$GSZ_Brief_Name = get_GSZ_name_by_id($GSZ_Id);
+?>
+<!-- =========================================================================== -->
 <!DOCTYPE html>
 <html>
 <head>
@@ -10,31 +22,13 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
-	<?php
-		require_once($_SERVER['DOCUMENT_ROOT'].'/script/app_config.php');
-		//require_once('./script/cred_limit_scripts.php');
-		$mysqli = db_connect();
-		$GSZ_Id = $_GET["GSZ_Id"];
-		// !!!!!!!!!!!!! Доделать проверку !!!!!!!!!!!!!!!!!!!!!
-		if (!preg_match("/^\d+$/", $GSZ_Id))
-		{
-			exit("Неверный формат URL-запроса");
-		}
-
-		$query = "SELECT `Brief_Name` FROM `gsz` WHERE `Id`={$GSZ_Id}";
-		$result_set = $mysqli->query($query);
-		$row = $result_set->fetch_assoc();
-		$Name = htmlspecialchars($row['Brief_Name']);
-		$mysqli->close();		
-	?>
-
 	<div class="container">
 		<header>
 			<h2 class="text-center">ГРУППЫ СВЯЗАННЫХ ЗАЕМЩИКОВ</h2>
 		</header>
 		<div class="jumbotron">
 			<div class="alert alert-info" role="alert">
-				<h3>Удалить группу <?=$Name?>?</h3>
+				<h3>Удалить группу <?=$GSZ_Brief_Name?>?</h3>
 			</div>
 			<a class="btn btn-primary" href="script/gsz_save_item.php?action=delete&Id=<?=$GSZ_Id?>">Удалить</a> 
 			<button type="button" class="btn btn-warning" onClick="history.back();">Отменить</button>

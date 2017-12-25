@@ -4,7 +4,27 @@ require_once($_SERVER['DOCUMENT_ROOT'].'/script/app_config.php');
 define('MAX_LENGTH_COMPANY_NAME', 150);
 define('MAX_LENGTH_GSZ_BRIEF_NAME', 30);
 define('MAX_LENGTH_GSZ_FULL_NAME', 150);
+define('ERROR_MESSAGE_PREFIX', 'Ошибка при выполнении последней операции: ');
+define('NO_ERRORS_MESSAGE', 'NO_ERRORS');
 
+
+function get_error_message() 
+{
+	if (isset($_GET['error']))
+		return (ERROR_MESSAGE_PREFIX . '<strong>'.htmlspecialchars(urldecode($_GET['error'])).'.</strong>');
+	else
+		return NO_ERRORS_MESSAGE;
+}
+
+
+function get_GSZ_set()
+{
+	$mysqli = db_connect();
+	$query = "SELECT * FROM `gsz` ORDER BY `Brief_Name`";
+	$GSZ_set = $mysqli->query($query);
+	$mysqli->close();		
+	return $GSZ_set;
+}
 
 function get_GSZ_name_by_id($GSZ_Id)
 {

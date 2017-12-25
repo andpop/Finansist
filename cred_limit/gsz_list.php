@@ -1,3 +1,10 @@
+<?php
+	require_once('./script/cred_limit_scripts.php');
+	$GSZ_set = get_GSZ_set();
+	$error_message = get_error_message();
+?>
+<!-- =================================================================================== -->
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -10,44 +17,39 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
-	<?php
-		require_once($_SERVER['DOCUMENT_ROOT'].'/script/app_config.php');
-		require_once('./script/cred_limit_scripts.php');
-
-		$mysqli = db_connect();
-		$query = "SELECT * FROM `gsz` ORDER BY `Brief_Name`";
-		$result_set = $mysqli->query($query);
-		$mysqli->close();		
-	?>
-
-		
 	<div class="container">
 		<header>
 			<h2 class="text-center">ГРУППЫ СВЯЗАННЫХ ЗАЕМЩИКОВ</h2>
 		</header>
 		<div class="jumbotron">
+			<div id="error_message_div" class="alert alert-danger" role="alert">
+				<span id="error_message"><?=$error_message?></span>
+				<button id="btnError_message" type="button" class="btn btn-info btn-xs">Закрыть</button>
+			</div>
+		
 			<table class="table">
-				<tr><th>Название</th><th>Описание</th></tr>'
-	<?php	
-		while (($row = $result_set->fetch_assoc()) != false) 
-		{
-			$id = $row['Id'];
-	?>
+				<tr><th>Название</th><th>Описание</th><th></th><th></th><th></th></tr>
+				<?php	
+					while (($GSZ = $GSZ_set->fetch_assoc()) != false) 
+					{
+						$id = $GSZ['Id'];
+				?>
 				<tr>
-					<td><?=$row['Brief_Name']?></td>
-					<td><?=$row['Full_Name']?></td>
+					<td><?=$GSZ['Brief_Name']?></td>
+					<td><?=$GSZ['Full_Name']?></td>
 					<td><a class="btn btn-primary btn-xs" href="company_list.php?GSZ_Id=<?=$id?>">Компании</a></td>
 					<td><a class="btn btn-link btn-xs" href="gsz_edit_item.php?id=<?=$id?>">Изменить</a></td>
 					<td><a class="btn btn-link btn-xs" href="gsz_confirm_delete.php?GSZ_Id=<?=$id?>">Удалить</a></td>
 				</tr>
-	<?php
-			} //end of while $row
-	?>
+				<?php
+					} //end of while $GSZ
+				?>
 			</table>
 			<a class="btn btn-primary" href="gsz_add.php">Добавить</a>
 			<a class="btn btn-warning" href="limit.html">Вернуться</a>
 		</div>
 	</div>
-			
+	<script type="text/javascript" src="/js/jquery-1.12.2.min.js"></script>
+	<script type="text/javascript" src="./js/cred_limit.js"></script>
 </body>
 </html>

@@ -1,31 +1,31 @@
 body{
 	/*padding-left: 20px;*/
 	/*background-color: #778899;*/
-    background-image: url(../img/bg.jpg);
-    height: 100%;
+    background-image : url(../img/bg.jpg);
+    height           : 100%;
     background-repeat: no-repeat;
-    background-size: cover;
+    background-size  : cover;
 }
 
 h1 {
-	font-size: 58px;
-    font-style: normal;
-    font-weight: 700;
+	font-size  : 58px;
+	font-style : normal;
+	font-weight: 700;
     /*text-align: center;*/
     text-transform: uppercase;
 }
 
 h2 {
-	font-size: 42px;
-    font-style: normal;
-    font-weight: 700;
+	font-size  : 42px;
+	font-style : normal;
+	font-weight: 700;
     /*text-align: center;*/
     text-transform: uppercase;
 }
 
 table{
 	border-spacing: 0px 10px;
-	margin-bottom: 20px;
+	margin-bottom : 20px;
 }
 
 /*.container {
@@ -33,33 +33,33 @@ table{
 }
 */
 td, th{
-	padding-left: 10px;
-	padding-right: 10px;
+	padding-left  : 10px;
+	padding-right : 10px;
 	vertical-align: top;
-	word-wrap:break-word;
+	word-wrap     : break-word;
 }
 
 .platezh_table {
 	text-align: right;
 }
 .platezh_table_header {
-    border-top: 3px double #000;
+    border-top   : 3px double #000;
     border-bottom: 3px double #000;
-    padding: 10px;
+    padding      : 10px;
 }
 
 .platezh_table_footer {
-    border-top: 3px double #000;
+    border-top   : 3px double #000;
     border-bottom: 3px double #000;
-	text-align: right;
-	font-weight: bold; 
+    text-align   : right;
+    font-weight  : bold;
 }
 
 input.error {
 	border: 1px solid #ff0000;
 }
 label.error {
-	color: #ff0000;
+	color      : #ff0000;
 	font-weight: normal;
 }
 
@@ -73,4 +73,8 @@ label.error {
 
 .btn_margin {
 	margin-top: 20px;
+}
+
+#error_message_div {
+	display: none;
 }
