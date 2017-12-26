@@ -1,13 +1,12 @@
 <?php
 	require_once('./script/cred_limit_scripts.php');
-	$GSZ_Id = $_GET["GSZ_Id"];
-	if (!ctype_digit($GSZ_Id))
+	// $GSZ_Id = $_GET["GSZ_Id"];
+	if (!ctype_digit($_GET["GSZ_Id"]))
 	{
 		$error_message = urlencode("Указан некорректный URL");
 		header( 'Location: gsz_list.php?error='.$error_message);
 	}
-	
-	$GSZ_Brief_Name = get_GSZ_name_by_id($GSZ_Id);
+	$GSZ_item = new GSZ_item($_GET["GSZ_Id"]);
 ?>
 <!-- =========================================================================== -->
 <!DOCTYPE html>
@@ -28,9 +27,9 @@
 		</header>
 		<div class="jumbotron">
 			<div class="alert alert-info" role="alert">
-				<h3>Удалить группу <?=$GSZ_Brief_Name?>?</h3>
+				<h3>Удалить группу <?=$GSZ_item->Brief_Name?>?</h3>
 			</div>
-			<a class="btn btn-primary" href="script/gsz_save_item.php?action=delete&Id=<?=$GSZ_Id?>">Удалить</a> 
+			<a class="btn btn-primary" href="script/gsz_save_item.php?action=delete&Id=<?=$GSZ_item->id?>">Удалить</a> 
 			<button type="button" class="btn btn-warning" onClick="history.back();">Отменить</button>
 		</div> 
 	</div> 	

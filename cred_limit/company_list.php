@@ -1,3 +1,14 @@
+<?php
+	require_once('script/cred_limit_scripts.php');
+	$GSZ_Id = $_GET["GSZ_Id"];
+	// !!!!!!!!!!!!! Доделать проверку !!!!!!!!!!!!!!!!!!!!!
+	if (!preg_match("/^\d+$/", $GSZ_Id))
+	{
+		exit("Неверный формат URL-запроса");
+	}
+
+?>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -11,15 +22,7 @@
 </head>
 <body>
 	<?php
-		require_once($_SERVER['DOCUMENT_ROOT'].'/script/app_config.php');
-		require_once('script/cred_limit_scripts.php');
 		
-		$GSZ_Id = $_GET["GSZ_Id"];
-		// !!!!!!!!!!!!! Доделать проверку !!!!!!!!!!!!!!!!!!!!!
-		if (!preg_match("/^\d+$/", $GSZ_Id))
-		{
-			exit("Неверный формат URL-запроса");
-		}
 
 		$mysqli = db_connect();
 		$query = "SELECT `Brief_Name` FROM `gsz` WHERE `Id`={$GSZ_Id}";

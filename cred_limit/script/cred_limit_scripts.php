@@ -6,6 +6,7 @@ define('MAX_LENGTH_GSZ_BRIEF_NAME', 30);
 define('MAX_LENGTH_GSZ_FULL_NAME', 150);
 define('ERROR_MESSAGE_PREFIX', 'Ошибка при выполнении последней операции: ');
 define('NO_ERRORS_MESSAGE', 'NO_ERRORS');
+define('PATH_GSZ_LIST', $_SERVER['DOCUMENT_ROOT'].'/cred_limit/gsz_list.php');
 
 
 class GSZ_Item 
@@ -15,7 +16,6 @@ class GSZ_Item
 	function __construct($id)
 	{
 		$mysqli = db_connect();
-		// $query = "SELECT `Brief_Name`, `Full_Name` FROM GSZ WHERE `Id`={$_GET['id']}";
 		$query = "SELECT `Brief_Name`, `Full_Name` FROM GSZ WHERE `Id`={$id}";
 		$result_set = $mysqli->query($query);
 		$row = $result_set->fetch_assoc();
