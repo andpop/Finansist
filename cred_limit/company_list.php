@@ -1,14 +1,14 @@
 <?php
-	require_once('script/cred_limit_scripts.php');
+	require_once('./script/cred_limit_scripts.php');
 	$GSZ_Id = $_GET["GSZ_Id"];
-	// !!!!!!!!!!!!! Доделать проверку !!!!!!!!!!!!!!!!!!!!!
-	if (!preg_match("/^\d+$/", $GSZ_Id))
+	if (!ctype_digit($_GET["GSZ_Id"]))
 	{
-		exit("Неверный формат URL-запроса");
+		$error_message = urlencode("Указан некорректный URL");
+		header( 'Location: '.HTML_PATH_COMPANY_LIST_FORM.'?error='.$error_message);
 	}
-
+	$GSZ_item = new GSZ_item($_GET["GSZ_Id"]);
 ?>
-
+<!-- ==================================================================================================== -->
 <!DOCTYPE html>
 <html>
 <head>

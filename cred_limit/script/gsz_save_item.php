@@ -19,8 +19,7 @@
 			if (!ctype_digit($_REQUEST['Id']))
 			{
 				$error_message = urlencode("Указан некорректный URL");
-				header("Location: ".PATH_GSZ_LIST."?error={$error_message}");
-				// header( 'Location: ../gsz_list.php?error='.$error_message);
+				header("Location: ".HTML_PATH_GSZ_LIST_FORM."?error={$error_message}");
 			}
 			
 			$query = 'UPDATE `GSZ` SET `Brief_Name`="'.$Brief_Name.'", `Full_Name`="'.$Full_Name.'" WHERE `Id`='.$_REQUEST['Id'];
@@ -31,8 +30,7 @@
 			if (!ctype_digit($_REQUEST['Id']))
 			{
 				$error_message = urlencode("Указан некорректный URL");
-				header("Location: ".PATH_GSZ_LIST."?error={$error_message}");
-				// header( 'Location: ../gsz_list.php?error='.$error_message);
+				header("Location: ".HTML_PATH_GSZ_LIST_FORM."?error={$error_message}");
 			}
 			
 			$query = 'DELETE FROM `GSZ` WHERE `Id`='.$_REQUEST['Id'];
@@ -42,7 +40,7 @@
 		}
 		
 		$mysqli->query($query);
-		// header( 'Location: ../gsz_list.php');
-		header("Location: ".PATH_GSZ_LIST);
+		$mysqli->close();
+		header("Location: ".HTML_PATH_GSZ_LIST_FORM);
  	die();
 ?>

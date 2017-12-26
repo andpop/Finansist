@@ -6,7 +6,12 @@ define('MAX_LENGTH_GSZ_BRIEF_NAME', 30);
 define('MAX_LENGTH_GSZ_FULL_NAME', 150);
 define('ERROR_MESSAGE_PREFIX', 'Ошибка при выполнении последней операции: ');
 define('NO_ERRORS_MESSAGE', 'NO_ERRORS');
-define('PATH_GSZ_LIST', $_SERVER['DOCUMENT_ROOT'].'/cred_limit/gsz_list.php');
+define('HTML_PATH_GSZ_LIST_FORM', 'http://'.$_SERVER['HTTP_HOST'].'/cred_limit/gsz_list.php');
+define('HTML_PATH_GSZ_ADD_FORM', 'http://'.$_SERVER['HTTP_HOST'].'/cred_limit/gsz_add.php');
+define('HTML_PATH_GSZ_EDIT_FORM', 'http://'.$_SERVER['HTTP_HOST'].'/cred_limit/gsz_edit_item.php');
+define('HTML_PATH_GSZ_DELETE_FORM', 'http://'.$_SERVER['HTTP_HOST'].'/cred_limit/gsz_confirm_delete.php');
+define('HTML_PATH_GSZ_SAVE_ITEM', 'http://'.$_SERVER['HTTP_HOST'].'/cred_limit/script/gsz_save_item.php');
+define('HTML_PATH_COMPANY_LIST_FORM', 'http://'.$_SERVER['HTTP_HOST'].'/cred_limit/company_list.php');
 
 
 class GSZ_Item 

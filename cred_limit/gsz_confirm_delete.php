@@ -1,10 +1,9 @@
 <?php
 	require_once('./script/cred_limit_scripts.php');
-	// $GSZ_Id = $_GET["GSZ_Id"];
 	if (!ctype_digit($_GET["GSZ_Id"]))
 	{
 		$error_message = urlencode("Указан некорректный URL");
-		header( 'Location: gsz_list.php?error='.$error_message);
+		header( 'Location: '.HTML_PATH_GSZ_LIST_FORM.'?error='.$error_message);
 	}
 	$GSZ_item = new GSZ_item($_GET["GSZ_Id"]);
 ?>
@@ -29,7 +28,7 @@
 			<div class="alert alert-info" role="alert">
 				<h3>Удалить группу <?=$GSZ_item->Brief_Name?>?</h3>
 			</div>
-			<a class="btn btn-primary" href="script/gsz_save_item.php?action=delete&Id=<?=$GSZ_item->id?>">Удалить</a> 
+			<a class="btn btn-primary" href="<?=HTML_PATH_GSZ_SAVE_ITEM?>?action=delete&Id=<?=$GSZ_item->id?>">Удалить</a> 
 			<button type="button" class="btn btn-warning" onClick="history.back();">Отменить</button>
 		</div> 
 	</div> 	

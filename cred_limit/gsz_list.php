@@ -38,14 +38,14 @@
 					<td><?=$GSZ['Brief_Name']?></td>
 					<td><?=$GSZ['Full_Name']?></td>
 					<td><a class="btn btn-primary btn-xs" href="company_list.php?GSZ_Id=<?=$id?>">Компании</a></td>
-					<td><a class="btn btn-link btn-xs" href="gsz_edit_item.php?id=<?=$id?>">Изменить</a></td>
-					<td><a class="btn btn-link btn-xs" href="gsz_confirm_delete.php?GSZ_Id=<?=$id?>">Удалить</a></td>
+					<td><a class="btn btn-link btn-xs" href="<?=HTML_PATH_GSZ_EDIT_FORM?>?id=<?=$id?>">Изменить</a></td>
+					<td><a class="btn btn-link btn-xs" href="<?=HTML_PATH_GSZ_DELETE_FORM?>?GSZ_Id=<?=$id?>">Удалить</a></td>
 				</tr>
 				<?php
 					} //end of while $GSZ
 				?>
 			</table>
-			<a class="btn btn-primary" href="gsz_add.php">Добавить</a>
+			<a class="btn btn-primary" href="<?=HTML_PATH_GSZ_ADD_FORM?>">Добавить</a>
 			<a class="btn btn-warning" href="limit.html">Вернуться</a>
 		</div>
 	</div>

@@ -22,7 +22,7 @@
 		</header>
 		<div class="jumbotron">
 			<h3>Изменение данных</h3>
-			<form name="edit_form" action="script/gsz_save_item.php?action=update" method="POST">
+			<form name="edit_form" action="<?=HTML_PATH_GSZ_SAVE_ITEM?>?action=update" method="POST">
 				<input type="hidden" name="Id" Id="Id" value=<?=$GSZ_item->id?>>
 			
 				<div class="form-group">
