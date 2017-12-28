@@ -1,10 +1,14 @@
 <?php
 	require_once('./script/cred_limit_scripts.php');
-	$GSZ_Id = $_GET["GSZ_Id"];
-	if (!ctype_digit($_GET["GSZ_Id"]))
+	if (!isset($_GET["GSZ_Id"])) 
 	{
-		$error_message = urlencode("Указан некорректный URL");
-		header( 'Location: '.HTML_PATH_COMPANY_LIST_FORM.'?error='.$error_message);
+		$error_message = urlencode("Указан некорректный URL для вывода списка компаний из ГСЗ");
+		header( 'Location: '.HTML_PATH_GSZ_LIST_FORM.'?error='.$error_message);
+	}
+	if (!ctype_digit($_GET["GSZ_Id"])) 
+	{
+		$error_message = urlencode("Указан некорректный URL для вывода списка компаний из ГСЗ");
+		header( 'Location: '.HTML_PATH_GSZ_LIST_FORM.'?error='.$error_message);
 	}
 	$GSZ_item = new GSZ_item($_GET["GSZ_Id"]);
 	$company_set = get_company_set($_GET["GSZ_Id"]);
@@ -40,7 +44,7 @@
 					<th>Название</th><th>ИНН</th><th>ОПФ</th><th>СНО</th>
 				</tr>
 
-				<?php
+				<?php 
 				while (($company_row = $company_set->fetch_assoc()) != false) 
 				{
 				?>
@@ -53,7 +57,7 @@
 				} 
 				?>
 			</table>
-			<a class="btn btn-primary" href="<?=HTML_PATH_COMPANY_ADD_FORM?>?GSZ_Id=<?=$GSZ_item->id?>">Добавить</a>
+			<a class="btn btn-primary" href="<?=HTML_PATH_COMPANY_ADD_FORM?>?GSZ_Id=<?=$GSZ_item->Id?>">Добавить</a>
 			<a class="btn btn-warning" href="<?=HTML_PATH_GSZ_LIST_FORM?>">Вернуться</a>
 		</div>
 	</div>

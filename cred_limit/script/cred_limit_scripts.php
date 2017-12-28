@@ -15,11 +15,12 @@ define('HTML_PATH_COMPANY_LIST_FORM', 'http://'.$_SERVER['HTTP_HOST'].'/cred_lim
 define('HTML_PATH_COMPANY_ADD_FORM', 'http://'.$_SERVER['HTTP_HOST'].'/cred_limit/company_add.php');
 define('HTML_PATH_COMPANY_EDIT_FORM', 'http://'.$_SERVER['HTTP_HOST'].'/cred_limit/company_edit.php');
 define('HTML_PATH_COMPANY_DELETE_FORM', 'http://'.$_SERVER['HTTP_HOST'].'/cred_limit/company_confirm_delete.php');
+define('HTML_PATH_COMPANY_SAVE_ITEM', 'http://'.$_SERVER['HTTP_HOST'].'/cred_limit/script/company_save_item.php');
 
 
 class GSZ_Item 
 {
-	public $id, $Brief_Name, $Full_Name;
+	public $Id, $Brief_Name, $Full_Name;
 
 	function __construct($id)
 	{
@@ -30,23 +31,15 @@ class GSZ_Item
 		
 		$this->Brief_Name = htmlspecialchars($row['Brief_Name']);
 		$this->Full_Name = htmlspecialchars($row['Full_Name']);
-		$this->id = $id;
+		$this->Id = $id;
 		
 		$mysqli->close();		
 	}
 }
 
-function get_error_message() 
-{
-	if (isset($_GET['error']))
-		return (ERROR_MESSAGE_PREFIX . '<strong>'.htmlspecialchars(urldecode($_GET['error'])).'.</strong>');
-	else
-		return NO_ERRORS_MESSAGE;
-}
-
-
 function get_GSZ_set()
 {
+	// GSZ_row := {Id, Brief_Name, Full_Name}
 	$mysqli = db_connect();
 	$query = "SELECT * FROM `gsz` ORDER BY `Brief_Name`";
 	$GSZ_set = $mysqli->query($query);
@@ -56,6 +49,7 @@ function get_GSZ_set()
 
 function get_company_set($GSZ_Id)
 {
+	// company_row := {Id, Name, INN, OPF, SNO}
 	$mysqli = db_connect();
 	$query = "SELECT `A`.`Id` AS `Id`, `A`.`Name` AS `Name`, `A`.`INN` AS `INN`, `B`.`Brief_Name` AS `OPF`, `C`.`Brief_Name` AS `SNO` ";
 	$query .= "FROM `Company` `A`, `OPF` `B`, `SNO` `C` ";
@@ -65,6 +59,13 @@ function get_company_set($GSZ_Id)
 	return $company_set;
 }
 
+function get_error_message() 
+{
+	if (isset($_GET['error']))
+		return (ERROR_MESSAGE_PREFIX . '<strong>'.htmlspecialchars(urldecode($_GET['error'])).'.</strong>');
+	else
+		return NO_ERRORS_MESSAGE;
+}
 
 function get_GSZ_name_by_id($GSZ_Id)
 {

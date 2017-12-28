@@ -1,3 +1,19 @@
+<?php
+	require_once('script/cred_limit_scripts.php');
+	if (!isset($_GET["GSZ_Id"])) 
+	{
+		$error_message = urlencode("Указан некорректный URL для добавления компании в ГСЗ");
+		header( 'Location: '.HTML_PATH_GSZ_LIST_FORM.'?error='.$error_message);
+	}
+	if (!ctype_digit($_GET["GSZ_Id"])) 
+	{
+		$error_message = urlencode("Указан некорректный URL для вывода списка компаний из ГСЗ");
+		header( 'Location: '.HTML_PATH_GSZ_LIST_FORM.'?error='.$error_message);
+	}
+	$GSZ_item = new GSZ_item($_GET["GSZ_Id"]);
+	// $GSZ_Id = $_GET["GSZ_Id"];
+?>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -10,18 +26,6 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
-	<?php
-	require_once($_SERVER['DOCUMENT_ROOT'].'/script/app_config.php');
-	require_once('script/cred_limit_scripts.php');
-	
-	// !!!!!!!!!!!!! Доделать проверку !!!!!!!!!!!!!!!!!!!!!
-	$GSZ_Id = $_GET["GSZ_Id"];
-	if (!preg_match("/^\d+$/", $GSZ_Id))
-	{
-		exit("Неверный формат URL-запроса");
-	}
-	?>
-
 	<div class="container">
 		<header>
 			<h2 class="text-center">КОМПАНИИ ГРУППЫ СВЯЗАННЫХ ЗАЕМЩИКОВ</h2>
@@ -29,10 +33,10 @@
 	
 		<div class="jumbotron">
 		
-			<h3>Новая компания из ГСЗ: <?=get_GSZ_name_by_id($GSZ_Id)?></h3>
-			<form name="add_form" action="script/company_save_item.php?action=add" method="POST">
+			<h3>Новая компания из ГСЗ: <?=$GSZ_item->Brief_Name?></h3>
+			<form name="add_form" action="<?=HTML_PATH_COMPANY_SAVE_ITEM?>?action=add" method="POST">
 		
-				<input type="hidden" name="GSZ_Id" id="GSZ_Id" value=<?=$GSZ_Id?>>
+				<input type="hidden" name="GSZ_Id" id="GSZ_Id" value=<?=$GSZ_item->Id?>>
 				<div class="form-group">
 					<label for="Company_Name">Название</label>
 					<input type="text" class="form-control" name="Company_Name" id="Company_Name" maxlength="<?=MAX_LENGTH_COMPANY_NAME?>" placeholder="Наименование компании">
@@ -46,20 +50,18 @@
 				<div class="form-group">
 					<label for="OPF">Организационно-правовая форма</label>
 					<select class="form-control"  name="OPF" id="OPF">
-						<?php
-						foreach (get_OPF_names() as $OPF_name) 
-							echo "      <option>{$OPF_name}</option>".PHP_EOL;
-						?>
+						<?php foreach (get_OPF_names() as $OPF_name) {?>
+						<option><?=$OPF_name?></option>
+						<?php };?>
 					</select>
 				</div>
 			
 				<div class="form-group">
 					<label for="SNO">Система налогооблажения</label>
 					<select class="form-control"  name="SNO" id="SNO">
-						<?php
-						foreach (get_SNO_names() as $SNO_name) 
-						echo "      <option>{$SNO_name}</option>".PHP_EOL;
-						?>
+						<?php foreach (get_SNO_names() as $SNO_name) {?>
+						<option><?=$SNO_name?></option>
+						<?php };?>
 					</select>
 				</div>
 			
