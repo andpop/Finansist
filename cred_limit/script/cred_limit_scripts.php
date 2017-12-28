@@ -140,14 +140,14 @@ function get_SNO_Id_by_Name($SNO_Name)
 
 function get_OPF_names()
 {
-	$mysqli = db_connect();
-	$query = 'SELECT `Brief_Name` FROM `OPF`';
-	if (!$result_set = $mysqli->query($query)) 
-		return '';
 	$array_OPF_names = [];
+	$mysqli = db_connect();
+	$query = 'SELECT `Brief_Name`, `INN_Length` FROM `OPF`';
+	if (!$result_set = $mysqli->query($query)) 
+		return $array_OPF_names;
 	while (($row = $result_set->fetch_assoc()) != false) 	
 	{
-		$array_OPF_names[]=$row['Brief_Name'];
+		$array_OPF_names[$row['Brief_Name']]=$row['INN_Length'];
 	}
 	$result_set->close();
 	return $array_OPF_names;	
@@ -155,14 +155,14 @@ function get_OPF_names()
 
 function get_SNO_names()
 {
-	$mysqli = db_connect();
-	$query = 'SELECT `Brief_Name` FROM `SNO`';
-	if (!$result_set = $mysqli->query($query)) 
-		return '';
 	$array_SNO_names = [];
+	$mysqli = db_connect();
+	$query = 'SELECT `Brief_Name`, `Cred_Limit_Affect` FROM `SNO`';
+	if (!$result_set = $mysqli->query($query)) 
+		return $array_SNO_names;	
 	while (($row = $result_set->fetch_assoc()) != false) 	
 	{
-		$array_SNO_names[]=$row['Brief_Name'];
+		$array_SNO_names[$row['Brief_Name']]=$row['Cred_Limit_Affect'];
 	}
 	$result_set->close();
 	return $array_SNO_names;	

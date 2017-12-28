@@ -56,17 +56,15 @@
 			break;
 	}
 	
-	//echo $query;
-
 	$mysqli->query($query);
 	if ($mysqli->errno)
 	{
 		$url_param = "GSZ_Id={$GSZ_Id}&error=".urlencode($mysqli->error);
-		header( 'Location: ../company_list.php?'.$url_param);
+		header( 'Location: '.HTML_PATH_COMPANY_LIST_FORM.'?'.$url_param);
 	}
 	else
 	{
-		header( 'Location: ../company_list.php?GSZ_Id='.$GSZ_Id);
+		header( 'Location: '.HTML_PATH_COMPANY_LIST_FORM.'?GSZ_Id='.$GSZ_Id);
 	}
  	die();
 ?>

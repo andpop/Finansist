@@ -34,7 +34,7 @@
 		<div class="jumbotron">
 		
 			<h3>Новая компания из ГСЗ: <?=$GSZ_item->Brief_Name?></h3>
-			<form name="add_form" action="<?=HTML_PATH_COMPANY_SAVE_ITEM?>?action=add" method="POST">
+			<form name="add_form" id="add_form" action="<?=HTML_PATH_COMPANY_SAVE_ITEM?>?action=add" method="POST">
 		
 				<input type="hidden" name="GSZ_Id" id="GSZ_Id" value=<?=$GSZ_item->Id?>>
 				<div class="form-group">
@@ -44,14 +44,14 @@
 		
 				<div class="form-group">
 					<label for="INN">ИНН</label>
-					<input type="text" class="form-control" name="INN" id="INN" maxlength=12 minlength=10 placeholder="123456789012">
+					<input type="number" class="form-control" name="INN" id="INN" required min=1111111111 maxlength=12 minlength=10 placeholder="123456789012">
 				</div>
 			
 				<div class="form-group">
 					<label for="OPF">Организационно-правовая форма</label>
 					<select class="form-control"  name="OPF" id="OPF">
-						<?php foreach (get_OPF_names() as $OPF_name) {?>
-						<option><?=$OPF_name?></option>
+						<?php foreach (get_OPF_names() as $OPF_name => $INN_Length) {?>
+						<option INN_Length="<?=$INN_Length?>"><?=$OPF_name?></option>
 						<?php };?>
 					</select>
 				</div>
@@ -59,13 +59,14 @@
 				<div class="form-group">
 					<label for="SNO">Система налогооблажения</label>
 					<select class="form-control"  name="SNO" id="SNO">
-						<?php foreach (get_SNO_names() as $SNO_name) {?>
-						<option><?=$SNO_name?></option>
+						<?php foreach (get_SNO_names() as $SNO_name => $Cred_Limit_Affect) {?>
+						<option Cred_Limit_Affect="<?=$Cred_Limit_Affect?>"><?=$SNO_name?></option>
 						<?php };?>
 					</select>
 				</div>
 			
-				<button type="submit" class="btn btn-primary">Сохранить</button> 
+				<!-- <button type="submit" class="btn btn-primary">Сохранить</button>  -->
+				<button type="submit" class="btn btn-primary" id="btnAddCompany">Сохранить</button> 
 				<button type="button" class="btn btn-warning" onClick="history.back();">Отменить</button>
 			</form>
 		</div> 

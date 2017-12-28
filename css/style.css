@@ -78,3 +78,8 @@ label.error {
 #error_message_div {
 	display: none;
 }
+
+.hide {
+	color: #ff0000;
+	/* display: none; */
+}

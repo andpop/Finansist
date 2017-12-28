@@ -28,7 +28,7 @@
 			<div class="alert alert-info" role="alert">
 				<h3>Удалить группу <?=$GSZ_item->Brief_Name?>?</h3>
 			</div>
-			<a class="btn btn-primary" href="<?=HTML_PATH_GSZ_SAVE_ITEM?>?action=delete&Id=<?=$GSZ_item->id?>">Удалить</a> 
+			<a class="btn btn-primary" href="<?=HTML_PATH_GSZ_SAVE_ITEM?>?action=delete&Id=<?=$GSZ_item->Id?>">Удалить</a> 
 			<button type="button" class="btn btn-warning" onClick="history.back();">Отменить</button>
 		</div> 
 	</div> 	

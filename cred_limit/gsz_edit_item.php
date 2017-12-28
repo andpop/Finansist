@@ -23,7 +23,7 @@
 		<div class="jumbotron">
 			<h3>Изменение данных</h3>
 			<form name="edit_form" action="<?=HTML_PATH_GSZ_SAVE_ITEM?>?action=update" method="POST">
-				<input type="hidden" name="Id" Id="Id" value=<?=$GSZ_item->id?>>
+				<input type="hidden" name="Id" Id="Id" value=<?=$GSZ_item->Id?>>
 			
 				<div class="form-group">
 					<label for="GSZ_Brief_Name">Название</label>
