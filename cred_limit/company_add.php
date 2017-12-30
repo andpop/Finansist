@@ -1,5 +1,6 @@
 <?php
 	require_once('script/cred_limit_scripts.php');
+	$error_message = "NO_ERRORS";
 	if (!isset($_GET["GSZ_Id"])) 
 	{
 		$error_message = urlencode("Указан некорректный URL для добавления компании в ГСЗ");
@@ -22,6 +23,7 @@
 	<meta name="description" content="" />
 	<meta name="keywords" content="" />
 	<link href="/css/bootstrap.min.css" rel="stylesheet"/> 
+	<link rel="stylesheet" href="/css/magnific-popup.css">
 	<link href="/css/style.css" rel="stylesheet"/> 
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
@@ -32,9 +34,13 @@
 		</header>
 	
 		<div class="jumbotron">
+			<div id="error_message_div" class="alert alert-danger" role="alert">
+				<span id="error_message"><?=$error_message?></span>
+				<button id="btnError_message" type="button" class="btn btn-info btn-xs">Закрыть</button>
+			</div>
 		
 			<h3>Новая компания из ГСЗ: <?=$GSZ_item->Brief_Name?></h3>
-			<form name="add_form" id="add_form" action="<?=HTML_PATH_COMPANY_SAVE_ITEM?>?action=add" method="POST">
+			<form name="add_form" id="add_form" class="validated_company_form" action="<?=HTML_PATH_COMPANY_SAVE_ITEM?>?action=add" method="POST">
 		
 				<input type="hidden" name="GSZ_Id" id="GSZ_Id" value=<?=$GSZ_item->Id?>>
 				<div class="form-group">
@@ -65,15 +71,18 @@
 					</select>
 				</div>
 			
-				<!-- <button type="submit" class="btn btn-primary">Сохранить</button>  -->
 				<button type="submit" class="btn btn-primary" id="btnAddCompany">Сохранить</button> 
 				<button type="button" class="btn btn-warning" onClick="history.back();">Отменить</button>
 			</form>
 		</div> 
+		<!-- Контейнер для magnific-popup -->
+		<!-- <div id="text-popup" class="white-popup mfp-hide"> -->
+		<!-- </div> -->
 	</div> 	
 		
 	<script type="text/javascript" src="/js/jquery-1.12.2.min.js"></script>
 	<script type="text/javascript" src="/js/jquery.validate.min.js"></script> 
+	<!-- <script type="text/javascript" src="/js/magnific-popup.js"></script> -->
 	<script type="text/javascript" src="js/cred_limit.js"></script>
 </body>
 </html>

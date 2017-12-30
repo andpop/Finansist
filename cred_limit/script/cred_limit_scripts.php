@@ -37,6 +37,35 @@ class GSZ_Item
 	}
 }
 
+class Company_Item 
+{
+	public $Id, $Name, $INN, $GSZ_Id, $OPF_Id, $OPF, $SNO_Id, $SNO;
+
+	function __construct($Company_Id)
+	{
+		$mysqli = db_connect();
+
+		$query = "SELECT `A`.`Name` AS `Name`, `A`.`INN` AS `INN`, `A`.`GSZ_Id` AS `GSZ_Id`, `A`.`OPF_Id` AS `OPF_Id`, `A`.`SNO_Id` AS `SNO_Id`, `B`.`Brief_Name` AS `OPF`, `C`.`Brief_Name` AS `SNO` ";
+		$query .= "FROM `Company` `A`, `OPF` `B`, `SNO` `C` ";
+		$query .= "WHERE `A`.`Id`={$Company_Id} AND (`A`.`OPF_Id`=`B`.`Id`) AND (`A`.`SNO_Id`=`C`.`Id`)";
+
+		$result_set = $mysqli->query($query);
+		$row = $result_set->fetch_assoc();
+		
+		$this->Id = $Company_Id;
+		$this->Name = htmlspecialchars($row['Name']);
+		$this->INN = $row['INN'];
+		$this->GSZ_Id = $row['GSZ_Id'];
+		$this->OPF_Id = $row['OPF_Id'];
+		$this->SNO_Id = $row['SNO_Id'];
+		$this->OPF = $row['OPF'];
+		$this->SNO = $row['SNO'];
+		// $OPF = get_OPF_name_by_id($OPF_Id);
+		// $SNO = get_SNO_name_by_id($SNO_Id);
+
+		$mysqli->close();		
+	}
+}
 function get_GSZ_set()
 {
 	// GSZ_row := {Id, Brief_Name, Full_Name}
