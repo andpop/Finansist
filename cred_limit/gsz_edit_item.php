@@ -1,7 +1,13 @@
-	<?php
-		require_once('./script/cred_limit_scripts.php');
-		$GSZ_item = new GSZ_item($_GET['id']);
-	?>
+<?php
+	require_once('./script/cred_limit_scripts.php');
+	if ((!isset($get["GSZ_Id"])) || (!ctype_digit($get["GSZ_Id"])))
+	{
+		$error_message = urlencode("Указаны некорректные параметры ГСЗ для редактирования");
+		redirect(HTML_PATH_GSZ_LIST_FORM.'?error='.$error_message);
+	}
+		
+	$GSZ_item = new GSZ_item($get['GSZ_Id']);
+?>
 <!-- =================================================================================================== -->
 <!DOCTYPE html>
 <html>

@@ -18,7 +18,7 @@
 		</header>
 		<div class="jumbotron">
 			<h3>Новая группа</h3>
-			<form name="add_form" action="script/gsz_save_item.php?action=add" method="POST">
+			<form name="add_form" action="<?=HTML_PATH_GSZ_SAVE_ITEM?>?action=add" method="POST">
 			<div class="form-group">
 				<label for="GSZ_Brief_Name">Название</label>
 				<input type="text" class="form-control" name="GSZ_Brief_Name" id="GSZ_Brief_Name" maxlength="<?=MAX_LENGTH_GSZ_BRIEF_NAME?>" placeholder="Краткое название ГСЗ">

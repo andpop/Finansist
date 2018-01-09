@@ -1,3 +1,15 @@
+<?php
+	require_once('script/cred_limit_scripts.php');
+
+	if ((!isset($get["Company_Id"])) || (!ctype_digit($get["Company_Id"])))
+	{
+		$error_message = urlencode("Указаны некорректные параметры удаления компании из ГСЗ");
+		redirect(HTML_PATH_GSZ_LIST_FORM.'?error='.$error_message);
+	}
+	
+	$Company_item = new Company_item($get["Company_Id"]);
+?>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -10,27 +22,6 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
-	<?php
-	require_once($_SERVER['DOCUMENT_ROOT'].'/script/app_config.php');
-	require_once('script/cred_limit_scripts.php');
-		
-	$Company_Id = $_GET["Company_Id"];
-	// !!!!!!!!!!!!! Доделать проверку !!!!!!!!!!!!!!!!!!!!!
-	if (!preg_match("/^\d+$/", $Company_Id))
-	{
-		exit("Неверный формат URL-запроса");
-	}
-
-	$mysqli = db_connect();
-	$query = "SELECT `Name`, `INN`, `GSZ_Id` FROM `Company` WHERE `Id`={$Company_Id}";
-	$result_set = $mysqli->query($query);
-	$row = $result_set->fetch_assoc();
-	// Попробовать extract() для получения переменных
-	$Name = htmlspecialchars($row['Name']);
-	$INN = $row['INN'];
-	$GSZ_Id = $row['GSZ_Id'];
-	$mysqli->close();		
-	?>
 	
 	<div class="container">
 		<header>
@@ -38,9 +29,9 @@
 		</header>
 		<div class="jumbotron">
 			<div class="alert alert-info" role="alert">
-				<h3>Удалить компанию <?=$Name?> (ИНН <?=$INN?>) из ГСЗ <?=get_GSZ_name_by_id($GSZ_Id)?>?</h3>
+				<h3>Удалить компанию <?=$Company_item->Name?> (ИНН <?=$Company_item->INN?>) из ГСЗ <?=$Company_item->GSZ_Name?>?</h3>
 			</div>
-			<a class="btn btn-primary" href="script/company_save_item.php?action=delete&Company_Id=<?=$Company_Id?>&GSZ_Id=<?=$GSZ_Id?>">Удалить</a>
+			<a class="btn btn-primary" href="<?=HTML_PATH_COMPANY_SAVE_ITEM?>?action=delete&Company_Id=<?=$Company_item->Id?>&GSZ_Id=<?=$Company_item->GSZ_Id?>">Удалить</a>
 			<button type="button" class="btn btn-warning" onClick="history.back();">Отменить</button>
 		</div> 
 	</div> 	

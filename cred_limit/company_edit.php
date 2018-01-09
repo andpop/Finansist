@@ -2,22 +2,14 @@
 	require_once('script/cred_limit_scripts.php');
 	$error_message = "NO_ERRORS";
 
-	if (!isset($_GET["Company_Id"])) 
+	if ((!isset($get["Company_Id"])) || (!ctype_digit($get["Company_Id"])))
 	{
 		$error_message = urlencode("Указан некорректный URL для формы редактирования компании из ГСЗ");
-		header( 'Location: '.HTML_PATH_COMPANY_LIST_FORM.'?error='.$error_message);
+		redirect(HTML_PATH_GSZ_LIST_FORM.'?error='.$error_message);
 	}
-	if (!ctype_digit($_GET["Company_Id"])) 
-	{
-		$error_message = urlencode("Указан некорректный URL для формы редактирования компании из ГСЗ");
-		header( 'Location: '.HTML_PATH_COMPANY_LIST_FORM.'?error='.$error_message);
-	}
-	$Company_Id = $_GET["Company_Id"];
-	$Company_item = new Company_item($Company_Id);
-	$GSZ_item = new GSZ_item($Company_item->GSZ_Id);
-
+	
+	$Company_item = new Company_item($get["Company_Id"]);
 	$error_message = get_error_message();
-
 ?>
 
 <!DOCTYPE html>
@@ -42,7 +34,7 @@
 				<button id="btnError_message" type="button" class="btn btn-info btn-xs">Закрыть</button>
 			</div>
 
-			<h3>Компания из ГСЗ: <?=$GSZ_item->Brief_Name?></h3>
+			<h3>Компания из ГСЗ: <?=$Company_item->GSZ_Name?></h3>
 
 			<form name="edit_form" id="edit_form" class="validated_company_form"  action="<?=HTML_PATH_COMPANY_SAVE_ITEM?>?action=update" method="POST">
 				<input type="hidden" name="Company_Id" Id="Company_Id" value="<?=$Company_item->Id?>">
@@ -59,7 +51,7 @@
 
 				<div class="form-group">
 				    <label for="OPF">Организационно-правовая форма</label>
-				    <select class="form-control"  name="OPF" id="OPF">
+				    <select class="form-control" name="OPF" id="OPF">
 						<?php
 						foreach (get_OPF_names() as $OPF_name => $INN_Length) 
 						if ($OPF_name==($Company_item->OPF)) {

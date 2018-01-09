@@ -1,17 +1,12 @@
 <?php
 	require_once('./script/cred_limit_scripts.php');
-	if (!isset($_GET["GSZ_Id"])) 
+	if ((!isset($get["GSZ_Id"])) || (!ctype_digit($get["GSZ_Id"])) )
 	{
 		$error_message = urlencode("Указан некорректный URL для вывода списка компаний из ГСЗ");
-		header( 'Location: '.HTML_PATH_GSZ_LIST_FORM.'?error='.$error_message);
+		redirect(HTML_PATH_GSZ_LIST_FORM.'?error='.$error_message);
 	}
-	if (!ctype_digit($_GET["GSZ_Id"])) 
-	{
-		$error_message = urlencode("Указан некорректный URL для вывода списка компаний из ГСЗ");
-		header( 'Location: '.HTML_PATH_GSZ_LIST_FORM.'?error='.$error_message);
-	}
-	$GSZ_item = new GSZ_item($_GET["GSZ_Id"]);
-	$company_set = get_company_set($_GET["GSZ_Id"]);
+	$GSZ_item = new GSZ_item($get["GSZ_Id"]);
+	$company_set = get_company_set($get["GSZ_Id"]);
 	$error_message = get_error_message();
 ?>
 <!-- ==================================================================================================== -->

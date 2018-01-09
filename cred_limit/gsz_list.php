@@ -37,8 +37,8 @@
 				<tr>
 					<td><?=$GSZ['Brief_Name']?></td>
 					<td><?=$GSZ['Full_Name']?></td>
-					<td><a class="btn btn-primary btn-xs" href="company_list.php?GSZ_Id=<?=$id?>">Компании</a></td>
-					<td><a class="btn btn-link btn-xs" href="<?=HTML_PATH_GSZ_EDIT_FORM?>?id=<?=$id?>">Изменить</a></td>
+					<td><a class="btn btn-primary btn-xs" href="<?=HTML_PATH_COMPANY_LIST_FORM?>?GSZ_Id=<?=$id?>">Компании</a></td>
+					<td><a class="btn btn-link btn-xs" href="<?=HTML_PATH_GSZ_EDIT_FORM?>?GSZ_Id=<?=$id?>">Изменить</a></td>
 					<td><a class="btn btn-link btn-xs" href="<?=HTML_PATH_GSZ_DELETE_FORM?>?GSZ_Id=<?=$id?>">Удалить</a></td>
 				</tr>
 				<?php

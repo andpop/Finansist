@@ -1,11 +1,12 @@
 <?php
 	require_once('./script/cred_limit_scripts.php');
-	if (!ctype_digit($_GET["GSZ_Id"]))
+	
+	if ((!isset($get["GSZ_Id"])) || (!ctype_digit($get["GSZ_Id"])))
 	{
-		$error_message = urlencode("Указан некорректный URL");
-		header( 'Location: '.HTML_PATH_GSZ_LIST_FORM.'?error='.$error_message);
+		$error_message = urlencode("Указаны некорректные параметры ГСЗ для удаления");
+		redirect(HTML_PATH_GSZ_LIST_FORM.'?error='.$error_message);
 	}
-	$GSZ_item = new GSZ_item($_GET["GSZ_Id"]);
+	$GSZ_item = new GSZ_item($get["GSZ_Id"]);
 ?>
 <!-- =========================================================================== -->
 <!DOCTYPE html>
