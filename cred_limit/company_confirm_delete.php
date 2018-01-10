@@ -7,7 +7,7 @@
 		redirect(HTML_PATH_GSZ_LIST_FORM.'?error='.$error_message);
 	}
 	
-	$Company_item = new Company_item($get["Company_Id"]);
+	$company = new Company_item($get["Company_Id"]);
 ?>
 
 <!DOCTYPE html>
@@ -29,9 +29,9 @@
 		</header>
 		<div class="jumbotron">
 			<div class="alert alert-info" role="alert">
-				<h3>Удалить компанию <?=$Company_item->Name?> (ИНН <?=$Company_item->INN?>) из ГСЗ <?=$Company_item->GSZ_Name?>?</h3>
+				<h3>Удалить компанию <?=$company->Name?> (ИНН <?=$company->INN?>) из ГСЗ <?=$company->GSZ_Name?>?</h3>
 			</div>
-			<a class="btn btn-primary" href="<?=HTML_PATH_COMPANY_SAVE_ITEM?>?action=delete&Company_Id=<?=$Company_item->Id?>&GSZ_Id=<?=$Company_item->GSZ_Id?>">Удалить</a>
+			<a class="btn btn-primary" href="<?=HTML_PATH_COMPANY_SAVE_ITEM?>?action=delete&Company_Id=<?=$company->Id?>&GSZ_Id=<?=$company->GSZ_Id?>">Удалить</a>
 			<button type="button" class="btn btn-warning" onClick="history.back();">Отменить</button>
 		</div> 
 	</div> 	

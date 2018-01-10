@@ -40,13 +40,11 @@
 				</tr>
 
 				<?php 
-				while (($company_row = $company_set->fetch_assoc()) != false) 
-				{
-				?>
+				foreach ($company_set as $company) { ?>
 				<tr>
-					<td><?=$company_row['Name']?></td><td><?=$company_row['INN']?></td><td><?=$company_row['OPF']?></td><td><?=$company_row['SNO']?></td>
-					<td><a class="btn btn-link btn-xs" href="<?=HTML_PATH_COMPANY_EDIT_FORM?>?Company_Id=<?=$company_row['Id']?>">Изменить</a></td>
-					<td><a class="btn btn-link btn-xs" href="<?=HTML_PATH_COMPANY_DELETE_FORM?>?Company_Id=<?=$company_row['Id']?>">Удалить</a></td>
+					<td><?=$company['Name']?></td><td><?=$company['INN']?></td><td><?=$company['OPF']?></td><td><?=$company['SNO']?></td>
+					<td><a class="btn btn-link btn-xs" href="<?=HTML_PATH_COMPANY_EDIT_FORM?>?Company_Id=<?=$company['Id']?>">Изменить</a></td>
+					<td><a class="btn btn-link btn-xs" href="<?=HTML_PATH_COMPANY_DELETE_FORM?>?Company_Id=<?=$company['Id']?>">Удалить</a></td>
 				</tr>
 				<?php
 				} 

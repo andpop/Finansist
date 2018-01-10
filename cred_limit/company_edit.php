@@ -8,7 +8,7 @@
 		redirect(HTML_PATH_GSZ_LIST_FORM.'?error='.$error_message);
 	}
 	
-	$Company_item = new Company_item($get["Company_Id"]);
+	$company = new Company_item($get["Company_Id"]);
 	$error_message = get_error_message();
 ?>
 
@@ -34,19 +34,19 @@
 				<button id="btnError_message" type="button" class="btn btn-info btn-xs">Закрыть</button>
 			</div>
 
-			<h3>Компания из ГСЗ: <?=$Company_item->GSZ_Name?></h3>
+			<h3>Компания из ГСЗ: <?=$company->GSZ_Name?></h3>
 
 			<form name="edit_form" id="edit_form" class="validated_company_form"  action="<?=HTML_PATH_COMPANY_SAVE_ITEM?>?action=update" method="POST">
-				<input type="hidden" name="Company_Id" Id="Company_Id" value="<?=$Company_item->Id?>">
-				<input type="hidden" name="GSZ_Id" Id="GSZ_Id" value="<?=$Company_item->GSZ_Id?>">
+				<input type="hidden" name="Company_Id" Id="Company_Id" value="<?=$company->Id?>">
+				<input type="hidden" name="GSZ_Id" Id="GSZ_Id" value="<?=$company->GSZ_Id?>">
 				<div class="form-group">
 					<label for="Company_Name">Название</label>
-					<input type="text" class="form-control" name="Company_Name" id="Company_Name"  maxlength="<?=MAX_LENGTH_COMPANY_NAME?>" value="<?=$Company_item->Name?>">
+					<input type="text" class="form-control" name="Company_Name" id="Company_Name"  maxlength="<?=MAX_LENGTH_COMPANY_NAME?>" value="<?=$company->Name?>">
 				</div>
 
 				<div class="form-group">
 					<label for="INN">ИНН</label>
-					<input type="text" class="form-control" name="INN" id="INN" maxlength=12 minlength=10 value="<?=$Company_item->INN?>">
+					<input type="text" class="form-control" name="INN" id="INN" maxlength=12 minlength=10 value="<?=$company->INN?>">
 				</div>
 
 				<div class="form-group">
@@ -54,7 +54,7 @@
 				    <select class="form-control" name="OPF" id="OPF">
 						<?php
 						foreach (get_OPF_names() as $OPF_name => $INN_Length) 
-						if ($OPF_name==($Company_item->OPF)) {
+						if ($OPF_name==($company->OPF)) {
 						?>
 						<option INN_Length="<?=$INN_Length?>" selected><?=$OPF_name?></option>
 						<?php
@@ -73,7 +73,7 @@
 			    	<select class="form-control"  name="SNO" id="SNO">
 					<?php
 					foreach (get_SNO_names() as $SNO_name => $Cred_Limit_Affect) 
-						if ($SNO_name==($Company_item->SNO)) {
+						if ($SNO_name==($company->SNO)) {
 						?>
 						<option Cred_Limit_Affect="<?=$Cred_Limit_Affect?>" selected><?=$SNO_name?></option>
 						<?php

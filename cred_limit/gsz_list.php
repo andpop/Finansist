@@ -30,10 +30,8 @@
 			<table class="table">
 				<tr><th>Название</th><th>Описание</th><th></th><th></th><th></th></tr>
 				<?php	
-					while (($GSZ = $GSZ_set->fetch_assoc()) != false) 
-					{
-						$id = $GSZ['Id'];
-				?>
+					foreach ($GSZ_set as $GSZ) {
+						$id = $GSZ['Id']; ?>
 				<tr>
 					<td><?=$GSZ['Brief_Name']?></td>
 					<td><?=$GSZ['Full_Name']?></td>
@@ -42,7 +40,7 @@
 					<td><a class="btn btn-link btn-xs" href="<?=HTML_PATH_GSZ_DELETE_FORM?>?GSZ_Id=<?=$id?>">Удалить</a></td>
 				</tr>
 				<?php
-					} //end of while $GSZ
+					} //end of foreach
 				?>
 			</table>
 			<a class="btn btn-primary" href="<?=HTML_PATH_GSZ_ADD_FORM?>">Добавить</a>
