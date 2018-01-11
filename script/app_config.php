@@ -1,11 +1,13 @@
 <?php
+// header('Content-Type: text/html; charset=utf-8');
+mb_internal_encoding("UTF-8");
+error_reporting(E_ALL);
+ini_set("display_errors", 1);
+
 // Параметры подключения к БД
 require_once 'connection_params.php';
 
 // Настройка кодировки и уровня обработки ошибок
-mb_internal_encoding("UTF-8");
-error_reporting(E_ALL);
-ini_set("display_errors", 1);
 
 // Защита от xss
 $request = xss($_REQUEST);
@@ -100,6 +102,7 @@ function getTable($query)
 function addRow($table, $data)
 {
     global $mysqli;
+    
     $query = "INSERT INTO `$table` (";
     foreach ($data as $key => $value) $query .= "`$key`,";
     $query = substr($query, 0, -1);
@@ -107,12 +110,10 @@ function addRow($table, $data)
     foreach ($data as $key=>$value) 
     {
         if (is_null($value)) $query .= "null,";
-        // else $query .= "'". addslashes($value). "',";
         else $query .= "'". $mysqli->real_escape_string($value). "',";
     }
     $query = substr($query, 0, -1);
     $query .= ")";
-    // print_r($query);
     $result_set = $mysqli->query($query);
     if (!$result_set) return false;
     return $mysqli->insert_id;

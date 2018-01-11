@@ -82,7 +82,7 @@ function get_company_set($GSZ_Id)
 function get_error_message() 
 {
 	global $get;
-	if (isset($get['error']))
+	if (isset($_GET['error']))
 		return (ERROR_MESSAGE_PREFIX . '<strong>'.htmlspecialchars(urldecode($_GET['error'])).'.</strong>');
 	else
 		return NO_ERRORS_MESSAGE;
