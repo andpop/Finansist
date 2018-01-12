@@ -114,6 +114,7 @@ function addRow($table, $data)
     }
     $query = substr($query, 0, -1);
     $query .= ")";
+    
     $result_set = $mysqli->query($query);
     if (!$result_set) return false;
     return $mysqli->insert_id;

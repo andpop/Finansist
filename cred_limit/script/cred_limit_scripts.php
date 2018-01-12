@@ -44,7 +44,7 @@ class Company_Item
 	function __construct($Company_Id)
 	{
 		$query = "SELECT `A`.`Name` AS `Name`, `A`.`INN` AS `INN`, `A`.`GSZ_Id` AS `GSZ_Id`, `A`.`OPF_Id` AS `OPF_Id`, `A`.`SNO_Id` AS `SNO_Id`, `B`.`Brief_Name` AS `OPF`, ";
-		$query .= " `C`.`Brief_Name` AS `SNO`, `D`.`Brief_Name` AS  `GSZ_Name` ";
+		$query .= " `C`.`Brief_Name` AS `SNO`, `D`.`Brief_Name` AS  `GSZ_Name`, `A`.`Date_Registr`, `A`.`Date_Begin_Work` ";
 		$query .= "FROM `Company` `A`, `OPF` `B`, `SNO` `C` , `GSZ` `D` ";
 		$query .= "WHERE `A`.`Id`={$Company_Id} AND (`A`.`OPF_Id`=`B`.`Id`) AND (`A`.`SNO_Id`=`C`.`Id`) AND (`A`.`GSZ_Id`=`D`.`Id`)";
 		
@@ -59,6 +59,8 @@ class Company_Item
 		$this->SNO_Id = $row['SNO_Id'];
 		$this->OPF = $row['OPF'];
 		$this->SNO = $row['SNO'];
+		$this->Date_Registr = (is_null($row['Date_Registr']) ? "" : $row['Date_Registr']); 
+		$this->Date_Begin_Work = (is_null($row['Date_Begin_Work']) ? "" : $row['Date_Begin_Work']); 
 	}
 }
 
@@ -72,7 +74,7 @@ function get_GSZ_set()
 function get_company_set($GSZ_Id)
 {
 	// company_set := array of {Id, Name, INN, OPF, SNO}
-	$query = "SELECT `A`.`Id` AS `Id`, `A`.`Name` AS `Name`, `A`.`INN` AS `INN`, `B`.`Brief_Name` AS `OPF`, `C`.`Brief_Name` AS `SNO` ";
+	$query = "SELECT `A`.`Id` AS `Id`, `A`.`Name` AS `Name`, `A`.`INN` AS `INN`, `B`.`Brief_Name` AS `OPF`, `C`.`Brief_Name` AS `SNO`, `A`.`Date_Registr`, `A`.`Date_Begin_Work` ";
 	$query .= "FROM `Company` `A`, `OPF` `B`, `SNO` `C` ";
 	$query .= "WHERE (`A`.`GSZ_Id`={$GSZ_Id}) AND (`A`.`OPF_Id`=`B`.`Id`) AND (`A`.`SNO_Id`=`C`.`Id`)";
 	$company_set = getTable($query);

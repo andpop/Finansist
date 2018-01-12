@@ -7,6 +7,7 @@
 	}
 	$GSZ_item = new GSZ_item($get["GSZ_Id"]);
 	$company_set = get_company_set($get["GSZ_Id"]);
+	
 	$error_message = get_error_message();
 ?>
 <!-- ==================================================================================================== -->
@@ -36,13 +37,14 @@
 			<h3><?=$GSZ_item->Brief_Name?></h3>
 			<table class="table">
 				<tr>
-					<th>Название</th><th>ИНН</th><th>ОПФ</th><th>СНО</th>
+					<th>Название</th><th>ИНН</th><th>ОПФ</th><th>СНО</th><th>Дата регистрации</th><th>Начало деятельности</th>
 				</tr>
 
 				<?php 
 				foreach ($company_set as $company) { ?>
 				<tr>
 					<td><?=$company['Name']?></td><td><?=$company['INN']?></td><td><?=$company['OPF']?></td><td><?=$company['SNO']?></td>
+					<td><?=$company['Date_Registr']?></td><td><?=$company['Date_Begin_Work']?></td>
 					<td><a class="btn btn-link btn-xs" href="<?=HTML_PATH_COMPANY_EDIT_FORM?>?Company_Id=<?=$company['Id']?>">Изменить</a></td>
 					<td><a class="btn btn-link btn-xs" href="<?=HTML_PATH_COMPANY_DELETE_FORM?>?Company_Id=<?=$company['Id']?>">Удалить</a></td>
 				</tr>

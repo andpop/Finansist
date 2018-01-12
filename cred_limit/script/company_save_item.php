@@ -20,8 +20,11 @@
 			$data["GSZ_Id"] = $_POST['GSZ_Id'];
 			$data["OPF_Id"] = get_OPF_Id_by_Name($_POST['OPF']);
 			$data["SNO_Id"] = get_SNO_Id_by_Name($_POST['SNO']);
+			$data["Date_Registr"] = $_POST['Date_Registr'];
+			$data["Date_Begin_Work"] = $_POST['Date_Begin_Work'];
+			
 			$result = addRow("Company", $data);
-			if (!$result) $error_message = urlencode("Ошибка при добавлении компании в ГСЗ");
+			if (!$result) $error_message = urlencode("Ошибка при добавлении компании в ГСЗ ({$mysqli->error})");
 
 			// $query = 'INSERT INTO `Company` (`Name`, `INN`, `OPF_Id`, `SNO_Id`, `GSZ_Id`) ';
 			// $query .= 'VALUES ("'.$Name.'", '.$INN.', '.$OPF_Id.', '.$SNO_Id.', '.$GSZ_Id.')';
@@ -45,6 +48,8 @@
 			$data["GSZ_Id"] = $_POST['GSZ_Id'];
 			$data["Name"] = $_POST['Company_Name'];
 			$data["INN"] = $_POST['INN'];
+			$data["Date_Registr"] = $_POST['Date_Registr'];
+			$data["Date_Begin_Work"] = $_POST['Date_Begin_Work'];
 			
 			$data["OPF_Id"] = get_OPF_Id_by_Name($_POST['OPF']);
 			$data["SNO_Id"] = get_SNO_Id_by_Name($_POST['SNO']);
@@ -60,6 +65,7 @@
 			}
 
 			$result = setRow("Company", $_POST['Company_Id'], $data);
+			if (!$result) $error_message = urlencode("Ошибка при сохранении данных о компании ({$mysqli->error})");
 			// $query = 'UPDATE `Company` SET `Name`="'.$Name.'", `INN`='.$INN.', `OPF_Id`='.$OPF_Id.', `SNO_Id`='.$SNO_Id.' WHERE `Id`='.$Id;
 			break;
 		
@@ -78,7 +84,7 @@
 			}
 
 			$result = deleteRow("Company", $_GET['Company_Id']);
-			if (!$result) $error_message = urlencode("Ошибка при удалении компании из ГСЗ");
+			if (!$result) $error_message = urlencode("Ошибка при удалении компании из ГСЗ ({$mysqli->error})");
 			// $query = 'DELETE FROM `Company` WHERE `Id`='.$get['Company_Id'];
 			break;
 		

@@ -24,7 +24,7 @@
 <body>
 	<div class="container">
 		<header>
-			<h2 class="text-center">КОМПАНИИ ГРУППЫ СВЯЗАННЫХ ЗАЕМЩИКОВ</h2>
+			<h2 class="text-center">Основные сведения о компании</h2>
 		</header>
 	
 		<div class="jumbotron">
@@ -44,12 +44,12 @@
 		
 				<div class="form-group">
 					<label for="INN">ИНН</label>
-					<input type="number" class="form-control" name="INN" id="INN" required min=1111111111 maxlength=12 minlength=10 placeholder="123456789012">
+					<input type="number" class="form-control company_input" name="INN" id="INN" required min=1111111111 maxlength=12 minlength=10 placeholder="123456789012">
 				</div>
 			
 				<div class="form-group">
 					<label for="OPF">Организационно-правовая форма</label>
-					<select class="form-control"  name="OPF" id="OPF">
+					<select class="form-control company_input"  name="OPF" id="OPF">
 						<?php foreach (get_OPF_names() as $OPF_name => $INN_Length) {?>
 						<option INN_Length="<?=$INN_Length?>"><?=$OPF_name?></option>
 						<?php };?>
@@ -58,13 +58,24 @@
 			
 				<div class="form-group">
 					<label for="SNO">Система налогооблажения</label>
-					<select class="form-control"  name="SNO" id="SNO">
+					<select class="form-control company_input"  name="SNO" id="SNO">
 						<?php foreach (get_SNO_names() as $SNO_name => $Cred_Limit_Affect) {?>
 						<option Cred_Limit_Affect="<?=$Cred_Limit_Affect?>"><?=$SNO_name?></option>
 						<?php };?>
 					</select>
 				</div>
-			
+
+				<div class="form-group">
+					<label for="Date_Registr">Дата регистрации</label>
+					<input type="date" required class="form-control company_input" name="Date_Registr" id="Date_Registr" >
+				</div>
+
+				<div class="form-group">
+					<label for="Date_Registr">Дата начала деятельности</label>
+					<input type="date" class="form-control company_input" name="Date_Begin_Work" id="Date_Begin_Work" >
+				</div>
+
+
 				<button type="submit" class="btn btn-primary" id="btnAddCompany">Сохранить</button> 
 				<button type="button" class="btn btn-warning" onClick="history.back();">Отменить</button>
 			</form>

@@ -26,7 +26,7 @@
 <body>
 	<div class="container">
 		<header>
-			<h2 class="text-center">ГРУППЫ СВЯЗАННЫХ ЗАЕМЩИКОВ</h2>
+			<h2 class="text-center">Основные сведения о компании</h2>
 		</header>
 		<div class="jumbotron">
 			<div id="error_message_div" class="alert alert-danger" role="alert">
@@ -46,12 +46,12 @@
 
 				<div class="form-group">
 					<label for="INN">ИНН</label>
-					<input type="text" class="form-control" name="INN" id="INN" maxlength=12 minlength=10 value="<?=$company->INN?>">
+					<input type="text" class="form-control company_input" name="INN" id="INN" maxlength=12 minlength=10 value="<?=$company->INN?>">
 				</div>
 
 				<div class="form-group">
 				    <label for="OPF">Организационно-правовая форма</label>
-				    <select class="form-control" name="OPF" id="OPF">
+				    <select class="form-control company_input" name="OPF" id="OPF">
 						<?php
 						foreach (get_OPF_names() as $OPF_name => $INN_Length) 
 						if ($OPF_name==($company->OPF)) {
@@ -70,7 +70,7 @@
 
 				<div class="form-group">
 			    	<label for="SNO">Система налогооблажения</label>
-			    	<select class="form-control"  name="SNO" id="SNO">
+			    	<select class="form-control company_input"  name="SNO" id="SNO" >
 					<?php
 					foreach (get_SNO_names() as $SNO_name => $Cred_Limit_Affect) 
 						if ($SNO_name==($company->SNO)) {
@@ -85,6 +85,16 @@
 						};
 						?>
 					</select>
+				</div>
+
+				<div class="form-group">
+					<label for="Date_Registr">Дата регистрации</label>
+					<input type="date" required class="form-control company_input" name="Date_Registr" id="Date_Registr" value="<?=$company->Date_Registr?>" >
+				</div>
+
+				<div class="form-group">
+					<label for="Date_Registr">Дата начала деятельности</label>
+					<input type="date" class="form-control company_input" name="Date_Begin_Work" id="Date_Begin_Work" value="<?=$company->Date_Begin_Work?>" >
 				</div>
 
 				<button type="submit" class="btn btn-primary">Сохранить</button> 

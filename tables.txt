@@ -69,10 +69,13 @@ CREATE TABLE `Company` (
   `User_Id` INT(10) NOT NULL,
   `Name` CHAR(150) NOT NULL,
   `OPF_Id` TINYINT(2) NOT NULL,
-  `SNO_Id` TINYINT(2) NOT NULL
+  `SNO_Id` TINYINT(2) NOT NULL,
+  `Date_Registr` DATE DEFAULT NULL,
+  `Date_Begin_Work` DATE DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE UNIQUE INDEX INN ON company (INN, GSZ_Id);
+ALTER TABLE `company` ADD `Date_registr` DATE NULL DEFAULT NULL AFTER `SNO_Id`, ADD `Date_begin_work` DATE NULL DEFAULT NULL AFTER `Date_registr`;
 
 INSERT INTO `finansist`.`Company` (`INN`, `GSZ_Id`, `User_Id`, `Name`, `OPF_Id`, `SNO_Id`) VALUES ('1234567890', '1', '1', 'ООО "Рога и копыта"', '2', '1');
 

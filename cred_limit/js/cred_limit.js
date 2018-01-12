@@ -34,6 +34,11 @@ $(document).ready(function() {
 		var INN_Length        = $('#OPF option:selected').attr('INN_Length');
 		var Cred_Limit_Affect = $('#SNO option:selected').attr('Cred_Limit_Affect');
 		var SNO               = $('#SNO').val();
+		var Date_Registr      = $('#Date_Registr').val();
+		var Date_Begin_Work   = $('#Date_Begin_Work').val();
+		
+		if ((Date_Begin_Work == null) || (Date_Begin_Work.trim() == ''))
+			$('#Date_Begin_Work').val(Date_Registr);
 	
 		if (Cred_Limit_Affect==0 ) {
 			alert('Внимание! Компании, работающие по системе '+SNO+', не учитываются в расчете суммы кредита!');
