@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <script type="text/javascript">
+        // var Curr_Date = new Date();
+        // var d = Curr_Date;
+        // d.setDate(d.getDate()+20);
+
+        var d1 = new Date("2017-12-02");
+        if (d1.getDate() == 1) 
+            Start_Date = new Date(d1.getFullYear(), d1.getMonth(), d1.getDate());
+        else
+            if (d1.getMonth() < 11)
+                Start_Date = new Date(d1.getFullYear(), d1.getMonth()+1, 1);
+            else
+                Start_Date = new Date(d1.getFullYear()+1, 0, 1);
+        var End_Date = new Date(Start_Date);
+        End_Date.setMonth(End_Date.getMonth()+6);
+        // d1.setMonth(d1.getMonth()+6);
+        // d2.setDate(d2.getMonth()+1);
+        alert(End_Date);
+        // alert(d1.getDate()+"."+d1.getMonth()+"."+d1.getFullYear());
+    </script>
+</body>
+</html>

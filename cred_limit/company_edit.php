@@ -21,6 +21,8 @@
 	<meta name="keywords" content="" />
 	<link href="/css/bootstrap.min.css" rel="stylesheet"/> 
 	<link href="/css/style.css" rel="stylesheet"/> 
+	<link rel="stylesheet" href="/css/alertify.css">
+	<link rel="stylesheet" href="/css/themes/bootstrap.css">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
@@ -103,6 +105,14 @@
 		</div> 
 	<script type="text/javascript" src="/js/jquery-1.12.2.min.js"></script>
 	<script type="text/javascript" src="/js/jquery.validate.min.js"></script> 
+	<script type="text/javascript" src="/js/alertify.min.js"></script>
+	<script type="text/javascript">
+		//override defaults
+		alertify.defaults.transition = "slide";
+		alertify.defaults.theme.ok = "btn btn-primary";
+		alertify.defaults.theme.cancel = "btn btn-danger";
+		alertify.defaults.theme.input = "form-control";
+		</script>
 	<script type="text/javascript" src="js/cred_limit.js"></script>
 </body>
 </html>
