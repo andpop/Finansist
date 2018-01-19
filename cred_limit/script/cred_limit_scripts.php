@@ -24,16 +24,17 @@ $mysqli->set_charset("utf8");
 
 class GSZ_Item 
 {
-	public $Id, $Brief_Name, $Full_Name;
+	public $Id, $Brief_Name, $Full_Name, $Date_Begin_Work;
 
 	function __construct($id)
 	{
-		$query = "SELECT `Brief_Name`, `Full_Name` FROM GSZ WHERE `Id`={$id}";
+		$query = "SELECT `Brief_Name`, `Full_Name`, `Date_Begin_Work` FROM GSZ WHERE `Id`={$id}";
 		$row = getRow($query);
 	
+		$this->Id = $id;
 		$this->Brief_Name = htmlspecialchars($row['Brief_Name']);
 		$this->Full_Name = htmlspecialchars($row['Full_Name']);
-		$this->Id = $id;
+		$this->Date_Begin_Work = (is_null($row['Date_Begin_Work']) ? "" : $row['Date_Begin_Work']); 
 	}
 }
 

@@ -28,13 +28,14 @@
 			</div>
 		
 			<table class="table">
-				<tr><th>Название</th><th>Описание</th><th></th><th></th><th></th></tr>
+				<tr><th>Название</th><th>Описание</th><th>Начало деятельности</th><th></th><th></th><th></th></tr>
 				<?php	
 					foreach ($GSZ_set as $GSZ) {
 						$id = $GSZ['Id']; ?>
 				<tr>
 					<td><?=$GSZ['Brief_Name']?></td>
 					<td><?=$GSZ['Full_Name']?></td>
+					<td><?=$GSZ['Date_Begin_Work']?></td>
 					<td><a class="btn btn-primary btn-xs" href="<?=HTML_PATH_COMPANY_LIST_FORM?>?GSZ_Id=<?=$id?>">Компании</a></td>
 					<td><a class="btn btn-link btn-xs" href="<?=HTML_PATH_GSZ_EDIT_FORM?>?GSZ_Id=<?=$id?>">Изменить</a></td>
 					<td><a class="btn btn-link btn-xs" href="<?=HTML_PATH_GSZ_DELETE_FORM?>?GSZ_Id=<?=$id?>">Удалить</a></td>

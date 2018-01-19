@@ -13,6 +13,7 @@
 			$data = [];
 			$data["Brief_Name"] = $_POST['GSZ_Brief_Name'];
 			$data["Full_Name"] = $_POST['GSZ_Full_Name'];
+			$data["Date_Begin_Work"] = $_POST['Date_Begin_Work'];
 			$result = addRow("GSZ", $data);
 			
 			if (!$result) $error_message = urlencode("Ошибка при добавлении ГСЗ"); 
@@ -37,6 +38,7 @@
 			$data = [];
 			$data["Brief_Name"] = $_POST['GSZ_Brief_Name'];
 			$data["Full_Name"] = $_POST['GSZ_Full_Name'];
+			$data["Date_Begin_Work"] = $_POST['Date_Begin_Work'];
 			$result = setRow("GSZ", $_POST['Id'], $data);
 			
 			if (!$result) $error_message = urlencode("Ошибка при изменении ГСЗ");

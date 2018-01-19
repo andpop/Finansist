@@ -10,19 +10,18 @@ function is_valid_INN()
 function is_Date_Correct_for_Cred_Limit(Date_Begin_Work, Current_Date)
 {
 	if (Date_Begin_Work.getDate() == 1) 
-	//Если деятельность начали с 1-го числа, то начинаем отсчитывать 6 месяцев с этой даты
-	Start_Date = new Date(Date_Begin_Work);
+		//Если деятельность начали с 1-го числа, то начинаем отсчитывать 6 месяцев с этой даты
+		Start_Date = new Date(Date_Begin_Work);
 	else
-	if (Date_Begin_Work.getMonth() < 11)
-	//Если начали работать не в декабре, то начинаяем отсчет с 1 числа следующего месяца
-	Start_Date = new Date(Date_Begin_Work.getFullYear(), Date_Begin_Work.getMonth()+1, 1);
-	else
-	//Если начали работать в декабре, то начинаяем отсчет с 1 января  следующего месяца
-	                                Start_Date = new Date(Date_Begin_Work.getFullYear()+1, 0, 1);
-	                            var End_Date   = new Date(Start_Date);
+		if (Date_Begin_Work.getMonth() < 11)
+			//Если начали работать не в декабре, то начинаяем отсчет с 1 числа следующего месяца
+			Start_Date = new Date(Date_Begin_Work.getFullYear(), Date_Begin_Work.getMonth()+1, 1);
+		else
+			//Если начали работать в декабре, то начинаяем отсчет с 1 января  следующего месяца
+			Start_Date = new Date(Date_Begin_Work.getFullYear()+1, 0, 1);
+	
+	var End_Date = new Date(Start_Date);
 	End_Date.setMonth(End_Date.getMonth()+6);
-	// alert(End_Date);
-	// alert(Current_Date);
 	return (End_Date <= Current_Date);
 
 }

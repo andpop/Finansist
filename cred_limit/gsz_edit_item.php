@@ -38,6 +38,11 @@
 					<label for="GSZ_Full_Name">Описание</label>
 					<input type="text" class="form-control" name="GSZ_Full_Name" id="GSZ_Full_Name" maxlength="<?=MAX_LENGTH_GSZ_FULL_NAME?>" value="<?=$GSZ_item->Full_Name?>">
 				</div>
+				<div class="form-group">
+					<label for="Date_Begin_Work">Дата начала деятельности</label>
+					<input type="date" class="form-control company_input" name="Date_Begin_Work" id="Date_Begin_Work" value="<?=$GSZ_item->Date_Begin_Work?>" >
+				</div>
+
 				<button type="submit" class="btn btn-primary">Сохранить</button> 
 				<button type="button" class="btn btn-warning" onClick="history.back();">Отменить</button>
 			</form>

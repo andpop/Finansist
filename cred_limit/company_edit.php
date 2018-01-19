@@ -95,7 +95,7 @@
 				</div>
 
 				<div class="form-group">
-					<label for="Date_Registr">Дата начала деятельности</label>
+					<label for="Date_Begin_Work">Дата начала деятельности</label>
 					<input type="date" class="form-control company_input" name="Date_Begin_Work" id="Date_Begin_Work" value="<?=$company->Date_Begin_Work?>" >
 				</div>
 
