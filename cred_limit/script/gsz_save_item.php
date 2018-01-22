@@ -13,14 +13,9 @@
 			$data = [];
 			$data["Brief_Name"] = $_POST['GSZ_Brief_Name'];
 			$data["Full_Name"] = $_POST['GSZ_Full_Name'];
-			$data["Date_Begin_Work"] = $_POST['Date_Begin_Work'];
 			$result = addRow("GSZ", $data);
 			
 			if (!$result) $error_message = urlencode("Ошибка при добавлении ГСЗ"); 
-			// $Brief_Name = $mysqli->real_escape_string( $request['GSZ_Brief_Name'] );
-			// $Full_Name = $mysqli->real_escape_string( $request['GSZ_Full_Name'] );
-			// $query = "INSERT INTO `GSZ` (`Brief_Name`, `Full_Name`) VALUES ('".$Brief_Name."', '".$Full_Name."')";
-			// $result = $mysqli->query($query);
 			break;
 
 		case 'update':
@@ -38,13 +33,9 @@
 			$data = [];
 			$data["Brief_Name"] = $_POST['GSZ_Brief_Name'];
 			$data["Full_Name"] = $_POST['GSZ_Full_Name'];
-			$data["Date_Begin_Work"] = $_POST['Date_Begin_Work'];
 			$result = setRow("GSZ", $_POST['Id'], $data);
 			
 			if (!$result) $error_message = urlencode("Ошибка при изменении ГСЗ");
-			// $data["Brief_Name"] = $mysqli->real_escape_string( $request['GSZ_Brief_Name'] );
-			// $data["Full_Name"] = $mysqli->real_escape_string( $request['GSZ_Full_Name'] );
-			// $query = 'UPDATE `GSZ` SET `Brief_Name`="'.$Brief_Name.'", `Full_Name`="'.$Full_Name.'" WHERE `Id`='.$request['Id'];
 			break;
 			
 		case 'delete':
