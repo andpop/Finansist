@@ -142,4 +142,19 @@ function get_SNO_names()
 	return $array_SNO_names;	
 }
 
+function fill_calc_limit_dates()
+{
+	// Найдем все ГСЗ из таблицы GSZ, для которых не введена дата расчета кредитного лимита в таблице calc_limit_dates
+	$query = 'SELECT `GSZ`.`Id` FROM `GSZ` LEFT JOIN `calc_limit_dates` ON `GSZ`.`Id`=`calc_limit_dates`.`GSZ_Id` WHERE `calc_limit_dates`.`GSZ_Id` IS NULL;';
+	$GSZ_array = getCol($query);
+	// Всем найденным ГСЗ в качестве даты расчета кредитного лимита проставим текущую дату 
+	$data = [];
+	foreach ($GSZ_array as $GSZ_Id)
+	{
+		$data["Date_calc_limit"] = date("Y.m.d");
+		$data["GSZ_Id"] = $GSZ_Id;
+		$result = addRow("calc_limit_dates", $data);
+	}
+}
+
 ?>

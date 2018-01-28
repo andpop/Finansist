@@ -1,7 +1,9 @@
 <?php
     require_once('./script/cred_limit_scripts.php');
+	fill_calc_limit_dates();
     $GSZ_set = get_GSZ_set();
 	$error_message = get_error_message();
+
 ?>
 <!-- ==================================================================================================== -->
 <!DOCTYPE html>
@@ -27,7 +29,11 @@
 				<button id="btnError_message" type="button" class="btn btn-info btn-xs">Закрыть</button>
 			</div>
 
-			<h3><?=$GSZ_item->Brief_Name?></h3>
+            <div class="form-group">
+				<label for="Date_Calculate">Дата расчета кредитного лимита</label>
+				<input type="date" required class="form-control company_input" name="Date_Limit_Calculate" id="Date_Limit_Calculate" value="<?=$company->Date_Registr?>" >
+			</div>
+
 			<table class="table">
 				<tr>
 					<th>Название</th><th>ИНН</th><th>ОПФ</th><th>СНО</th><th>Дата регистрации</th><th>Начало деятельности</th>

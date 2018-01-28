@@ -78,11 +78,15 @@ function getCol($query)
 {
     global $mysqli;
     $result_set = $mysqli->query($query);
+    $arr = [];
     if (is_null($result_set)) return false;
-    $row = $result_set->fetch_assoc();
+
+    while (($row = $result_set->fetch_assoc()) !=false)    
+    {
+        $arr[]=reset($row);
+    }
     $result_set->close();
-    if ($row) return array_values($row);
-    return false;    
+    return $arr;
 }
 
 function getTable($query)

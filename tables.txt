@@ -98,3 +98,15 @@ FROM `Company` A, `OPF` B, `SNO` `C`
 WHERE (`A`.`OPF_Id`=`B`.`Id`) AND (`A`.`SNO_Id`=`C`.`Id`)
 
 ALTER TABLE `GSZ` ADD `Date_Begin_Work` DATE NULL AFTER `Full_Name`;
+
+-----------------------------------------------------------------------
+
+CREATE TABLE `finansist`.`calc_limit_dates` ( 
+  `Id` TINYINT(2) NOT NULL AUTO_INCREMENT , 
+  `Date_calc_limit` DATE NOT NULL , 
+  `GSZ_Id` TINYINT(2) UNSIGNED NOT NULL , PRIMARY KEY (`Id`)
+) ENGINE = InnoDB CHARACTER SET utf8 COLLATE utf8_general_ci;
+
+ALTER TABLE `finansist`.`calc_limit_dates` ADD INDEX (`GSZ_Id`);
+ALTER TABLE `calc_limit_dates` ADD FOREIGN KEY (`GSZ_Id`) REFERENCES `finansist`.`GSZ`(`Id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
