@@ -79,6 +79,23 @@ function get_GSZ_set()
 	return $GSZ_set;
 }
 
+function get_GSZ_set_with_calc_limit_date()
+{
+	$sql = "SELECT \n"
+    . " `GSZ`.`Id`, \n"
+    . " `GSZ`.`Brief_Name`, \n"
+    . " `calc_limit_dates`.`Date_calc_limit`, \n"
+    . " `calc_limit_dates`.`Id`,\n"
+    . " min(`company`.`Date_Begin_Work`)\n"
+    . "FROM \n"
+    . " `GSZ`, `calc_limit_dates`, `company` \n"
+    . "WHERE `GSZ`.`Id` = `calc_limit_dates`.`GSZ_Id` AND `GSZ`.`Id`=`company`.`GSZ_Id`";
+	
+	$query = "SELECT `GSZ`.`Id`, `GSZ`.`Brief_Name`, `calc_limit_dates`.`Date_calc_limit`, `calc_limit_dates`.`Id` FROM `GSZ` LEFT JOIN `calc_limit_dates` ON `GSZ`.`Id`=`calc_limit_dates`.`GSZ_Id`";
+	$GSZ_set = getTable($query);
+	return $GSZ_set;
+}
+
 function get_company_set($GSZ_Id)
 {
 	// company_set := array of {Id, Name, INN, OPF, SNO}
