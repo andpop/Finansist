@@ -81,17 +81,20 @@ function get_GSZ_set()
 
 function get_GSZ_set_with_calc_limit_date()
 {
-	$sql = "SELECT \n"
-    . " `GSZ`.`Id`, \n"
-    . " `GSZ`.`Brief_Name`, \n"
-    . " `calc_limit_dates`.`Date_calc_limit`, \n"
-    . " `calc_limit_dates`.`Id`,\n"
-    . " min(`company`.`Date_Begin_Work`)\n"
-    . "FROM \n"
-    . " `GSZ`, `calc_limit_dates`, `company` \n"
-    . "WHERE `GSZ`.`Id` = `calc_limit_dates`.`GSZ_Id` AND `GSZ`.`Id`=`company`.`GSZ_Id`";
+
+	$query = "SELECT\n"
+    . " `GSZ`.`Id` AS `GSZ_Id`, \n"
+    . " `GSZ`.`Brief_Name`,\n"
+    . " min(`company`.`Date_Begin_Work`) AS `Date_begin_work`,\n"
+    . " count(`company`.Id) AS `Count_company`,\n"
+    . " `calc_limit_dates`.`Date_calc_limit`,\n"
+    . " `calc_limit_dates`.`Id` AS `Calc_limit_dates_Id`\n"
+    . "FROM\n"
+    . " `GSZ`, `company`,`calc_limit_dates`\n"
+    . "WHERE `GSZ`.`Id`=`company`.`GSZ_Id` AND `GSZ`.`Id`=`calc_limit_dates`.`GSZ_Id`\n"
+    . "GROUP BY `GSZ`.`Id`";
 	
-	$query = "SELECT `GSZ`.`Id`, `GSZ`.`Brief_Name`, `calc_limit_dates`.`Date_calc_limit`, `calc_limit_dates`.`Id` FROM `GSZ` LEFT JOIN `calc_limit_dates` ON `GSZ`.`Id`=`calc_limit_dates`.`GSZ_Id`";
+	// $query = "SELECT `GSZ`.`Id`, `GSZ`.`Brief_Name`, `calc_limit_dates`.`Date_calc_limit`, `calc_limit_dates`.`Id` FROM `GSZ` LEFT JOIN `calc_limit_dates` ON `GSZ`.`Id`=`calc_limit_dates`.`GSZ_Id`";
 	$GSZ_set = getTable($query);
 	return $GSZ_set;
 }

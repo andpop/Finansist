@@ -20,7 +20,7 @@
 <body>
 	<div class="container">
 		<header>
-			<h2 class="text-center">ФИНАНСОВЫЕ ДАННЫЕ ГРУППЫ СВЯЗАННЫХ ЗАЕМЩИКОВ</h2>
+			<h2 class="text-center">ФИНАНСОВЫЕ ДАННЫЕ ГРУПП СВЯЗАННЫХ ЗАЕМЩИКОВ</h2>
 		</header>
 
 		<div class="jumbotron">
@@ -31,28 +31,23 @@
 
 			<table class="table">
 				<tr>
-					<th>Название ГСЗ</th><th>Дата расчета лимита</th><th>Начало деятельности</th><th>Компаний в группе</th>
+					<th>Название ГСЗ</th><th>Начало деятельности</th><th>Компаний в группе</th><th>Дата расчета лимита</th>
 				</tr>
 
 				<?php 
 				foreach ($GSZ_set as $GSZ) { ?>
 				<tr>
-					<td><?=$company['Name']?></td><td><?=$company['INN']?></td><td><?=$company['OPF']?></td><td><?=$company['SNO']?></td>
-					<td><?=$company['Date_Registr']?></td><td><?=$company['Date_Begin_Work']?></td>
-					<td><a class="btn btn-link btn-xs" href="<?=HTML_PATH_COMPANY_EDIT_FORM?>?Company_Id=<?=$company['Id']?>">Изменить</a></td>
-					<td><a class="btn btn-link btn-xs" href="<?=HTML_PATH_COMPANY_DELETE_FORM?>?Company_Id=<?=$company['Id']?>">Удалить</a></td>
+					<td><?=$GSZ['Brief_Name']?></td><td><?=$GSZ['Date_begin_work']?></td><td><?=$GSZ['Count_company']?></td><td><?=$GSZ['Date_calc_limit']?></td>
 				</tr>
 				<?php
 				} 
 				?>
 			</table>
-			<a class="btn btn-primary" href="<?=HTML_PATH_COMPANY_ADD_FORM?>?GSZ_Id=<?=$GSZ_item->Id?>">Добавить</a>
-			<a class="btn btn-warning" href="<?=HTML_PATH_GSZ_LIST_FORM?>">Вернуться</a>
 		</div>
 	</div>
 		
-	<script type="text/javascript" src="/js/jquery-1.12.2.min.js"></script>
+	<!-- <script type="text/javascript" src="/js/jquery-1.12.2.min.js"></script>
 	<script type="text/javascript" src="/js/jquery.validate.min.js"></script> 
-	<script type="text/javascript" src="js/cred_limit.js"></script>
+	<script type="text/javascript" src="js/cred_limit.js"></script> -->
 </body>
 </html>

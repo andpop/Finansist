@@ -110,3 +110,17 @@ CREATE TABLE `finansist`.`calc_limit_dates` (
 ALTER TABLE `finansist`.`calc_limit_dates` ADD INDEX (`GSZ_Id`);
 ALTER TABLE `calc_limit_dates` ADD FOREIGN KEY (`GSZ_Id`) REFERENCES `finansist`.`GSZ`(`Id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
+SELECT * FROM `GSZ` LEFT JOIN `calc_limit_dates` ON `GSZ`.`Id`=`calc_limit_dates`.`GSZ_Id`;
+SELECT * FROM `GSZ` LEFT JOIN `calc_limit_dates` ON `GSZ`.`Id`=`calc_limit_dates`.`GSZ_Id` WHERE `calc_limit_dates`.`GSZ_Id` IS NULL;
+
+SELECT
+ `GSZ`.`Id` AS `GSZ_Id`, 
+ `GSZ`.`Brief_Name`,
+ min(`company`.`Date_Begin_Work`) AS `Date_begin_work`,
+ count(`company`.Id) AS `Count_company`,
+ `calc_limit_dates`.`Date_calc_limit`,
+ `calc_limit_dates`.`Id` AS `Calc_limit_dates_Id`
+FROM
+ `GSZ`, `company`,`calc_limit_dates`
+WHERE `GSZ`.`Id`=`company`.`GSZ_Id` AND `GSZ`.`Id`=`calc_limit_dates`.`GSZ_Id`
+GROUP BY `GSZ`.`Id`
