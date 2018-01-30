@@ -16,6 +16,10 @@ define('HTML_PATH_COMPANY_ADD_FORM', 'http://'.$_SERVER['HTTP_HOST'].'/cred_limi
 define('HTML_PATH_COMPANY_EDIT_FORM', 'http://'.$_SERVER['HTTP_HOST'].'/cred_limit/company_edit.php');
 define('HTML_PATH_COMPANY_DELETE_FORM', 'http://'.$_SERVER['HTTP_HOST'].'/cred_limit/company_confirm_delete.php');
 define('HTML_PATH_COMPANY_SAVE_ITEM', 'http://'.$_SERVER['HTTP_HOST'].'/cred_limit/script/company_save_item.php');
+define('HTML_PATH_FINANCE_GSZ_LIST_FORM', 'http://'.$_SERVER['HTTP_HOST'].'/cred_limit/finance_gsz_list.php');
+define('HTML_PATH_FINANCE_COMPANY_LIST_FORM', 'http://'.$_SERVER['HTTP_HOST'].'/cred_limit/finance_company_list.php');
+define('HTML_PATH_DATE_CALC_LIMIT_EDIT_FORM', 'http://'.$_SERVER['HTTP_HOST'].'/cred_limit/date_calc_limit_edit.php');
+define('HTML_PATH_DATE_CALC_LIMIT_SAVE', 'http://'.$_SERVER['HTTP_HOST'].'/cred_limit/script/date_calc_limit_save.php');
 
 // Подключение к БД
 $mysqli = db_connect();
@@ -24,7 +28,7 @@ $mysqli->set_charset("utf8");
 
 class GSZ_Item 
 {
-	public $Id, $Brief_Name, $Full_Name, $Date_Begin_Work, $NumberCompany;
+	public $Id, $Brief_Name, $Full_Name, $Date_Begin_Work, $NumberCompany, $Calc_limit_dates_Id, $Date_calc_limit;
 
 	function __construct($id)
 	{
@@ -42,6 +46,14 @@ class GSZ_Item
 		$query = "SELECT COUNT(*) FROM `company` WHERE `GSZ_Id`={$id}";
 		$NumberCompany = getCell($query);
 		$this->NumberCompany = $NumberCompany;
+
+		$query = "SELECT `Id`, `Date_calc_limit` FROM `calc_limit_dates` WHERE `GSZ_Id`={$id}";
+		$result_array = getRow($query);
+
+		$this->Calc_limit_dates_Id = $result_array['Id'];
+		$Date_calc_limit = $result_array['Date_calc_limit'];
+		$this->Date_calc_limit = (is_null($Date_calc_limit) ? "" : $Date_calc_limit); 
+
 	}
 }
 

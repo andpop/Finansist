@@ -25,9 +25,6 @@
 			
 			$result = addRow("Company", $data);
 			if (!$result) $error_message = urlencode("Ошибка при добавлении компании в ГСЗ ({$mysqli->error})");
-
-			// $query = 'INSERT INTO `Company` (`Name`, `INN`, `OPF_Id`, `SNO_Id`, `GSZ_Id`) ';
-			// $query .= 'VALUES ("'.$Name.'", '.$INN.', '.$OPF_Id.', '.$SNO_Id.', '.$GSZ_Id.')';
 			break;
 		
 		case 'update':

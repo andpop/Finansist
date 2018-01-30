@@ -16,6 +16,8 @@ INSERT INTO `OPF` (`Brief_Name`, `Full_Name`, `INN_Length`) VALUES
 ('АО', 'Акционерное общество', 10),
 ('ПАО', 'Публичное акционерное общество', 10);
 
+ALTER TABLE `OPF` ADD `Is_Corporation` TINYINT(1) NOT NULL DEFAULT '1' COMMENT 'Признак того, что компания является организацией (не ИП). У ИП=0, у других = 1.' AFTER `INN_Length`;
+
 
 --------------------------------------------------------------------
 

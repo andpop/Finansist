@@ -31,18 +31,21 @@
 
 			<table class="table">
 				<tr>
-					<th>Название ГСЗ</th><th>Начало деятельности</th><th>Компаний в группе</th><th>Дата расчета лимита</th>
+					<th>Название ГСЗ</th><th>Начало деятельности</th><th>Компаний <br>в группе</th><th>Дата расчета лимита</th>
 				</tr>
 
 				<?php 
 				foreach ($GSZ_set as $GSZ) { ?>
 				<tr>
-					<td><?=$GSZ['Brief_Name']?></td><td><?=$GSZ['Date_begin_work']?></td><td><?=$GSZ['Count_company']?></td><td><?=$GSZ['Date_calc_limit']?></td>
+					<td><?=$GSZ['Brief_Name']?></td><td><?=$GSZ['Date_begin_work']?></td><td style="text-align: center"><?=$GSZ['Count_company']?></td>
+					<td><?=$GSZ['Date_calc_limit']?>&nbsp;&nbsp;  <a href="<?=HTML_PATH_DATE_CALC_LIMIT_EDIT_FORM?>?GSZ_Id=<?=$GSZ['GSZ_Id']?>">Изменить</a></td>
+					<td><a class="btn btn-primary btn-xs" href="<?=HTML_PATH_FINANCE_COMPANY_LIST_FORM?>?GSZ_Id=<?=$GSZ['GSZ_Id']?>">Компании</a></td>
 				</tr>
 				<?php
 				} 
 				?>
 			</table>
+			<a class="btn btn-warning" href="limit.html">Вернуться</a>
 		</div>
 	</div>
 		
