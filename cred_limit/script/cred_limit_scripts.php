@@ -20,6 +20,10 @@ define('HTML_PATH_FINANCE_GSZ_LIST_FORM', 'http://'.$_SERVER['HTTP_HOST'].'/cred
 define('HTML_PATH_FINANCE_COMPANY_LIST_FORM', 'http://'.$_SERVER['HTTP_HOST'].'/cred_limit/finance_company_list.php');
 define('HTML_PATH_DATE_CALC_LIMIT_EDIT_FORM', 'http://'.$_SERVER['HTTP_HOST'].'/cred_limit/date_calc_limit_edit.php');
 define('HTML_PATH_DATE_CALC_LIMIT_SAVE', 'http://'.$_SERVER['HTTP_HOST'].'/cred_limit/script/date_calc_limit_save.php');
+define('HTML_PATH_BALANCE_IP_FORM', 'http://'.$_SERVER['HTTP_HOST'].'/cred_limit/balance_ip.php');
+define('HTML_PATH_BALANCE_CORPORATION_FORM', 'http://'.$_SERVER['HTTP_HOST'].'/cred_limit/balance_corporation.php');
+define('HTML_PATH_FINANCE_IP_FORM', 'http://'.$_SERVER['HTTP_HOST'].'/cred_limit/finance_ip.php');
+define('HTML_PATH_FINANCE_CORPORATION_FORM', 'http://'.$_SERVER['HTTP_HOST'].'/cred_limit/finance_corporation.php');
 
 // Подключение к БД
 $mysqli = db_connect();
@@ -64,7 +68,7 @@ class Company_Item
 	function __construct($Company_Id)
 	{
 		$query = "SELECT `A`.`Name` AS `Name`, `A`.`INN` AS `INN`, `A`.`GSZ_Id` AS `GSZ_Id`, `A`.`OPF_Id` AS `OPF_Id`, `A`.`SNO_Id` AS `SNO_Id`, `B`.`Brief_Name` AS `OPF`, ";
-		$query .= " `C`.`Brief_Name` AS `SNO`, `D`.`Brief_Name` AS  `GSZ_Name`, `A`.`Date_Registr`, `A`.`Date_Begin_Work` ";
+		$query .= " `C`.`Brief_Name` AS `SNO`, `D`.`Brief_Name` AS  `GSZ_Name`, `A`.`Date_Registr`, `A`.`Date_Begin_Work`, `B`.`Is_Corporation` ";
 		$query .= "FROM `Company` `A`, `OPF` `B`, `SNO` `C` , `GSZ` `D` ";
 		$query .= "WHERE `A`.`Id`={$Company_Id} AND (`A`.`OPF_Id`=`B`.`Id`) AND (`A`.`SNO_Id`=`C`.`Id`) AND (`A`.`GSZ_Id`=`D`.`Id`)";
 		
@@ -81,6 +85,7 @@ class Company_Item
 		$this->SNO = $row['SNO'];
 		$this->Date_Registr = (is_null($row['Date_Registr']) ? "" : $row['Date_Registr']); 
 		$this->Date_Begin_Work = (is_null($row['Date_Begin_Work']) ? "" : $row['Date_Begin_Work']); 
+		$this->Is_Corporation = $row['Is_Corporation'];
 	}
 }
 
@@ -113,10 +118,25 @@ function get_GSZ_set_with_calc_limit_date()
 
 function get_company_set($GSZ_Id)
 {
-	// company_set := array of {Id, Name, INN, OPF, SNO}
-	$query = "SELECT `A`.`Id` AS `Id`, `A`.`Name` AS `Name`, `A`.`INN` AS `INN`, `B`.`Brief_Name` AS `OPF`, `C`.`Brief_Name` AS `SNO`, `A`.`Date_Registr`, `A`.`Date_Begin_Work` ";
-	$query .= "FROM `Company` `A`, `OPF` `B`, `SNO` `C` ";
-	$query .= "WHERE (`A`.`GSZ_Id`={$GSZ_Id}) AND (`A`.`OPF_Id`=`B`.`Id`) AND (`A`.`SNO_Id`=`C`.`Id`)";
+	// company_set := array of {Id, Name, INN, OPF, SNO, Date_Registr, Date_Begin_Work, Is_Corporation}
+	$query = "SELECT \n"
+    . " `A`.`Id` AS `Id`, \n"
+    . " `A`.`Name` AS `Name`, \n"
+    . " `A`.`INN` AS `INN`, \n"
+    . " `B`.`Brief_Name` AS `OPF`, \n"
+    . " `C`.`Brief_Name` AS `SNO`, \n"
+    . " `A`.`Date_Registr`, \n"
+    . " `A`.`Date_Begin_Work`,\n"
+    . " `B`.`Is_Corporation`\n"
+    . "FROM \n"
+    . " `Company` `A`, \n"
+    . " `OPF` `B`, \n"
+    . " `SNO` `C` \n"
+    . "WHERE \n"
+    . " (`A`.`GSZ_Id` = {$GSZ_Id}) \n"
+    . " AND (`A`.`OPF_Id` = `B`.`Id`) \n"
+    . " AND (`A`.`SNO_Id` = `C`.`Id`)";
+	
 	$company_set = getTable($query);
 	return $company_set;
 }
@@ -187,6 +207,35 @@ function fill_calc_limit_dates()
 		$data["GSZ_Id"] = $GSZ_Id;
 		$result = addRow("calc_limit_dates", $data);
 	}
+}
+
+function get_Balance_Dates($Date_calc_limit, $Is_Corporation = 0)
+{
+	$Balance_Dates = [];
+
+	$Date1 = new DateTime($Date_calc_limit);
+	if ($Is_Corporation)
+	{
+		//Для организации даты определения баланса: {Начало_текущего_квартала - 6 месяцев, Начало_текущего_квартала - 3 месяцеа, Начало_текущего_квартала }
+		$month = (int)($Date1->format("n"));
+		if ($month <= 3) $Date3 = $Date1->format("Y-01-01");
+		if (($month >= 4) and ($month <= 6)) $Date3 = $Date1->format("Y-04-01");
+		if (($month >= 7) and ($month <= 9)) $Date3 = $Date1->format("Y-07-01");
+		if ($month >= 10) $Date3 = $Date1->format("Y-10-01");
+	}
+	else
+	{
+		//Для ИП даты определения баланса: {Дата_расчета_лимита - 6 месяцев, Дата_расчета_лимита - 3 месяцеа, Дата_расчета_лимита }
+		$Date3 = $Date_calc_limit;
+	};
+	
+	$Date = new DateTime($Date3);
+	$Balance_Dates[] = ($Date->modify("-6 month"))->format("Y-m-d");
+	$Date = new DateTime($Date3);
+	$Balance_Dates[] = ($Date->modify("-3 month"))->format("Y-m-d");
+	$Balance_Dates[] = $Date3;
+
+	return $Balance_Dates;
 }
 
 ?>

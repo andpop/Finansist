@@ -126,3 +126,16 @@ FROM
  `GSZ`, `company`,`calc_limit_dates`
 WHERE `GSZ`.`Id`=`company`.`GSZ_Id` AND `GSZ`.`Id`=`calc_limit_dates`.`GSZ_Id`
 GROUP BY `GSZ`.`Id`
+
+----------------------------------------------------------------
+
+CREATE TABLE `finansist`.`Corp_Balance_Article` ( 
+  `Id` TINYINT(3) UNSIGNED NOT NULL AUTO_INCREMENT , 
+  `Section_Id` TINYINT(2) UNSIGNED NOT NULL COMMENT 'FK' , 
+  `Code` CHAR(5) NOT NULL COMMENT 'Код статьи' , 
+  `Has_Children` TINYINT(1) UNSIGNED NOT NULL COMMENT '1 - есть подкоды (вычисляемый), 0 - нет' , 
+  `Description` CHAR(100) NOT NULL , 
+  `Is_Sum_Section` TINYINT(1) NOT NULL COMMENT '1 - сумма раздела' , 
+  `Is_Sum_Part` TINYINT(1) NOT NULL COMMENT '1 - сумма актива или пассива' , 
+  PRIMARY KEY (`Id`))
+   ENGINE = InnoDB CHARACTER SET utf8 COLLATE utf8_general_ci COMMENT = 'Статьи баланса для организация';
