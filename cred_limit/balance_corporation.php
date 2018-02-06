@@ -10,6 +10,8 @@
     $GSZ = new GSZ_Item($company->GSZ_Id);
 	$Balance_Dates = get_Balance_Dates($GSZ->Date_calc_limit, $company->Is_Corporation);
 	$error_message = get_error_message();
+
+	$Balance_Active = get_Balance_Active();
 ?>
 <!-- ==================================================================================================== -->
 <!DOCTYPE html>
@@ -41,6 +43,20 @@
             <h4>Дата начала деятельности: <?=$company->Date_Begin_Work?></h4>
             <h4>Дата расчета лимита: <?=$GSZ->Date_calc_limit?></h4>
             <h4>Даты для ввода баланса: <?=$Balance_Dates[0].", ".$Balance_Dates[1].", ".$Balance_Dates[2]?></h4>
+			<table>
+				<tr><td>Наименование показателя</td><td>Код</td><td>Сумма</td></tr>
+				<?php foreach($Balance_Active as $article): ?>
+				<tr>
+					<td><?= $article['Description'] ?></td>
+					<?php if ($article['Is_Section']): ?>
+						<td></td><td></td>
+					<?php else: ?>
+						<td><?= $article['Code'] ?></td><td><?= $article['Value'] ?></td>
+					<?php endif; ?>
+				</tr>
+				<?php endforeach; ?>
+
+			</table>
 		</div>
 	</div>
 		

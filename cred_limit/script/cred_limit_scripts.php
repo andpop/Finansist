@@ -185,8 +185,7 @@ function get_SNO_names()
 	$array_SNO_names = [];
 	$query = 'SELECT `Brief_Name`, `Cred_Limit_Affect` FROM `SNO`';
 	$result_array = getTable($query);
-	if (!$result_array) 
-	return $array_SNO_names;
+	if (!$result_array) return $array_SNO_names;
 	foreach ($result_array as $row)
 	{
 		$array_SNO_names[$row['Brief_Name']]=$row['Cred_Limit_Affect'];
@@ -216,7 +215,7 @@ function get_Balance_Dates($Date_calc_limit, $Is_Corporation = 0)
 	$Date1 = new DateTime($Date_calc_limit);
 	if ($Is_Corporation)
 	{
-		//Для организации даты определения баланса: {Начало_текущего_квартала - 6 месяцев, Начало_текущего_квартала - 3 месяцеа, Начало_текущего_квартала }
+		//Для организации даты определения баланса: {Начало_текущего_квартала - 6 месяцев, Начало_текущего_квартала - 3 месяца, Начало_текущего_квартала }
 		$month = (int)($Date1->format("n"));
 		if ($month <= 3) $Date3 = $Date1->format("Y-01-01");
 		if (($month >= 4) and ($month <= 6)) $Date3 = $Date1->format("Y-04-01");
@@ -236,6 +235,59 @@ function get_Balance_Dates($Date_calc_limit, $Is_Corporation = 0)
 	$Balance_Dates[] = $Date3;
 
 	return $Balance_Dates;
+}
+
+function get_Balance_Active()
+{
+	$Balance_Active = [];
+	$query = "SELECT \n"
+    . " `Code`, `Description`, `Value`\n"
+    . "FROM \n"
+    . " `Corp_Balance_Articles` \n"
+    . "WHERE \n"
+    . " `Is_Section`=1 AND `Balance_Part`=1\n"
+	. "ORDER BY `Code`";
+	$Sections_Active = getTable($query);
+	foreach ($Sections_Active as $Section)
+	{
+		$article = [];
+		$article['Code'] = $Section['Code'];
+		$article['Is_Section'] = 1;
+		$article['Description'] = '<b><em>'.htmlspecialchars($Section['Description']).'</b></em>';
+		
+		$Balance_Active[] = $article;
+
+		$query = "SELECT \n"
+		. " `Code`, `Description`, `Value`, `Parent_Code`, `Has_children` \n"
+		. "FROM \n"
+		. " `Corp_Balance_Articles` \n"
+		. "WHERE \n"
+		. " `Is_Section`=0 AND `Section_Code`={$Section['Code']}\n"
+		. "ORDER BY `Code`";
+		$Section_articles = getTable($query);
+		foreach ($Section_articles as $Section_article)
+		{
+			$article = [];
+			$article['Code'] = $Section_article['Code'];
+			$article['Is_Section'] = 0;
+
+			$prefix = ($Section_article['Parent_Code'] ? '&nbsp &nbsp' : '<b>'); 
+			$suffix = ($Section_article['Parent_Code'] ? '' : '</b>'); 
+			$article['Description'] = $prefix . htmlspecialchars($Section_article['Description']) . $suffix;
+			if ($Section_article['Has_children'])
+			{
+				$query = "SELECT SUM(`Value`) FROM `Corp_Balance_Articles` WHERE `Parent_Code` = '{$Section_article['Code']}' ";
+				$Value = getCell($query);
+				$article['Value'] = $Value;
+			}
+			else
+				$article['Value'] = $Section_article['Value'];
+
+			$Balance_Active[] = $article;
+		}
+	}
+	// print_r($Balance_Active);
+	return $Balance_Active;
 }
 
 ?>
