@@ -240,6 +240,7 @@ function get_Balance_Dates($Date_calc_limit, $Is_Corporation = 0)
 function get_Balance_Active()
 {
 	$Balance_Active = [];
+	// Список всех разделов баланса
 	$query = "SELECT \n"
     . " `Code`, `Description`, `Value`\n"
     . "FROM \n"
@@ -250,19 +251,19 @@ function get_Balance_Active()
 	$Sections_Active = getTable($query);
 	foreach ($Sections_Active as $Section)
 	{
+		// Заголовок очередного раздела баланса
 		$article = [];
 		$article['Code'] = $Section['Code'];
 		$article['Is_Section'] = 1;
-		$article['Description'] = '<b><em>'.htmlspecialchars($Section['Description']).'</b></em>';
+		$article['Is_Sum_Section'] = 0;
+		$article['Description'] = '<b>'.htmlspecialchars($Section['Description']).'</b>';
 		
 		$Balance_Active[] = $article;
 
-		$query = "SELECT \n"
-		. " `Code`, `Description`, `Value`, `Parent_Code`, `Has_children` \n"
-		. "FROM \n"
-		. " `Corp_Balance_Articles` \n"
-		. "WHERE \n"
-		. " `Is_Section`=0 AND `Section_Code`={$Section['Code']}\n"
+		// Строим список всех статей баланса, входящих в текущую статью
+		$query = "SELECT `Code`, `Description`, `Value`, `Parent_Code`, `Has_children` \n"
+		. "FROM `Corp_Balance_Articles` \n"
+		. "WHERE `Is_Section`=0 AND `Section_Code`={$Section['Code']} AND `Is_Sum_Section`=0 \n"
 		. "ORDER BY `Code`";
 		$Section_articles = getTable($query);
 		foreach ($Section_articles as $Section_article)
@@ -270,12 +271,16 @@ function get_Balance_Active()
 			$article = [];
 			$article['Code'] = $Section_article['Code'];
 			$article['Is_Section'] = 0;
+			$article['Is_Sum_Section'] = 0;
+			$article['Is_Editable_Value'] = (! $Section_article['Has_children']);
 
-			$prefix = ($Section_article['Parent_Code'] ? '&nbsp &nbsp' : '<b>'); 
-			$suffix = ($Section_article['Parent_Code'] ? '' : '</b>'); 
-			$article['Description'] = $prefix . htmlspecialchars($Section_article['Description']) . $suffix;
+			// Если статья баланса является дочерней, то название ее смещаем враво на два пробела
+			$prefix = ($Section_article['Parent_Code'] ? '&nbsp &nbsp' : ''); 
+			$article['Description'] = $prefix . htmlspecialchars($Section_article['Description']);
+
 			if ($Section_article['Has_children'])
 			{
+				// Если статья явлется составной, то находим сумму значений всех статей, входящих в нее 
 				$query = "SELECT SUM(`Value`) FROM `Corp_Balance_Articles` WHERE `Parent_Code` = '{$Section_article['Code']}' ";
 				$Value = getCell($query);
 				$article['Value'] = $Value;
@@ -285,8 +290,21 @@ function get_Balance_Active()
 
 			$Balance_Active[] = $article;
 		}
+		
+		$article = [];
+		$query = "SELECT `Code`, `Description` \n"
+		. "FROM `Corp_Balance_Articles` \n"
+		. "WHERE `Section_Code`={$Section['Code']} AND `Is_Sum_Section`=1";
+		$row = getRow($query);
+		$article['Code'] = '<b>'.$row['Code'].'</b>';
+		$article['Description'] = '<b>'.$row['Description'].'</b>';
+		
+		$query = "SELECT SUM(`Value`) FROM `Corp_Balance_Articles` WHERE `Section_Code`={$Section['Code']} AND `Has_Children`=0 AND `Is_Section`=0";
+		$article['Value'] = getCell($query);
+		$article['Is_Sum_Section'] = 1;
+		$article['Is_Section'] = 0;
+		$Balance_Active[] = $article;
 	}
-	// print_r($Balance_Active);
 	return $Balance_Active;
 }
 

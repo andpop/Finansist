@@ -50,8 +50,16 @@
 					<td><?= $article['Description'] ?></td>
 					<?php if ($article['Is_Section']): ?>
 						<td></td><td></td>
+					<?php elseif ($article['Is_Sum_Section']): ?>
+						<td><?= $article['Code'] ?></td>
+						<td><?= $article['Value'] ?></td>
 					<?php else: ?>
-						<td><?= $article['Code'] ?></td><td><?= $article['Value'] ?></td>
+						<td><?= $article['Code'] ?></td>
+						<?php if ($article['Is_Editable_Value']): ?>
+							<td><input type="text" style="width: 100px; text-align: right" value="<?= $article['Value'] ?>" ></td>
+						<?php else: ?>
+							<td><?= $article['Value'] ?></td>
+						<?php endif; ?>
 					<?php endif; ?>
 				</tr>
 				<?php endforeach; ?>
