@@ -43,28 +43,32 @@
             <h4>Дата начала деятельности: <?=$company->Date_Begin_Work?></h4>
             <h4>Дата расчета лимита: <?=$GSZ->Date_calc_limit?></h4>
             <h4>Даты для ввода баланса: <?=$Balance_Dates[0].", ".$Balance_Dates[1].", ".$Balance_Dates[2]?></h4>
-			<table>
-				<tr><td>Наименование показателя</td><td>Код</td><td>Сумма</td></tr>
-				<?php foreach($Balance_Active as $article): ?>
-				<tr>
-					<td><?= $article['Description'] ?></td>
-					<?php if ($article['Is_Section']): ?>
-						<td></td><td></td>
-					<?php elseif ($article['Is_Sum_Section']): ?>
-						<td><?= $article['Code'] ?></td>
-						<td><?= $article['Value'] ?></td>
-					<?php else: ?>
-						<td><?= $article['Code'] ?></td>
-						<?php if ($article['Is_Editable_Value']): ?>
-							<td><input type="text" style="width: 100px; text-align: right" value="<?= $article['Value'] ?>" ></td>
-						<?php else: ?>
+			<form name="edit_balance" action="<?=HTML_PATH_BALANCE_SAVE_VALUES?>" method="POST">
+				<input type="hidden" name="Company_Id" value=<?=$company->Id?>>
+				<input type="hidden" name="Balance_Date" value=<?=$Balance_Dates[0]?>>
+				<table>
+					<tr><td>Наименование показателя</td><td>Код</td><td>Сумма</td></tr>
+					<?php foreach($Balance_Active as $article): ?>
+					<tr>
+						<td><?= $article['Description'] ?></td>
+						<?php if ($article['Is_Section']): ?>
+							<td></td><td></td>
+						<?php elseif ($article['Is_Sum_Section']): ?>
+							<td><?= $article['Code'] ?></td>
 							<td><?= $article['Value'] ?></td>
+						<?php else: ?>
+							<td><?= $article['Code'] ?></td>
+							<?php if ($article['Is_Editable_Value']): ?>
+								<td><input type="text" name="<?=$article['Code']?>" style="width: 100px; text-align: right" value="<?= $article['Value'] ?>" ></td>
+							<?php else: ?>
+								<td><?= $article['Value'] ?></td>
+							<?php endif; ?>
 						<?php endif; ?>
-					<?php endif; ?>
-				</tr>
-				<?php endforeach; ?>
-
-			</table>
+					</tr>
+					<?php endforeach; ?>
+				</table>
+				<button type="submit" class="btn btn-primary">Сохранить</button> 
+			</form>
 		</div>
 	</div>
 		

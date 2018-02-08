@@ -24,6 +24,7 @@ define('HTML_PATH_BALANCE_IP_FORM', 'http://'.$_SERVER['HTTP_HOST'].'/cred_limit
 define('HTML_PATH_BALANCE_CORPORATION_FORM', 'http://'.$_SERVER['HTTP_HOST'].'/cred_limit/balance_corporation.php');
 define('HTML_PATH_FINANCE_IP_FORM', 'http://'.$_SERVER['HTTP_HOST'].'/cred_limit/finance_ip.php');
 define('HTML_PATH_FINANCE_CORPORATION_FORM', 'http://'.$_SERVER['HTTP_HOST'].'/cred_limit/finance_corporation.php');
+define('HTML_PATH_BALANCE_SAVE_VALUES', 'http://'.$_SERVER['HTTP_HOST'].'/cred_limit/script/balance_save_values.php');
 
 // Подключение к БД
 $mysqli = db_connect();
@@ -111,7 +112,6 @@ function get_GSZ_set_with_calc_limit_date()
     . "WHERE `GSZ`.`Id`=`company`.`GSZ_Id` AND `GSZ`.`Id`=`calc_limit_dates`.`GSZ_Id`\n"
     . "GROUP BY `GSZ`.`Id`";
 	
-	// $query = "SELECT `GSZ`.`Id`, `GSZ`.`Brief_Name`, `calc_limit_dates`.`Date_calc_limit`, `calc_limit_dates`.`Id` FROM `GSZ` LEFT JOIN `calc_limit_dates` ON `GSZ`.`Id`=`calc_limit_dates`.`GSZ_Id`";
 	$GSZ_set = getTable($query);
 	return $GSZ_set;
 }
@@ -240,24 +240,20 @@ function get_Balance_Dates($Date_calc_limit, $Is_Corporation = 0)
 function get_Balance_Active()
 {
 	$Balance_Active = [];
-	// Список всех разделов баланса
+	// Список всех разделов баланса (актив)
 	$query = "SELECT \n"
-    . " `Code`, `Description`, `Value`\n"
-    . "FROM \n"
-    . " `Corp_Balance_Articles` \n"
-    . "WHERE \n"
-    . " `Is_Section`=1 AND `Balance_Part`=1\n"
+    . " `Code`, `Description`, `Value` FROM `Corp_Balance_Articles` \n"
+    . "WHERE `Is_Section`=1 AND `Balance_Part`=1 \n"
 	. "ORDER BY `Code`";
 	$Sections_Active = getTable($query);
 	foreach ($Sections_Active as $Section)
 	{
-		// Заголовок очередного раздела баланса
+		// Формируем заголовок очередного раздела баланса
 		$article = [];
 		$article['Code'] = $Section['Code'];
 		$article['Is_Section'] = 1;
 		$article['Is_Sum_Section'] = 0;
 		$article['Description'] = '<b>'.htmlspecialchars($Section['Description']).'</b>';
-		
 		$Balance_Active[] = $article;
 
 		// Строим список всех статей баланса, входящих в текущую статью
@@ -280,25 +276,28 @@ function get_Balance_Active()
 
 			if ($Section_article['Has_children'])
 			{
-				// Если статья явлется составной, то находим сумму значений всех статей, входящих в нее 
+				// Если статья явлется составной, то вычисляем сумму значений всех статей, входящих в нее 
 				$query = "SELECT SUM(`Value`) FROM `Corp_Balance_Articles` WHERE `Parent_Code` = '{$Section_article['Code']}' ";
 				$Value = getCell($query);
 				$article['Value'] = $Value;
 			}
 			else
+				// Статья не является составной, ее значение можно будет менять
 				$article['Value'] = $Section_article['Value'];
 
 			$Balance_Active[] = $article;
 		}
 		
+		// Формирование записи для суммы раздела
+		// Находим код и название статьи для суммы раздела
 		$article = [];
-		$query = "SELECT `Code`, `Description` \n"
-		. "FROM `Corp_Balance_Articles` \n"
+		$query = "SELECT `Code`, `Description` FROM `Corp_Balance_Articles` \n"
 		. "WHERE `Section_Code`={$Section['Code']} AND `Is_Sum_Section`=1";
 		$row = getRow($query);
 		$article['Code'] = '<b>'.$row['Code'].'</b>';
 		$article['Description'] = '<b>'.$row['Description'].'</b>';
 		
+		// Находим сумму значений всех статей, входящих в текущий раздел
 		$query = "SELECT SUM(`Value`) FROM `Corp_Balance_Articles` WHERE `Section_Code`={$Section['Code']} AND `Has_Children`=0 AND `Is_Section`=0";
 		$article['Value'] = getCell($query);
 		$article['Is_Sum_Section'] = 1;
