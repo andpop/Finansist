@@ -90,4 +90,3 @@
 			redirect(HTML_PATH_GSZ_LIST_FORM."?error={$error_message}");
 	}
 	$result ? redirect(HTML_PATH_COMPANY_LIST_FORM.'?GSZ_Id='.$GSZ_Id) : redirect(HTML_PATH_GSZ_LIST_FORM."?error={$error_message}");	
-?>

@@ -55,4 +55,3 @@
 			redirect(HTML_PATH_GSZ_LIST_FORM."?error={$error_message}");
 		}
 	$result ? redirect(HTML_PATH_GSZ_LIST_FORM) : redirect(HTML_PATH_GSZ_LIST_FORM."?error={$error_message}");
-?>

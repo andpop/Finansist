@@ -307,5 +307,3 @@ function get_Balance_Active()
 	}
 	return $Balance_Active;
 }
-
-?>

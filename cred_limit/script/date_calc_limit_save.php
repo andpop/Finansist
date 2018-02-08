@@ -21,5 +21,4 @@
     
     if (!$result) $error_message = urlencode("Ошибка при изменении даты расчета кредитного лимита.");
 			
-	$result ? redirect(HTML_PATH_FINANCE_GSZ_LIST_FORM) : redirect(HTML_PATH_FINANCE_GSZ_LIST_FORM."?error={$error_message}");
-?>
+    $result ? redirect(HTML_PATH_FINANCE_GSZ_LIST_FORM) : redirect(HTML_PATH_FINANCE_GSZ_LIST_FORM."?error={$error_message}");
