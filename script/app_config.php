@@ -139,6 +139,9 @@ function setRow($table, $id, $data)
     }
     $query = substr($query, 0, -1);
     $query .= " WHERE `id`='$id'";
+
+    echo $query . "<br>";
+
     return $mysqli->query($query);
 }
 
