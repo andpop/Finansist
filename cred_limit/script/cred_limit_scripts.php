@@ -21,6 +21,7 @@ define('HTML_PATH_FINANCE_COMPANY_LIST_FORM', 'http://'.$_SERVER['HTTP_HOST'].'/
 define('HTML_PATH_DATE_CALC_LIMIT_EDIT_FORM', 'http://'.$_SERVER['HTTP_HOST'].'/cred_limit/date_calc_limit_edit.php');
 define('HTML_PATH_DATE_CALC_LIMIT_SAVE', 'http://'.$_SERVER['HTTP_HOST'].'/cred_limit/script/date_calc_limit_save.php');
 define('HTML_PATH_BALANCE_IP_FORM', 'http://'.$_SERVER['HTTP_HOST'].'/cred_limit/balance_ip.php');
+define('HTML_PATH_BALANCE_DATES', 'http://'.$_SERVER['HTTP_HOST'].'/cred_limit/balance_dates.php');
 define('HTML_PATH_BALANCE_CORPORATION_FORM', 'http://'.$_SERVER['HTTP_HOST'].'/cred_limit/balance_corporation.php');
 define('HTML_PATH_FINANCE_IP_FORM', 'http://'.$_SERVER['HTTP_HOST'].'/cred_limit/finance_ip.php');
 define('HTML_PATH_FINANCE_CORPORATION_FORM', 'http://'.$_SERVER['HTTP_HOST'].'/cred_limit/finance_corporation.php');
@@ -237,14 +238,33 @@ function get_Balance_Dates($Date_calc_limit, $Is_Corporation = 0)
 	return $Balance_Dates;
 }
 
-function get_Balance_Active()
+// Проверка наличия записей о балансе компании на определенную дату в таблице Corp_Balance_Results
+function is_Balance_Exists($Company_Id, $Balance_Date, $Balance_Part)
 {
+	$query = "SELECT count(*) FROM `Corp_Balance_Results` WHERE `Balance_Part`={$Balance_Part} AND `Company_Id`={$Company_Id} AND `Date_Balance`='$Balance_Date'";
+	$count_rows = getCell($query);
+
+	return ($count_rows>1);
+}
+
+function get_Corporation_Balance_Part($Company_Id, $Balance_Date, $Type_Balance = "active")
+{
+	// $Balance_Part=1 - актив, $Balance_Part=2 - пассив
+	$Balance_Part =(strtolower($Type_Balance) == "active" ? 1 : 2);
+
 	$Balance_Active = [];
 	// Список всех разделов баланса (актив)
-	$query = "SELECT \n"
-    . " `Code`, `Description`, `Value` FROM `Corp_Balance_Articles` \n"
-    . "WHERE `Is_Section`=1 AND `Balance_Part`=1 \n"
-	. "ORDER BY `Code`";
+	$is_Balance_Exists = is_Balance_Exists($Company_Id, $Balance_Date, $Balance_Part);
+
+	if ($is_Balance_Exists)
+		$query = "SELECT `Code`, `Description`, `Value` FROM `Corp_Balance_Results` \n"
+		. "WHERE `Is_Section`=1 AND `Balance_Part`={$Balance_Part} AND `Company_Id`={$Company_Id} AND `Date_Balance`='$Balance_Date' \n"
+		. "ORDER BY `Code`";
+	else
+		$query = "SELECT `Code`, `Description`, `Value` FROM `Corp_Balance_Articles` \n"
+		. "WHERE `Is_Section`=1 AND `Balance_Part`={$Balance_Part} \n"
+		. "ORDER BY `Code`";
+
 	$Sections_Active = getTable($query);
 	foreach ($Sections_Active as $Section)
 	{
@@ -253,14 +273,23 @@ function get_Balance_Active()
 		$article['Code'] = $Section['Code'];
 		$article['Is_Section'] = 1;
 		$article['Is_Sum_Section'] = 0;
+		$article['Is_Sum_Part'] = 0;
 		$article['Description'] = '<b>'.htmlspecialchars($Section['Description']).'</b>';
 		$Balance_Active[] = $article;
 
 		// Строим список всех статей баланса, входящих в текущую статью
-		$query = "SELECT `Code`, `Description`, `Value`, `Parent_Code`, `Has_children` \n"
-		. "FROM `Corp_Balance_Articles` \n"
-		. "WHERE `Is_Section`=0 AND `Section_Code`={$Section['Code']} AND `Is_Sum_Section`=0 \n"
-		. "ORDER BY `Code`";
+		if ($is_Balance_Exists)
+			$query = "SELECT `Code`, `Description`, `Value`, `Parent_Code`, `Has_children` \n"
+			. "FROM `Corp_Balance_Results` \n"
+			. "WHERE `Is_Section`=0 AND `Section_Code`={$Section['Code']} AND `Is_Sum_Section`=0 "
+			. "AND `Company_Id`={$Company_Id} AND `Date_Balance`='$Balance_Date'\n"
+			. "ORDER BY `Code`";
+		else
+			$query = "SELECT `Code`, `Description`, `Value`, `Parent_Code`, `Has_children` \n"
+			. "FROM `Corp_Balance_Articles` \n"
+			. "WHERE `Is_Section`=0 AND `Section_Code`={$Section['Code']} AND `Is_Sum_Section`=0 \n"
+			. "ORDER BY `Code`";
+
 		$Section_articles = getTable($query);
 		foreach ($Section_articles as $Section_article)
 		{
@@ -268,6 +297,7 @@ function get_Balance_Active()
 			$article['Code'] = $Section_article['Code'];
 			$article['Is_Section'] = 0;
 			$article['Is_Sum_Section'] = 0;
+			$article['Is_Sum_Part'] = 0;
 			$article['Is_Editable_Value'] = (! $Section_article['Has_children']);
 
 			// Если статья баланса является дочерней, то название ее смещаем враво на два пробела
@@ -277,7 +307,11 @@ function get_Balance_Active()
 			if ($Section_article['Has_children'])
 			{
 				// Если статья явлется составной, то вычисляем сумму значений всех статей, входящих в нее 
-				$query = "SELECT SUM(`Value`) FROM `Corp_Balance_Articles` WHERE `Parent_Code` = '{$Section_article['Code']}' ";
+				if ($is_Balance_Exists)
+					$query = "SELECT SUM(`Value`) FROM `Corp_Balance_Results` "
+					. "WHERE `Parent_Code` = '{$Section_article['Code']}' AND `Company_Id`={$Company_Id} AND `Date_Balance`='$Balance_Date' ";
+				else
+					$query = "SELECT SUM(`Value`) FROM `Corp_Balance_Articles` WHERE `Parent_Code` = '{$Section_article['Code']}' ";
 				$Value = getCell($query);
 				$article['Value'] = $Value;
 			}
@@ -291,18 +325,69 @@ function get_Balance_Active()
 		// Формирование записи для суммы раздела
 		// Находим код и название статьи для суммы раздела
 		$article = [];
-		$query = "SELECT `Code`, `Description` FROM `Corp_Balance_Articles` \n"
-		. "WHERE `Section_Code`={$Section['Code']} AND `Is_Sum_Section`=1";
+		if ($is_Balance_Exists)
+			$query = "SELECT `Code`, `Description` FROM `Corp_Balance_Results` \n"
+			. "WHERE `Section_Code`={$Section['Code']} AND `Is_Sum_Section`=1 "
+			. "AND `Company_Id`={$Company_Id} AND `Date_Balance`='$Balance_Date'";
+		else
+			$query = "SELECT `Code`, `Description` FROM `Corp_Balance_Articles` \n"
+			. "WHERE `Section_Code`={$Section['Code']} AND `Is_Sum_Section`=1";
 		$row = getRow($query);
-		$article['Code'] = '<b>'.$row['Code'].'</b>';
-		$article['Description'] = '<b>'.$row['Description'].'</b>';
+		$article['Code'] = $row['Code'];
+		$article['Description'] = "<b>".$row['Description']."</b>";
 		
 		// Находим сумму значений всех статей, входящих в текущий раздел
-		$query = "SELECT SUM(`Value`) FROM `Corp_Balance_Articles` WHERE `Section_Code`={$Section['Code']} AND `Has_Children`=0 AND `Is_Section`=0";
+		if ($is_Balance_Exists)
+			$query = "SELECT SUM(`Value`) FROM `Corp_Balance_Results` "
+			. "WHERE `Section_Code`={$Section['Code']} AND `Has_Children`=0 AND `Is_Section`=0 "
+			."AND `Is_Sum_Section`=0 AND `Is_Sum_Part`=0 AND `Company_Id`={$Company_Id} AND `Date_Balance`='$Balance_Date'";
+		else
+			$query = "SELECT SUM(`Value`) FROM `Corp_Balance_Articles` WHERE `Section_Code`={$Section['Code']} "
+			." AND `Has_Children`=0 AND `Is_Section`=0 AND `Is_Sum_Section`=0 AND `Is_Sum_Part`=0";
 		$article['Value'] = getCell($query);
 		$article['Is_Sum_Section'] = 1;
 		$article['Is_Section'] = 0;
+		$article['Is_Sum_Part'] = 0;
 		$Balance_Active[] = $article;
 	}
+
+	// Формирование записи для суммы (баланса) всего актива
+	// Находим код и название статьи для баланса актива
+	$article = [];
+	if ($is_Balance_Exists)
+		$query = "SELECT `Code`, `Description` FROM `Corp_Balance_Results` \n"
+		. "WHERE `Balance_Part`={$Balance_Part} AND `Is_Sum_Part`=1 AND `Company_Id`={$Company_Id} AND `Date_Balance`='$Balance_Date'";
+	else
+		$query = "SELECT `Code`, `Description` FROM `Corp_Balance_Articles` WHERE `Balance_Part`={$Balance_Part} AND `Is_Sum_Part`=1";
+	$row = getRow($query);
+	$article['Code'] = $row['Code'];
+	$article['Description'] = "<b>".$row['Description']."</b>";
+	
+	// Находим сумму значений всех статей, входящих в актив баланса
+	if ($is_Balance_Exists)
+		$query = "SELECT SUM(`Value`) FROM `Corp_Balance_Results` "
+		. "WHERE `Balance_Part`={$Balance_Part} AND `Has_Children`=0 AND `Is_Section`=0 "
+		."AND `Is_Sum_Section`=0 AND `Is_Sum_Part`=0 AND `Company_Id`={$Company_Id} AND `Date_Balance`='$Balance_Date'";
+	else
+		$query = "SELECT SUM(`Value`) FROM `Corp_Balance_Articles` WHERE `Balance_Part`={$Balance_Part} "
+		."AND `Has_Children`=0 AND `Is_Section`=0 AND `Is_Sum_Section`=0 AND `Is_Sum_Part`=0";
+	$article['Value'] = getCell($query);
+	$article['Is_Sum_Section'] = 0;
+	$article['Is_Section'] = 0;
+	$article['Is_Sum_Part'] = 1;
+	$Balance_Active[] = $article;
+
 	return $Balance_Active;
+}
+
+function is_Date($str)
+{
+    return is_numeric(strtotime($str));
+}
+
+function delete_Balance_Values($Company_Id, $Balance_Date)
+{
+	global $mysqli;
+	$query = "DELETE FROM `Corp_Balance_Results` WHERE `Date_Balance`='{$Balance_Date}' AND `Company_Id`={$Company_Id}";
+    return $mysqli->query($query);	
 }

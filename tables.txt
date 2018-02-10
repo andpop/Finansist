@@ -139,3 +139,18 @@ CREATE TABLE `finansist`.`Corp_Balance_Article` (
   `Is_Sum_Part` TINYINT(1) NOT NULL COMMENT '1 - сумма актива или пассива' , 
   PRIMARY KEY (`Id`))
    ENGINE = InnoDB CHARACTER SET utf8 COLLATE utf8_general_ci COMMENT = 'Статьи баланса для организация';
+
+-------------------------------------------------------------
+
+CREATE TABLE `finansist`.`Corp_Balance_Section` ( 
+  `Id` TINYINT(3) UNSIGNED NOT NULL AUTO_INCREMENT , 
+  `Section_Code` TINYINT(2) UNSIGNED NOT NULL COMMENT 'Числовой код раздела баланса (1..5)' , 
+  `Balance_Part` TINYINT(1) UNSIGNED ZEROFILL NOT NULL COMMENT '1 - актив, 0 - пассив' , 
+  `Description` CHAR(100) NOT NULL , 
+  PRIMARY KEY (`Id`)) 
+  ENGINE = InnoDB CHARACTER SET utf8 COLLATE utf8_general_ci COMMENT = 'Разделы баланса для организаций';
+
+---------------------------------------------------------------
+
+  ALTER TABLE `finansist`.`Corp_Balance_Results` ADD INDEX (`Company_Id`);
+  ALTER TABLE `Corp_Balance_Results` ADD FOREIGN KEY (`Company_Id`) REFERENCES `finansist`.`company`(`Id`) ON DELETE CASCADE ON UPDATE CASCADE;

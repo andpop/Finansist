@@ -2,7 +2,7 @@
 	require_once('./script/cred_limit_scripts.php');
 	if ((!isset($get["GSZ_Id"])) || (!ctype_digit($get["GSZ_Id"])) )
 	{
-		$error_message = urlencode("Указан некорректный URL для ввода данных по балансу компании");
+		$error_message = urlencode("Ошибка! Для списка организаций указан некорректный код ГСЗ.");
 		redirect(HTML_PATH_FINANCE_COMPANY_LIST_FORM.'?error='.$error_message);
 	}
 	$GSZ_item = new GSZ_item($get["GSZ_Id"]);
@@ -47,7 +47,7 @@
 				<tr>
 					<td><?=$company['Name']?></td><td><?=$company['INN']?></td><td><?=$company['OPF']?></td><td><?=$company['SNO']?></td>
 					<td><?=$company['Date_Registr']?></td><td><?=$company['Date_Begin_Work']?></td>
-					<td><a class="btn btn-link btn-xs" href="<?=$company['Is_Corporation'] ? HTML_PATH_BALANCE_CORPORATION_FORM : HTML_PATH_BALANCE_IP_FORM?>?Company_Id=<?=$company['Id']?>">Баланс</a></td>
+					<td><a class="btn btn-link btn-xs" href="<?=HTML_PATH_BALANCE_DATES?>?Company_Id=<?=$company['Id']?>">Баланс</a></td>
 					<td><a class="btn btn-link btn-xs" href="<?=$company['Is_Corporation'] ? HTML_PATH_FINANCE_CORPORATION_FORM : HTML_PATH_FINANCE_IP_FORM?>?Company_Id=<?=$company['Id']?>">Финансовые результаты</a></td>
 				</tr>
 				<?php

@@ -2,16 +2,23 @@
 	require_once('./script/cred_limit_scripts.php');
 	if ((!isset($get["Company_Id"])) || (!ctype_digit($get["Company_Id"])) )
 	{
-		$error_message = urlencode("Указан некорректный URL для вывода списка компаний из ГСЗ");
-		redirect(HTML_PATH_GSZ_LIST_FORM.'?error='.$error_message);
+		$error_message = urlencode("Был указан некорректный код компании для ввода данных по балансу");
+		redirect(HTML_PATH_FINANCE_GSZ_LIST_FORM.'?error='.$error_message);
+	}
+	if ((!isset($get["date"])) || (!is_Date($get["date"])) )
+	{
+		$error_message = urlencode("Была указана некорректная дата для ввода данных по балансу");
+		redirect(HTML_PATH_FINANCE_GSZ_LIST_FORM.'?error='.$error_message);
 	}
     $company = new Company_Item($get["Company_Id"]);
 
     $GSZ = new GSZ_Item($company->GSZ_Id);
-	$Balance_Dates = get_Balance_Dates($GSZ->Date_calc_limit, $company->Is_Corporation);
+	$Balance_Date = $get["date"];
 	$error_message = get_error_message();
 
-	$Balance_Active = get_Balance_Active();
+	// $Balance_Active = get_Corporation_Balance_Active($company->Id, $Balance_Date);
+	$Balance_Active = get_Corporation_Balance_Part($company->Id, $Balance_Date, "active");
+	$Balance_Passive = get_Corporation_Balance_Part($company->Id, $Balance_Date, "passive");
 ?>
 <!-- ==================================================================================================== -->
 <!DOCTYPE html>
@@ -39,41 +46,45 @@
 
             <h3><?=$company->Name?></h3>
             <h4>ИНН: <?=$company->INN?></h4>
-            <h4>Организационно-правовая форма: <?=$company->OPF?></h4>
-            <h4>Дата начала деятельности: <?=$company->Date_Begin_Work?></h4>
-            <h4>Дата расчета лимита: <?=$GSZ->Date_calc_limit?></h4>
-            <h4>Даты для ввода баланса: <?=$Balance_Dates[0].", ".$Balance_Dates[1].", ".$Balance_Dates[2]?></h4>
+            <h4>Начало деятельности: <?=$company->Date_Begin_Work?> &nbsp Дата баланса: <?=$Balance_Date?></h4>
+			<hr>
 			<form name="edit_balance" action="<?=HTML_PATH_BALANCE_SAVE_VALUES?>" method="POST">
 				<input type="hidden" name="Company_Id" value=<?=$company->Id?>>
-				<input type="hidden" name="Balance_Date" value=<?=$Balance_Dates[0]?>>
+				<input type="hidden" name="Balance_Date" value=<?=$Balance_Date?>>
 				<table>
+					<tr><td style="text-align: center; color: blue;"><b>АКТИВ</b></td><td></td><td></td></tr>
 					<tr><td>Наименование показателя</td><td>Код</td><td>Сумма</td></tr>
 					<?php foreach($Balance_Active as $article): ?>
 					<tr>
 						<td><?= $article['Description'] ?></td>
 						<?php if ($article['Is_Section']): ?>
-							<td></td><td></td>
-						<?php elseif ($article['Is_Sum_Section']): ?>
-							<td><?= $article['Code'] ?></td>
-							<td><?= $article['Value'] ?></td>
+							<td></td><td><input type="hidden" name="<?=$article['Code']?>" value="0" ></td>
+						<?php elseif ($article['Is_Sum_Section'] || $article['Is_Sum_Part']): ?>
+							<td><b><?= $article['Code'] ?></b></td>
+							<td style="text-align: right"><?= $article['Value'] ?></td>
+							<td><input type="hidden" name="<?=$article['Code']?>" value="<?= $article['Value'] ?>" ></td>
 						<?php else: ?>
 							<td><?= $article['Code'] ?></td>
 							<?php if ($article['Is_Editable_Value']): ?>
 								<td><input type="text" name="<?=$article['Code']?>" style="width: 100px; text-align: right" value="<?= $article['Value'] ?>" ></td>
 							<?php else: ?>
-								<td><?= $article['Value'] ?></td>
+								<td style="text-align: right"><?= $article['Value'] ?></td>
+								<td><input type="hidden" name="<?=$article['Code']?>" value="<?= $article['Value'] ?>" ></td>
 							<?php endif; ?>
 						<?php endif; ?>
 					</tr>
 					<?php endforeach; ?>
+					<tr><td style="text-align: center; color: blue;"><b>ПАССИВ</b></td><td></td><td></td></tr>
+					<tr><td>Наименование показателя</td><td>Код</td><td>Сумма</td></tr>
+					
 				</table>
 				<button type="submit" class="btn btn-primary">Сохранить</button> 
+				<a class="btn btn-warning" href="<?=HTML_PATH_BALANCE_DATES?>?Company_Id=<?=$company->Id?>">Вернуться</a>
 			</form>
 		</div>
 	</div>
 		
 	<script type="text/javascript" src="/js/jquery-1.12.2.min.js"></script>
-	<script type="text/javascript" src="/js/jquery.validate.min.js"></script> 
-	<script type="text/javascript" src="js/cred_limit.js"></script>
+	<script type="text/javascript" src="js/cred_limit.js"></script> 
 </body>
 </html>
