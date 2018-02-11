@@ -15,6 +15,7 @@
     $GSZ = new GSZ_Item($company->GSZ_Id);
 	$Balance_Date = $get["date"];
 	$error_message = get_error_message();
+	$warning_message = get_warning_message();
 
 	// $Balance_Active = get_Corporation_Balance_Active($company->Id, $Balance_Date);
 	$Balance_Active = get_Corporation_Balance_Part($company->Id, $Balance_Date, "active");
@@ -42,6 +43,10 @@
 			<div id="error_message_div" class="alert alert-danger" role="alert">
 				<span id="error_message"><?=$error_message?></span>
 				<button id="btnError_message" type="button" class="btn btn-info btn-xs">Закрыть</button>
+			</div>
+			<div id="warning_message_div" class="alert alert-danger" role="alert">
+				<span id="warning_message"><?=$warning_message?></span>
+				<button id="btnWarning_message" type="button" class="btn btn-info btn-xs">Закрыть</button>
 			</div>
 
             <h3><?=$company->Name?></h3>
@@ -76,6 +81,26 @@
 					<?php endforeach; ?>
 					<tr><td style="text-align: center; color: blue;"><b>ПАССИВ</b></td><td></td><td></td></tr>
 					<tr><td>Наименование показателя</td><td>Код</td><td>Сумма</td></tr>
+					<?php foreach($Balance_Passive as $article): ?>
+					<tr>
+						<td><?= $article['Description'] ?></td>
+						<?php if ($article['Is_Section']): ?>
+							<td></td><td><input type="hidden" name="<?=$article['Code']?>" value="0" ></td>
+						<?php elseif ($article['Is_Sum_Section'] || $article['Is_Sum_Part']): ?>
+							<td><b><?= $article['Code'] ?></b></td>
+							<td style="text-align: right"><?= $article['Value'] ?></td>
+							<td><input type="hidden" name="<?=$article['Code']?>" value="<?= $article['Value'] ?>" ></td>
+						<?php else: ?>
+							<td><?= $article['Code'] ?></td>
+							<?php if ($article['Is_Editable_Value']): ?>
+								<td><input type="text" name="<?=$article['Code']?>" style="width: 100px; text-align: right" value="<?= $article['Value'] ?>" ></td>
+							<?php else: ?>
+								<td style="text-align: right"><?= $article['Value'] ?></td>
+								<td><input type="hidden" name="<?=$article['Code']?>" value="<?= $article['Value'] ?>" ></td>
+							<?php endif; ?>
+						<?php endif; ?>
+					</tr>
+					<?php endforeach; ?>
 					
 				</table>
 				<button type="submit" class="btn btn-primary">Сохранить</button> 

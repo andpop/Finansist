@@ -35,5 +35,16 @@ foreach ($_POST as $code => $value) {
     
     addRow("Corp_Balance_Results", $data);
 }
-redirect(HTML_PATH_BALANCE_CORPORATION_FORM."?Company_Id={$Company_Id}&date={$Balance_Date}");
+
+// Вычисляем балансы по активу и пассиву, сравниваем эти балансы друг с другом
+$Balance_Active = calculate_Balance($Company_Id, $Balance_Date, "active");
+$Balance_Passive = calculate_Balance($Company_Id, $Balance_Date, "passive");
+$url_param = ['Company_Id' => $Company_Id, 'date' => $Balance_Date];
+
+if ($Balance_Active != $Balance_Passive) {
+    $url_param['warning'] = "Баланс не сходится! Актив: {$Balance_Active}, пассив: {$Balance_Passive}";
+}
+$url = HTML_PATH_BALANCE_CORPORATION_FORM."?".http_build_query($url_param);
+// echo $url;
+redirect($url);
 

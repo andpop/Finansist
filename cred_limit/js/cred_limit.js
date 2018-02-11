@@ -43,9 +43,15 @@ $(document).ready(function() {
 		$('#error_message_div').hide();
 	}
 	);
+	$('#btnWarning_message').click(function(){
+		$('#warning_message_div').hide();
+	}
+	);
 
 	if ($('#error_message').text() != "NO_ERRORS")
 		$('#error_message_div').show();
+	if ($('#warning_message').text() != "NO_WARNINGS")
+		$('#warning_message_div').show();
 	
 	$('.validated_company_form').submit(function(event){
 		event.preventDefault();

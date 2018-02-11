@@ -6,6 +6,7 @@ define('MAX_LENGTH_GSZ_BRIEF_NAME', 30);
 define('MAX_LENGTH_GSZ_FULL_NAME', 150);
 define('ERROR_MESSAGE_PREFIX', 'Ошибка при выполнении последней операции: ');
 define('NO_ERRORS_MESSAGE', 'NO_ERRORS');
+define('NO_WARNINGS_MESSAGE', 'NO_WARNINGS');
 define('HTML_PATH_GSZ_LIST_FORM', 'http://'.$_SERVER['HTTP_HOST'].'/cred_limit/gsz_list.php');
 define('HTML_PATH_GSZ_ADD_FORM', 'http://'.$_SERVER['HTTP_HOST'].'/cred_limit/gsz_add.php');
 define('HTML_PATH_GSZ_EDIT_FORM', 'http://'.$_SERVER['HTTP_HOST'].'/cred_limit/gsz_edit_item.php');
@@ -149,6 +150,15 @@ function get_error_message()
 		return (ERROR_MESSAGE_PREFIX . '<strong>'.htmlspecialchars(urldecode($_GET['error'])).'.</strong>');
 	else
 		return NO_ERRORS_MESSAGE;
+}
+
+function get_warning_message() 
+{
+	global $get;
+	if (isset($_GET['warning']))
+		return ('<strong>'.htmlspecialchars(urldecode($_GET['warning'])).'.</strong>');
+	else
+		return NO_WARNINGS_MESSAGE;
 }
 
 function get_OPF_Id_by_Name($OPF_Name)
@@ -351,8 +361,8 @@ function get_Corporation_Balance_Part($Company_Id, $Balance_Date, $Type_Balance 
 		$Balance_Active[] = $article;
 	}
 
-	// Формирование записи для суммы (баланса) всего актива
-	// Находим код и название статьи для баланса актива
+	// Формирование записи для суммы (баланса) всего актива/пассива
+	// Находим код и название статьи для баланса актива/пассива
 	$article = [];
 	if ($is_Balance_Exists)
 		$query = "SELECT `Code`, `Description` FROM `Corp_Balance_Results` \n"
@@ -363,7 +373,7 @@ function get_Corporation_Balance_Part($Company_Id, $Balance_Date, $Type_Balance 
 	$article['Code'] = $row['Code'];
 	$article['Description'] = "<b>".$row['Description']."</b>";
 	
-	// Находим сумму значений всех статей, входящих в актив баланса
+	// Находим сумму значений всех статей, входящих в актив/пассив баланса
 	if ($is_Balance_Exists)
 		$query = "SELECT SUM(`Value`) FROM `Corp_Balance_Results` "
 		. "WHERE `Balance_Part`={$Balance_Part} AND `Has_Children`=0 AND `Is_Section`=0 "
@@ -390,4 +400,16 @@ function delete_Balance_Values($Company_Id, $Balance_Date)
 	global $mysqli;
 	$query = "DELETE FROM `Corp_Balance_Results` WHERE `Date_Balance`='{$Balance_Date}' AND `Company_Id`={$Company_Id}";
     return $mysqli->query($query);	
+}
+
+function calculate_Balance($Company_Id, $Balance_Date, $Type_Balance = "active")
+{
+	// $Balance_Part=1 - актив, $Balance_Part=2 - пассив
+	$Balance_Part =(strtolower($Type_Balance) == "active" ? 1 : 2);
+	
+	$query = "SELECT SUM(`Value`) FROM `Corp_Balance_Results` "
+	. "WHERE `Balance_Part`={$Balance_Part} AND `Has_Children`=0 AND `Is_Section`=0 "
+	."AND `Is_Sum_Section`=0 AND `Is_Sum_Part`=0 AND `Company_Id`={$Company_Id} AND `Date_Balance`='$Balance_Date'";	
+	$Balance = getCell($query);
+	return $Balance;
 }
