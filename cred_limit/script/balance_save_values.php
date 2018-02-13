@@ -15,6 +15,11 @@ if ((!isset($_POST['Balance_Date'])) || (!is_Date($_POST['Balance_Date'])))
 $Company_Id = $_POST['Company_Id'];
 $Balance_Date = $_POST['Balance_Date'];
 
+$company = new Company_Item($Company_Id);
+// Таблица Corp_Balance_Articles - структура статей баланса для предприятий
+// Таблица Indived_Balance_Articles - структура статей баланса для ИП
+$Balance_Articles_table = ($company->Is_Corporation ? 'Corp_Balance_Articles' : 'Individ_Balance_Articles');
+
 // Удаляем записи по данной компании за эту дату в таблице Corp_Balance_Results
 delete_Balance_Values($Company_Id, $Balance_Date);
 
@@ -24,7 +29,7 @@ foreach ($_POST as $code => $value) {
     if (!is_numeric($code)) continue;
     
     // Получаем строку для данного кода из справочника статей баланса Corp_Balance_Articles
-    $query = "SELECT * FROM `Corp_Balance_Articles` WHERE `Code`='{$code}'";
+    $query = "SELECT * FROM `{$Balance_Articles_table}` WHERE `Code`='{$code}'";
     $data = getRow($query);
 
     // Меняем нужные поля (значения пришли из формы) и записываем эту строку в Corp_Balance_Results
@@ -44,7 +49,7 @@ $url_param = ['Company_Id' => $Company_Id, 'date' => $Balance_Date];
 if ($Balance_Active != $Balance_Passive) {
     $url_param['warning'] = "Баланс не сходится! Актив: {$Balance_Active}, пассив: {$Balance_Passive}";
 }
-$url = HTML_PATH_BALANCE_CORPORATION_FORM."?".http_build_query($url_param);
+$url = HTML_PATH_BALANCE_FORM."?".http_build_query($url_param);
 // echo $url;
 redirect($url);
 

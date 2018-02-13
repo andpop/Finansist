@@ -42,13 +42,13 @@
             <h4>Дата начала деятельности: <?=$company->Date_Begin_Work?></h4>
             <h4>Дата расчета лимита: <?=$GSZ->Date_calc_limit?></h4>
             <a class="btn btn-primary btn-lg"  
-                href="<?=$company->Is_Corporation ? HTML_PATH_BALANCE_CORPORATION_FORM : HTML_PATH_BALANCE_IP_FORM?>?Company_Id=<?=$company->Id?>&date=<?=$Balance_Dates[0]?>">
+                href="<?=HTML_PATH_BALANCE_FORM?>?Company_Id=<?=$company->Id?>&date=<?=$Balance_Dates[0]?>">
                 Баланс на <?=$Balance_Dates[0]?></a>
             <a class="btn btn-primary btn-lg"  
-                href="<?=$company->Is_Corporation ? HTML_PATH_BALANCE_CORPORATION_FORM : HTML_PATH_BALANCE_IP_FORM?>?Company_Id=<?=$company->Id?>&date=<?=$Balance_Dates[1]?>">
+                href="<?=HTML_PATH_BALANCE_FORM?>?Company_Id=<?=$company->Id?>&date=<?=$Balance_Dates[1]?>">
                 Баланс на <?=$Balance_Dates[1]?></a>
             <a class="btn btn-primary btn-lg"  
-                href="<?=$company->Is_Corporation ? HTML_PATH_BALANCE_CORPORATION_FORM : HTML_PATH_BALANCE_IP_FORM?>?Company_Id=<?=$company->Id?>&date=<?=$Balance_Dates[2]?>">
+                href="<?=HTML_PATH_BALANCE_FORM?>?Company_Id=<?=$company->Id?>&date=<?=$Balance_Dates[2]?>">
                 Баланс на <?=$Balance_Dates[2]?></a>
             <a class="btn btn-warning btn-lg" href="<?=HTML_PATH_FINANCE_COMPANY_LIST_FORM?>?GSZ_Id=<?=$company->GSZ_Id?>">Вернуться</a>
 		</div>

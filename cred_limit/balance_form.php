@@ -18,8 +18,8 @@
 	$warning_message = get_warning_message();
 
 	// $Balance_Active = get_Corporation_Balance_Active($company->Id, $Balance_Date);
-	$Balance_Active = get_Corporation_Balance_Part($company->Id, $Balance_Date, "active");
-	$Balance_Passive = get_Corporation_Balance_Part($company->Id, $Balance_Date, "passive");
+	$Balance_Active = get_Corporation_Balance_Part($company->Id, $Balance_Date, "active", $company->Is_Corporation);
+	$Balance_Passive = get_Corporation_Balance_Part($company->Id, $Balance_Date, "passive", $company->Is_Corporation);
 ?>
 <!-- ==================================================================================================== -->
 <!DOCTYPE html>
