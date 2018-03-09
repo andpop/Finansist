@@ -57,9 +57,9 @@
 						<?php
 						foreach (get_OPF_names() as $OPF_name => $INN_Length) 
 							if ($OPF_name==($company->OPF)): ?>
-								<option INN_Length="<?=$INN_Length?>" selected><?=$OPF_name?></option>
+								<option data-INN_Length="<?=$INN_Length?>" selected><?=$OPF_name?></option>
 							<?php else: ?>
-								<option INN_Length="<?=$INN_Length?>"><?=$OPF_name?></option>
+								<option data-INN_Length="<?=$INN_Length?>"><?=$OPF_name?></option>
 							<?php endif; ?>
 					</select>
 				</div>
@@ -70,9 +70,9 @@
 					<?php
 					foreach (get_SNO_names() as $SNO_name => $Cred_Limit_Affect) 
 						if ($SNO_name==($company->SNO)): ?>
-							<option Cred_Limit_Affect="<?=$Cred_Limit_Affect?>" selected><?=$SNO_name?></option>
+							<option data-Cred_Limit_Affect="<?=$Cred_Limit_Affect?>" selected><?=$SNO_name?></option>
 						<?php else: ?>
-							<option Cred_Limit_Affect="<?=$Cred_Limit_Affect?>"><?=$SNO_name?></option>
+							<option data-Cred_Limit_Affect="<?=$Cred_Limit_Affect?>"><?=$SNO_name?></option>
 						<?php endif; ?>
 					</select>
 				</div>

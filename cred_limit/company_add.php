@@ -51,7 +51,7 @@
 					<label for="OPF">Организационно-правовая форма</label>
 					<select class="form-control company_input"  name="OPF" id="OPF">
 						<?php foreach (get_OPF_names() as $OPF_name => $INN_Length) {?>
-						<option INN_Length="<?=$INN_Length?>"><?=$OPF_name?></option>
+						<option data-INN_Length="<?=$INN_Length?>"><?=$OPF_name?></option>
 						<?php };?>
 					</select>
 				</div>
@@ -60,7 +60,7 @@
 					<label for="SNO">Система налогооблажения</label>
 					<select class="form-control company_input"  name="SNO" id="SNO">
 						<?php foreach (get_SNO_names() as $SNO_name => $Cred_Limit_Affect) {?>
-						<option Cred_Limit_Affect="<?=$Cred_Limit_Affect?>"><?=$SNO_name?></option>
+						<option data-Cred_Limit_Affect="<?=$Cred_Limit_Affect?>"><?=$SNO_name?></option>
 						<?php };?>
 					</select>
 				</div>

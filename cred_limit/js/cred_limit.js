@@ -2,7 +2,7 @@
 function is_valid_INN() 
 {
 	var INN                = $('#INN').val();
-	var correct_INN_Length = $('#OPF option:selected').attr('INN_Length');
+	var correct_INN_Length = $('#OPF option:selected').attr('data-INN_Length');
 	return (INN.length == correct_INN_Length);
 }
 
@@ -58,8 +58,8 @@ $(document).ready(function() {
 
 		var INN               = $('#INN').val();
 		var OPF               = $('#OPF').val();
-		var INN_Length        = $('#OPF option:selected').attr('INN_Length');
-		var Cred_Limit_Affect = $('#SNO option:selected').attr('Cred_Limit_Affect');
+		var INN_Length        = $('#OPF option:selected').attr('data-INN_Length');
+		var Cred_Limit_Affect = $('#SNO option:selected').attr('data-Cred_Limit_Affect');
 		var SNO               = $('#SNO').val();
 		var sDate_Registr     = $('#Date_Registr').val();
 		var sDate_Begin_Work  = $('#Date_Begin_Work').val();

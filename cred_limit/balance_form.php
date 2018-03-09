@@ -10,14 +10,22 @@
 		$error_message = urlencode("Была указана некорректная дата для ввода данных по балансу");
 		redirect(HTML_PATH_FINANCE_GSZ_LIST_FORM.'?error='.$error_message);
 	}
-    $company = new Company_Item($get["Company_Id"]);
-
-    $GSZ = new GSZ_Item($company->GSZ_Id);
+	
+	$company = new Company_Item($get["Company_Id"]);
+	
+	$GSZ = new GSZ_Item($company->GSZ_Id);
 	$Balance_Date = $get["date"];
 	$error_message = get_error_message();
 	$warning_message = get_warning_message();
 
-	// $Balance_Active = get_Corporation_Balance_Active($company->Id, $Balance_Date);
+	// Вычисляем балансы по активу и пассиву, сравниваем эти балансы друг с другом
+	$total_Balance_Active = calculate_Balance($company->Id, $Balance_Date, "active");
+	$total_Balance_Passive = calculate_Balance($company->Id, $Balance_Date, "passive");
+
+	if ($total_Balance_Active != $total_Balance_Passive) {
+		$warning_message = '<strong>'."Баланс не сходится! Актив: {$total_Balance_Active}, пассив: {$total_Balance_Passive}".'.</strong>';		
+	}
+
 	$Balance_Active = get_Corporation_Balance_Part($company->Id, $Balance_Date, "active", $company->Is_Corporation);
 	$Balance_Passive = get_Corporation_Balance_Part($company->Id, $Balance_Date, "passive", $company->Is_Corporation);
 ?>

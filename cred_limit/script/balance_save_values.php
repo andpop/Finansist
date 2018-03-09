@@ -17,7 +17,7 @@ $Balance_Date = $_POST['Balance_Date'];
 
 $company = new Company_Item($Company_Id);
 // Таблица Corp_Balance_Articles - структура статей баланса для предприятий
-// Таблица Indived_Balance_Articles - структура статей баланса для ИП
+// Таблица Individ_Balance_Articles - структура статей баланса для ИП
 $Balance_Articles_table = ($company->Is_Corporation ? 'Corp_Balance_Articles' : 'Individ_Balance_Articles');
 
 // Удаляем записи по данной компании за эту дату в таблице Corp_Balance_Results
@@ -40,16 +40,7 @@ foreach ($_POST as $code => $value) {
     
     addRow("Corp_Balance_Results", $data);
 }
-
-// Вычисляем балансы по активу и пассиву, сравниваем эти балансы друг с другом
-$Balance_Active = calculate_Balance($Company_Id, $Balance_Date, "active");
-$Balance_Passive = calculate_Balance($Company_Id, $Balance_Date, "passive");
 $url_param = ['Company_Id' => $Company_Id, 'date' => $Balance_Date];
-
-if ($Balance_Active != $Balance_Passive) {
-    $url_param['warning'] = "Баланс не сходится! Актив: {$Balance_Active}, пассив: {$Balance_Passive}";
-}
 $url = HTML_PATH_BALANCE_FORM."?".http_build_query($url_param);
-// echo $url;
 redirect($url);
 

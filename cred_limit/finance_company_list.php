@@ -9,6 +9,7 @@
 	$company_set = get_company_set($get["GSZ_Id"]);
 	
 	$error_message = get_error_message();
+	$warning_message = get_warning_message();
 ?>
 <!-- ==================================================================================================== -->
 <!DOCTYPE html>
@@ -32,6 +33,10 @@
 			<div id="error_message_div" class="alert alert-danger" role="alert">
 				<span id="error_message"><?=$error_message?></span>
 				<button id="btnError_message" type="button" class="btn btn-info btn-xs">Закрыть</button>
+			</div>
+			<div id="warning_message_div" class="alert alert-danger" role="alert">
+				<span id="warning_message"><?=$warning_message?></span>
+				<button id="btnWarning_message" type="button" class="btn btn-info btn-xs">Закрыть</button>
 			</div>
 
             <h3><?=$GSZ_item->Brief_Name?></h3>

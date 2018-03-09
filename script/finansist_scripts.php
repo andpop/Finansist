@@ -38,6 +38,13 @@ function redirect($link)
     exit;
 }
 
+function dump($var)
+{
+    echo '<pre>';
+    print_r($var);
+    echo '</pre>';
+}
+
 function getCell($query) 
 {
     global $mysqli;

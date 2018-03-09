@@ -155,7 +155,8 @@ function get_warning_message()
 {
 	global $get;
 	if (isset($_GET['warning']))
-		return ('<strong>'.htmlspecialchars(urldecode($_GET['warning'])).'.</strong>');
+		// return ('<strong>'.htmlspecialchars(urldecode($_GET['warning'])).'.</strong>');
+		return ('<strong>'.htmlspecialchars(htmlspecialchars_decode(urldecode($_GET['warning']))).'.</strong>');
 	else
 		return NO_WARNINGS_MESSAGE;
 }
