@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Финансист онлайн - Группы связанных заемщиков</title>
+	<title>Новая группа связанных заемщиков | Финансист онлайн</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<meta name="description" content="" />
 	<meta name="keywords" content="" />

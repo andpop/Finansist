@@ -219,12 +219,12 @@ function fill_calc_limit_dates()
 	}
 }
 
-function get_Balance_Dates($Date_calc_limit, $Is_Corporation = 0)
+function get_Balance_Dates($Date_calc_limit, $is_Corporation = 0)
 {
 	$Balance_Dates = [];
 
 	$Date1 = new DateTime($Date_calc_limit);
-	if ($Is_Corporation)
+	if ($is_Corporation)
 	{
 		//Для организации даты определения баланса: {Начало_текущего_квартала - 6 месяцев, Начало_текущего_квартала - 3 месяца, Начало_текущего_квартала }
 		$month = (int)($Date1->format("n"));
@@ -257,14 +257,14 @@ function is_Balance_Exists($Company_Id, $Balance_Date, $Balance_Part)
 	return ($count_rows>1);
 }
 
-function get_Corporation_Balance_Part($Company_Id, $Balance_Date, $Type_Balance = "active", $Is_Corporation = 0)
+function get_Corporation_Balance_Part($Company_Id, $Balance_Date, $Type_Balance = "active", $is_Corporation = 0)
 {
 	// $Balance_Part=1 - актив, $Balance_Part=2 - пассив
 	$Balance_Part =(strtolower($Type_Balance) == "active" ? 1 : 2);
 
 	// Таблица Corp_Balance_Articles - структура статей баланса для предприятий
 	// Таблица Indived_Balance_Articles - структура статей баланса для ИП
-	$Balance_Articles_table = ($Is_Corporation ? 'Corp_Balance_Articles' : 'Individ_Balance_Articles');
+	$Balance_Articles_table = ($is_Corporation ? 'Corp_Balance_Articles' : 'Individ_Balance_Articles');
 
 	$Balance_Active = [];
 	// Список всех разделов баланса (актив)
@@ -392,11 +392,6 @@ function get_Corporation_Balance_Part($Company_Id, $Balance_Date, $Type_Balance 
 	$Balance_Active[] = $article;
 
 	return $Balance_Active;
-}
-
-function is_Date($str)
-{
-    return is_numeric(strtotime($str));
 }
 
 function delete_Balance_Values($Company_Id, $Balance_Date)

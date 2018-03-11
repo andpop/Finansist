@@ -26,6 +26,7 @@
 		$warning_message = '<strong>'."Баланс не сходится! Актив: {$total_Balance_Active}, пассив: {$total_Balance_Passive}".'.</strong>';		
 	}
 
+	// Формируем массивы значений для дебет и кредита
 	$Balance_Active = get_Corporation_Balance_Part($company->Id, $Balance_Date, "active", $company->Is_Corporation);
 	$Balance_Passive = get_Corporation_Balance_Part($company->Id, $Balance_Date, "passive", $company->Is_Corporation);
 ?>
@@ -33,7 +34,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Финансист онлайн - Баланс</title>
+	<title>Баланс <?=$company->Name?> на <?=$Balance_Date?> | Финансист онлайн</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<meta name="description" content="" />
 	<meta name="keywords" content="" />

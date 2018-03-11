@@ -8,7 +8,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Финансист онлайн - Группы связанных заемщиков</title>
+	<title>Группы связанных заемщиков | Финансист онлайн</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<meta name="description" content="" />
 	<meta name="keywords" content="" />
@@ -19,8 +19,8 @@
 <body>
 	<div class="container">
 		<header>
-			<h2 class="text-center">ГРУППЫ СВЯЗАННЫХ ЗАЕМЩИКОВ</h2>
-		</header>
+			<h2 class="textГРУППЫ СВЯЗАННЫХ ЗАЕМЩИКОВ | -center"></h2>
+	header>
 		<div class="jumbotron">
 			<div id="error_message_div" class="alert alert-danger" role="alert">
 				<span id="error_message"><?=$error_message?></span>

@@ -11,15 +11,11 @@
 	$Balance_Dates = get_Balance_Dates($GSZ->Date_calc_limit, $company->Is_Corporation);
 	$error_message = get_error_message();
 
-	// dump($Balance_Dates);
-	// dump($company->Date_Registr);
-	// dump($company->Date_Begin_Work);
 	$url_param['GSZ_Id'] = $company->GSZ_Id;
 	if ($Balance_Dates[0] < $company->Date_Begin_Work) 
 	{
 		$url_param['warning'] = "{$company->Name} работает менее 6 полных месяцев, в расчете кредитного лимита участвовать не будет";
 		$url = HTML_PATH_FINANCE_COMPANY_LIST_FORM."?".http_build_query($url_param);
-		// echo $url;
 		redirect($url);
 	};
 
@@ -28,7 +24,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Финансист онлайн - Баланс</title>
+	<title>Ввод баланса <?=$company->Name?> | Финансист онлайн</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<meta name="description" content="" />
 	<meta name="keywords" content="" />

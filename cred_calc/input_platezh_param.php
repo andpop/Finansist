@@ -2,7 +2,7 @@
 
 <html>
 <head>
-	<title>Финансист онлайн</title>
+	<title>Расчет графика платежей по кредиту | Финансист онлайн</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<meta name="description" content="" />
 	<meta name="keywords" content="" />

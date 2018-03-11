@@ -14,7 +14,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Финансист онлайн - Компании из ГСЗ</title>
+	<title>Компании из ГСЗ <?=$GSZ_item->Brief_Name?> | Финансист онлайн</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<meta name="description" content="" />
 	<meta name="keywords" content="" />

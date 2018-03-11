@@ -4,6 +4,11 @@
 // Служебные функции
 // ===========================================================================================
 
+function is_Date($str)
+{
+    return is_numeric(strtotime($str));
+}
+
 function db_connect(){
     $mysqli = new mysqli(MYSQL_SERVER, MYSQL_USER, MYSQL_PASSWORD, MYSQL_DB);
     
